@@ -14,10 +14,6 @@ import java.util.Set;
 @PrimaryKeyJoinColumn(name ="id_persona")
 public class Usuario  extends Persona {
 
-    public Usuario (String documento, String nombreCompleto){
-        super(documento, nombreCompleto);
-    }
-
     private String password;
     private Boolean estado;
     @ManyToMany(fetch = FetchType.EAGER)
@@ -27,7 +23,7 @@ public class Usuario  extends Persona {
             inverseJoinColumns = @JoinColumn(name = "rol_id")
     )
     private Set<Rol> roles;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "servicios_usuarios",
             joinColumns = @JoinColumn(name = "id_persona"),
