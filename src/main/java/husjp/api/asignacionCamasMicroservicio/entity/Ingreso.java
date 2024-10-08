@@ -13,8 +13,8 @@ public class Ingreso {
     @Id
     private String id;
     @Column(name = "fecha_ingreso")
-    private LocalDateTime fehcaIngreso;
-    @ManyToOne
+    private LocalDateTime fechaIngreso;
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "paciente_id", foreignKey = @ForeignKey(name = "FK_ingreso_paciente"))
     private Paciente paciente;
 }
