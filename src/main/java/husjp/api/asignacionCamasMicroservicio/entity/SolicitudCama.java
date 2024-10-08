@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -16,7 +17,7 @@ public class SolicitudCama {
     private String estado;
     @Column(name = "fecha_inicial")
     private LocalDateTime fechaInicial;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ingreso_id", foreignKey = @ForeignKey(name = "fk_solicitudCama_ingreso"))
     private Ingreso ingreso;
 
