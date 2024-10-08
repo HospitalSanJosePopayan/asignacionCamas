@@ -9,6 +9,7 @@ import lombok.Data;
 public class TitulosFormacionAcacemica {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String titulo;
     @ManyToOne
