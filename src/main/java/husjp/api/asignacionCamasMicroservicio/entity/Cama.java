@@ -9,10 +9,11 @@ import lombok.Data;
 public class Cama {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_cama")
     private Integer id;
     private String nombre;
-
+    private String codigo;
     @ManyToOne
     @JoinColumn(name = "area_id", foreignKey = @ForeignKey(name = "FK_cama_area"))
     private Area area;
