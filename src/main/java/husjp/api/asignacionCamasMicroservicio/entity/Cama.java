@@ -13,11 +13,12 @@ public class Cama {
     @Column(name = "id_cama")
     private Integer id;
     private String nombre;
+    @Column(unique = true)
     private String codigo;
     @ManyToOne
-    @JoinColumn(name = "area_id", foreignKey = @ForeignKey(name = "FK_cama_area"))
+    @JoinColumn(name = "area_id", foreignKey = @ForeignKey(name = "FK_cama_area"), nullable = false)
     private Area area;
     @ManyToOne
-    @JoinColumn(name = "cama_estado_id", foreignKey = @ForeignKey(name = "FK_cama_estadoCama"))
+    @JoinColumn(name = "cama_estado_id", foreignKey = @ForeignKey(name = "FK_cama_estadoCama"), nullable = false)
     private CamaEstado camaEstado;
 }
