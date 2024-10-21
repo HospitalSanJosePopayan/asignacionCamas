@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Data
 @NoArgsConstructor
 @Entity
@@ -18,6 +20,8 @@ public class Persona {
     private String documento;
     @Column(name = "nombre_completo")
     private String nombreCompleto;
+    @Column(name = "fecha_nacimiento")
+    private LocalDate fechaNacimiento;
 
     public Persona (String documento, String nombreCompleto){
         this.documento = documento;
