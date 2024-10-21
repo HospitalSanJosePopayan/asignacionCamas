@@ -2,6 +2,8 @@ package husjp.api.asignacionCamasMicroservicio.service.dto.request;
 
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -11,4 +13,6 @@ public class PacienteDTO {
     private String genero;
     private String documento;
     private String nombreCompleto;
+    private LocalDate fechaNacimiento;
+
 }
