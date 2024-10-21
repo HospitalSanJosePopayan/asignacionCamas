@@ -36,6 +36,12 @@ public class RestApiExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(SolicitudCamaVigenteException.class)
+    public ResponseEntity<Error> handleGenericException(final HttpServletRequest req, final  SolicitudCamaVigenteException ex){
+        final Error error = ErrorUtils.crearError(CodigoError.SOLICITUD_CAMA_VIGENTE.getCodigo(), String.format("%s, %s", CodigoError.SOLICITUD_CAMA_VIGENTE.getLlaveMensaje(), ex.getMessage()), HttpStatus.BAD_REQUEST.value()).setUrl(req.getRequestURL().toString()).setMetodo(req.getMethod());
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
     //este metodo se ejecuta automaticamente con el valid
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex){
