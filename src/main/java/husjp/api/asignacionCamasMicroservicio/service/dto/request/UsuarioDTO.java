@@ -9,6 +9,5 @@ import lombok.*;
 public class UsuarioDTO {
 
     private Integer idPersona;
-    private String documento;
 
 }
