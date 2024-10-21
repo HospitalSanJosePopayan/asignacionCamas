@@ -13,8 +13,6 @@ public class VersionSolicitudCamaDTO {
     private Boolean requiereAislamiento;
     private String motivo;
     private String otraEspecialidad;
-    private String autorizacionFacturacion;
-    private LocalDateTime fecha;
     private UsuarioDTO usuario;
     private SolicitudCamaDTO solicitudCama;
     private List<MedidasAislamientoDTO> medidasAislamiento;
