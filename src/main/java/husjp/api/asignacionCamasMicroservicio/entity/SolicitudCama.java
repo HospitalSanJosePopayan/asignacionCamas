@@ -14,11 +14,13 @@ public class SolicitudCama {
     @Id
     @Column(name = "id_solicitud_cama")
     private String id;
-    private String estado;
-    @Column(name = "fecha_inicial")
+    @Column(name = "fecha_inicial", nullable = false)
     private LocalDateTime fechaInicial;
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ingreso_id", foreignKey = @ForeignKey(name = "fk_solicitudCama_ingreso"))
+    @JoinColumn(name = "ingreso_id", foreignKey = @ForeignKey(name = "fk_solicitudCama_ingreso"), nullable = false)
     private Ingreso ingreso;
+    @ManyToOne
+    @JoinColumn(name = "estado_solicitud_cama_id", foreignKey = @ForeignKey(name = "fk_solicitudCama_estadoSolicitudCama"), nullable = false)
+    private EstadoSolicitudCama estado;
 
 }
