@@ -20,7 +20,11 @@ public enum CodigoError {
     ACCESO_DENEGADOO("GC-0011","Acceso denegado. "),
     SIN_CREDENCIALES("GC-0012","No se encontraron las credenciales para acceder a esta funcion. "),
     TOKEN_EXPIRO("GC-0012","EL TOKEN HA EXPIRADO"),
-    INCUMPLE_CONDICIONES("GC-0013","INCUMPLE CONDICIÓN");
+    INCUMPLE_CONDICIONES("GC-0013","INCUMPLE CONDICIÓN"),
+    SIN_ASOCIACIONES("GC-0014","No tiene Asignaciones"),
+    FECHA_FUERA_RANGO("GC-0015", "fecha No se encuentra entre los limites establecidos "),
+    OPERACION_NO_PERMITIDA("GC-0016", " No se logro realizar esta asignacion "),
+    SOLICITUD_CAMA_VIGENTE("SCV-0001", "Solicitud vigente");
 
     private final String codigo;
     private final String llaveMensaje;
