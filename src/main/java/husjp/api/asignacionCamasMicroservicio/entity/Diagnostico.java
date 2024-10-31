@@ -9,10 +9,8 @@ import lombok.Data;
 public class Diagnostico {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_diagnostico")
-    private Integer id;
-    private String codigo;
+    @Column(name = "codigo")
+    private String id;
     private String nombre;
 
 }
