@@ -13,5 +13,6 @@ public class SolicitudCamaResponseDTO {
     private CamaEstadoResponseDTO estado;
     private String fechaInicial;
     private IngresoResponseDTO ingreso;
+    private String motivoCancelacion;
 
 }
