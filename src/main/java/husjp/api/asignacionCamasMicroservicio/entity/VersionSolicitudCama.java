@@ -14,12 +14,12 @@ public class VersionSolicitudCama {
     @Id
     @Column(name = "id_version_solicitud_cama")
     private String id;
-    @Column(name = "requiere_aislamiento")
+    @Column(name = "requiere_aislamiento", nullable = false)
     private Boolean requiereAislamiento;
+    @Column(name = "requerimientos_especiales")
+    private String requerimientosEspeciales;
     private String motivo;
-    @Column(name = "otra_especialidad")
-    private String otraEspecialidad;
-    @Column(name = "autorizacion_facturacion")
+    @Column(name = "autorizacion_facturacion", nullable = false)
     private String autorizacionFacturacion;
     @Column(nullable = false)
     private LocalDateTime fecha;
@@ -52,9 +52,12 @@ public class VersionSolicitudCama {
     private List<Diagnostico> diagnosticos;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "subservicio_id",nullable = false,  foreignKey = @ForeignKey(name = "fk_versionSolicitudCama_subservicio"))
-    private SubServicio subservicio;
+    private Servicio subservicio;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "cama_id", nullable = false, foreignKey = @ForeignKey(name = "fk_versionSolicitudCama_cama"))
     private Cama cama;
+    @ManyToOne
+    @JoinColumn(name = "bloque_servicio_id", nullable = false, foreignKey = @ForeignKey(name = "fk_versionSolicitudCama_bloqueServicio"))
+    private BloqueServicio bloqueServicio;
 
 }
