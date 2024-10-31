@@ -15,7 +15,7 @@ public class Area {
     private String nombre;
 
     @ManyToOne
-    @JoinColumn(name = "subservicio_id", foreignKey = @ForeignKey(name = "FK_area_subservicio"))
-    private SubServicio subservicio;
+    @JoinColumn(name = "servicio_id", foreignKey = @ForeignKey(name = "FK_area_servicio"))
+    private Servicio servicio;
 
 }
