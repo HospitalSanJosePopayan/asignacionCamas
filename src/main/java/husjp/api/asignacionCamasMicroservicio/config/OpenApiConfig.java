@@ -21,10 +21,21 @@ public class OpenApiConfig {
     }
 
     @Bean
-    public GroupedOpenApi solilcitudCamaOpenApi(@Value("2.3.0") String appVersion){
+    public GroupedOpenApi versionSolilcitudCamaOpenApi(@Value("2.3.0") String appVersion){
         String [] paths = {"/versionSolicitudCama/**"};
         return GroupedOpenApi.builder()
                 .group("versionSolicitudCama")
+                .addOpenApiCustomizer(openApi -> openApi.info(new Info().title("EJEMPLO microservicio").version(appVersion)
+                        .description("Ejemplo de como se debe documentar el microservicio")))
+                .pathsToMatch(paths)
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi solilcitudCamaOpenApi(@Value("2.3.0") String appVersion){
+        String [] paths = {"/versionSolicitudCama/**"};
+        return GroupedOpenApi.builder()
+                .group("solicitudCama")
                 .addOpenApiCustomizer(openApi -> openApi.info(new Info().title("EJEMPLO microservicio").version(appVersion)
                         .description("Ejemplo de como se debe documentar el microservicio")))
                 .pathsToMatch(paths)

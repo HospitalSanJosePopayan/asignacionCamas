@@ -3,7 +3,6 @@ package husjp.api.asignacionCamasMicroservicio.controllers;
 import husjp.api.asignacionCamasMicroservicio.service.SolicitudCamaService;
 import husjp.api.asignacionCamasMicroservicio.service.dto.response.SolicitudCamaResponseDTO;
 import lombok.AllArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
