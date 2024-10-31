@@ -22,5 +22,7 @@ public class SolicitudCama {
     @ManyToOne
     @JoinColumn(name = "estado_solicitud_cama_id", foreignKey = @ForeignKey(name = "fk_solicitudCama_estadoSolicitudCama"), nullable = false)
     private EstadoSolicitudCama estado;
+    @Column(name = "motivo_cancelacion")
+    private String motivoCancelacion;
 
 }
