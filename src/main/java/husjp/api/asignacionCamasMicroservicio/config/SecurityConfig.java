@@ -31,6 +31,10 @@ public class SecurityConfig {
                         //ejemplo para proteger un endpoint
                         authorizeRequests.requestMatchers(HttpMethod.GET, "ejemplo/prueba").hasAnyRole("ADMIN");
                         authorizeRequests.requestMatchers(HttpMethod.POST, "versionSolicitudCama").hasAnyRole("ADMIN");
+                        authorizeRequests.requestMatchers(HttpMethod.GET, "versionSolicitudCama/active").hasAnyRole("ADMIN");
+                        authorizeRequests.requestMatchers(HttpMethod.GET, "titulosFormacionAcademica/especialidad").hasAnyRole("ADMIN");
+                        authorizeRequests.requestMatchers(HttpMethod.GET, "medidasAislamiento").hasAnyRole("ADMIN");
+                        authorizeRequests.requestMatchers(HttpMethod.GET, "diagnostico/{idOrName}").hasAnyRole("ADMIN");
                         authorizeRequests.anyRequest().authenticated();
                     }
                 )
