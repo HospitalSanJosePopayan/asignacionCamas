@@ -33,7 +33,7 @@ public class OpenApiConfig {
 
     @Bean
     public GroupedOpenApi solilcitudCamaOpenApi(@Value("2.3.0") String appVersion){
-        String [] paths = {"/versionSolicitudCama/**"};
+        String [] paths = {"/solicitudCama/**"};
         return GroupedOpenApi.builder()
                 .group("solicitudCama")
                 .addOpenApiCustomizer(openApi -> openApi.info(new Info().title("EJEMPLO microservicio").version(appVersion)
