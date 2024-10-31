@@ -14,5 +14,7 @@ public class PacienteDTO {
     private String documento;
     private String nombreCompleto;
     private LocalDate fechaNacimiento;
+    private String nombres;
+    private String apellidos;
 
 }
