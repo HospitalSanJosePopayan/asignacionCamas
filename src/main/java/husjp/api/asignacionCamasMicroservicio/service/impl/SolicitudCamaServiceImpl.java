@@ -61,7 +61,7 @@ public class SolicitudCamaServiceImpl implements SolicitudCamaService {
     public SolicitudCamaResponseDTO updateMotivoCancelacion(String motivo, String idSolicitudCama) {
         SolicitudCama solicitudCama = solicitudCamaRepository.findById(idSolicitudCama).orElseThrow(() -> new EntidadNoExisteException("No existe la solicitud de cama con el id "+idSolicitudCama));
         solicitudCama.setMotivoCancelacion(motivo);
-
+        solicitudCamaRepository.save(solicitudCama);
         return mapper.map(solicitudCama, SolicitudCamaResponseDTO.class);
     }
 
