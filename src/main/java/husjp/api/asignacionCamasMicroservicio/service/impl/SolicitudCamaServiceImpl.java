@@ -1,5 +1,6 @@
 package husjp.api.asignacionCamasMicroservicio.service.impl;
 
+import husjp.api.asignacionCamasMicroservicio.entity.EstadoSolicitudCama;
 import husjp.api.asignacionCamasMicroservicio.entity.SolicitudCama;
 import husjp.api.asignacionCamasMicroservicio.exceptionsControllers.exceptions.EntidadNoExisteException;
 import husjp.api.asignacionCamasMicroservicio.exceptionsControllers.exceptions.SolicitudCamaVigenteException;
@@ -61,6 +62,7 @@ public class SolicitudCamaServiceImpl implements SolicitudCamaService {
     public SolicitudCamaResponseDTO updateMotivoCancelacion(String motivo, String idSolicitudCama) {
         SolicitudCama solicitudCama = solicitudCamaRepository.findById(idSolicitudCama).orElseThrow(() -> new EntidadNoExisteException("No existe la solicitud de cama con el id "+idSolicitudCama));
         solicitudCama.setMotivoCancelacion(motivo);
+        solicitudCama.setEstado(new EstadoSolicitudCama(2));
         solicitudCamaRepository.save(solicitudCama);
         return mapper.map(solicitudCama, SolicitudCamaResponseDTO.class);
     }
