@@ -5,8 +5,7 @@ import lombok.Data;
 @Data
 public class DiagnosticoResponseDTO {
 
-    private Integer id;
-    private String codigo;
+    private String id;
     private String nombre;
 
 }
