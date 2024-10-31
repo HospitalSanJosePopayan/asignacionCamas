@@ -1,11 +1,13 @@
 package husjp.api.asignacionCamasMicroservicio.service.impl;
 
 import husjp.api.asignacionCamasMicroservicio.entity.SolicitudCama;
+import husjp.api.asignacionCamasMicroservicio.exceptionsControllers.exceptions.EntidadNoExisteException;
 import husjp.api.asignacionCamasMicroservicio.exceptionsControllers.exceptions.SolicitudCamaVigenteException;
 import husjp.api.asignacionCamasMicroservicio.repository.SolicitudCamaRepository;
 import husjp.api.asignacionCamasMicroservicio.service.SolicitudCamaService;
 import husjp.api.asignacionCamasMicroservicio.service.dto.request.SolicitudCamaDTO;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +16,7 @@ import java.util.List;
 @Service
 public class SolicitudCamaServiceImpl implements SolicitudCamaService {
 
+    private ModelMapper mapper;
     private SolicitudCamaRepository solicitudCamaRepository;
 
     @Override
@@ -51,6 +54,14 @@ public class SolicitudCamaServiceImpl implements SolicitudCamaService {
         }else{
             return codigoCamaFormat.toString() + "-1";
         }
+    }
+
+    @Override
+    public SolicitudCamaDTO updateMotivoCancelacion(String motivo, String idSolicitudCama) {
+        SolicitudCama solicitudCama = solicitudCamaRepository.findById(idSolicitudCama).orElseThrow(() -> new EntidadNoExisteException("No existe la solicitud de cama con el id "+idSolicitudCama));
+        solicitudCama.setMotivoCancelacion(motivo);
+
+        return mapper.map(solicitudCama, SolicitudCamaDTO.class);
     }
 
 }
