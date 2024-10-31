@@ -22,10 +22,7 @@ public class Persona {
     private String nombreCompleto;
     @Column(name = "fecha_nacimiento")
     private LocalDate fechaNacimiento;
-
-    public Persona (String documento, String nombreCompleto){
-        this.documento = documento;
-        this.nombreCompleto = nombreCompleto;
-    }
+    private String nombres;
+    private String apellidos;
 
 }
