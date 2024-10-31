@@ -35,6 +35,7 @@ public class SecurityConfig {
                         authorizeRequests.requestMatchers(HttpMethod.GET, "titulosFormacionAcademica/especialidad").hasAnyRole("ADMIN");
                         authorizeRequests.requestMatchers(HttpMethod.GET, "medidasAislamiento").hasAnyRole("ADMIN");
                         authorizeRequests.requestMatchers(HttpMethod.GET, "diagnostico/{idOrName}").hasAnyRole("ADMIN");
+                        authorizeRequests.requestMatchers(HttpMethod.PUT, "solicitudCama/cancelar/{idSolicitudCama}").hasAnyRole("ADMIN");
                         authorizeRequests.anyRequest().authenticated();
                     }
                 )
