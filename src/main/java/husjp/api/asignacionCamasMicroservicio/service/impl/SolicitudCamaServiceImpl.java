@@ -1,8 +1,10 @@
 package husjp.api.asignacionCamasMicroservicio.service.impl;
 
 import husjp.api.asignacionCamasMicroservicio.entity.SolicitudCama;
+import husjp.api.asignacionCamasMicroservicio.exceptionsControllers.exceptions.SolicitudCamaVigenteException;
 import husjp.api.asignacionCamasMicroservicio.repository.SolicitudCamaRepository;
 import husjp.api.asignacionCamasMicroservicio.service.SolicitudCamaService;
+import husjp.api.asignacionCamasMicroservicio.service.dto.request.SolicitudCamaDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,33 @@ public class SolicitudCamaServiceImpl implements SolicitudCamaService {
     @Override
     public SolicitudCama findLastIdBySiglas(String siglas) {
         return solicitudCamaRepository.findLastIdBySiglas(siglas).orElse(null);
+    }
+
+    @Override
+    public void validarSiExisteSolicitudVigente(SolicitudCamaDTO solicitudCamaDTO) {
+        List<Integer> estados = List.of(1,3);//EN ESPERA - ACEPTADA
+
+        SolicitudCama solicitudCama = findByIngreso_IdAndAndEstado_IdIn(solicitudCamaDTO.getIngreso().getId(), estados);
+        if(solicitudCama != null){
+            throw new SolicitudCamaVigenteException("Ya existe una solicitud activa para el paciente");
+        }
+    }
+
+    @Override
+    public String generarCodigoSolicitudCama(SolicitudCamaDTO solicitudCamaDTO, String subservicio) {
+        String [] servicioSplit = subservicio.trim().split(" ");
+        StringBuilder codigoCamaFormat = new StringBuilder();
+        for(String s : servicioSplit){
+            codigoCamaFormat.append(' ').append(s,0,3);
+        }
+        codigoCamaFormat = new StringBuilder(codigoCamaFormat.toString().trim());
+        SolicitudCama solicitudCama = findLastIdBySiglas(codigoCamaFormat.toString());
+        if(solicitudCama != null){
+            String [] parts = solicitudCama.getId().split("-");
+            return parts[0] + "-" + (Integer.parseInt(parts[1]) + 1);
+        }else{
+            return codigoCamaFormat.toString() + "-1";
+        }
     }
 
 }
