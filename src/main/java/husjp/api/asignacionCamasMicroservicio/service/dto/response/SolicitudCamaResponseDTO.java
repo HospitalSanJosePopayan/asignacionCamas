@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class SolicitudCamaResponseDTO {
 
     private String id;
-    private CamaEstadoResponseDTO estado;
+    private EstadoSolicitudCamaResponseDTO estado;
     private String fechaInicial;
     private IngresoResponseDTO ingreso;
     private String motivoCancelacion;

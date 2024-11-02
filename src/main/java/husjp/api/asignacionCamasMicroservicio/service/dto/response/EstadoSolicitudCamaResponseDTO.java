@@ -7,12 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CamaResponseDTO {
+public class EstadoSolicitudCamaResponseDTO {
 
     private Integer id;
     private String nombre;
-    private String codigo;
-    private ServicioResponseDTO servicio;
-    private SubSeccionesServicioResponseDTO subseccion;
-    private CamaEstadoResponseDTO camaEstado;
+
 }

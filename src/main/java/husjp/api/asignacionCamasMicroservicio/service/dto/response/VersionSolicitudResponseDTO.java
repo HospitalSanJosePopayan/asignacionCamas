@@ -23,7 +23,7 @@ public class VersionSolicitudResponseDTO {
     private List<MedidasAislamientoResponseDTO> medidasAislamiento;
     private List<TitulosFormacionAcacemicaResponseDTO> titulosFormacionAcademica;
     private List<DiagnosticoResponseDTO> diagnosticos;
-    private ServicioResponseDTO subservicio;
+    private ServicioResponseDTO servicio;
     private CamaResponseDTO cama;
     private BloqueServicioDTO bloqueServicio;
 }
