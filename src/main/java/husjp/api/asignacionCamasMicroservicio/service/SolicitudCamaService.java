@@ -15,7 +15,7 @@ public interface SolicitudCamaService {
 
     void validarSiExisteSolicitudVigente(SolicitudCamaDTO solicitudCamaDTO);
 
-    String generarCodigoSolicitudCama(SolicitudCamaDTO solicitudCamaDTO, String subservicio);
+    String generarCodigoSolicitudCama(String servicio);
 
     SolicitudCamaResponseDTO updateMotivoCancelacion(String motivo, String idSolicitudCama);
 }

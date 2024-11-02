@@ -24,22 +24,34 @@ public class VersionSolicitudCamaServiceImpl implements VersionSolicitudCamaServ
     private SolicitudCamaService solicitudCamaService;
     private VersionSolicitudCamaRepository versionSolicitudCamaRepository;
     private PacienteService pacienteService;
-    private ServicioService servicioService;
     private CamaService camaService;
 
     @Override
-    public VersionSolicitudResponseDTO guardarVersionSolicitudCama(VersionSolicitudCamaDTO versionSolicitudCamaDTO) {
+    public VersionSolicitudResponseDTO guardarVersionSolicitudCama(VersionSolicitudCamaDTO versionSolicitudCamaDTO, String username) {
         // si hay una solicitud activa se lanza excepcion
         solicitudCamaService.validarSiExisteSolicitudVigente(versionSolicitudCamaDTO.getSolicitudCama());
-
-        String codigoCamaFormat = solicitudCamaService.generarCodigoSolicitudCama(versionSolicitudCamaDTO.getSolicitudCama(), versionSolicitudCamaDTO.getSubservicio().getNombre());
-        VersionSolicitudCama versionSolicitudCama = crearVersionSolicitudCama(versionSolicitudCamaDTO, codigoCamaFormat);
+        VersionSolicitudCama versionSolicitudCama = crearVersionSolicitudCama(versionSolicitudCamaDTO, username);
         VersionSolicitudCama r = versionSolicitudCamaRepository.save(versionSolicitudCama);
         return modelMapper.map(r, VersionSolicitudResponseDTO.class);
     }
 
-    private VersionSolicitudCama crearVersionSolicitudCama(VersionSolicitudCamaDTO versionSolicitudCamaDTO, String codigoSolicitudCama) {
+    private VersionSolicitudCama crearVersionSolicitudCama(VersionSolicitudCamaDTO versionSolicitudCamaDTO, String username) {
+
         VersionSolicitudCama versionSolicitudCama = modelMapper.map(versionSolicitudCamaDTO, VersionSolicitudCama.class);
+        Paciente paciente = pacienteService.findByIdentificacion(versionSolicitudCamaDTO.getSolicitudCama().getIngreso().getPaciente().getDocumento());
+        if(paciente != null ){
+            versionSolicitudCama.getSolicitudCama().getIngreso().getPaciente().setIdPersona(paciente.getIdPersona());
+        }
+        //agregar la cama
+        Cama cama = camaService.findByCodigo(versionSolicitudCamaDTO.getCama().getCodigo());
+        versionSolicitudCama.setCama(cama);
+        //agregar el subservicio
+        //Servicio servicio = servicioService.findByNombre(versionSolicitudCamaDTO.getServicio().getNombre());
+        versionSolicitudCama.setServicio(cama.getSubseccion() == null ? cama.getServicio() : cama.getSubseccion().getSeccionServicio().getServicio());
+        //agregar usuario
+        Usuario usuario = usuarioRepository.findByDocumento(username).orElse(null);
+        versionSolicitudCama.setUsuario(usuario);
+        String codigoSolicitudCama = solicitudCamaService.generarCodigoSolicitudCama(cama.getSubseccion() == null ? cama.getServicio().getNombre() : cama.getSubseccion().getSeccionServicio().getServicio().getNombre());
         //Actualizamos la fecha de la solicitud de cama y version de solicitud
         versionSolicitudCama.getSolicitudCama().setFechaInicial(LocalDateTime.now());
         versionSolicitudCama.setFecha(LocalDateTime.now());
@@ -48,19 +60,7 @@ public class VersionSolicitudCamaServiceImpl implements VersionSolicitudCamaServ
         versionSolicitudCama.getSolicitudCama().setId(String.valueOf(codigoSolicitudCama));  // Asignar el id manualmente
         versionSolicitudCama.setId(codigoSolicitudCama+"-V1");  // Asignar el id manualmente
         //buscamos al paciente si el paciente no esta se crea_todo sin ninguna otra resticcion
-        Paciente paciente = pacienteService.findByIdentificacion(versionSolicitudCamaDTO.getSolicitudCama().getIngreso().getPaciente().getDocumento());
-        if(paciente != null ){
-            versionSolicitudCama.getSolicitudCama().getIngreso().getPaciente().setIdPersona(paciente.getIdPersona());
-        }
-        //agregar el subservicio
-        Servicio servicio = servicioService.findByNombre(versionSolicitudCamaDTO.getSubservicio().getNombre());
-        versionSolicitudCama.setSubservicio(servicio);
-        //agregar la cama
-        Cama cama = camaService.findByCodigo(versionSolicitudCamaDTO.getCama().getCodigo());
-        versionSolicitudCama.setCama(cama);
-        //agregar usuario
-        Usuario usuario = usuarioRepository.findByDocumento(versionSolicitudCamaDTO.getUsuario().getDocumento()).orElse(null);
-        versionSolicitudCama.setUsuario(usuario);
+
         return versionSolicitudCama;
     }
 

@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface VersionSolicitudCamaService {
 
-    VersionSolicitudResponseDTO guardarVersionSolicitudCama(VersionSolicitudCamaDTO versionSolicitudCamaDTO);
+    VersionSolicitudResponseDTO guardarVersionSolicitudCama(VersionSolicitudCamaDTO versionSolicitudCamaDTO, String username);
     List<VersionSolicitudResponseDTO> getVersionSolicitudCamaActivasEnEspera();
 
 }

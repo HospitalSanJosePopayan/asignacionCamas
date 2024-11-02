@@ -42,8 +42,8 @@ public class SolicitudCamaServiceImpl implements SolicitudCamaService {
     }
 
     @Override
-    public String generarCodigoSolicitudCama(SolicitudCamaDTO solicitudCamaDTO, String subservicio) {
-        String [] servicioSplit = subservicio.trim().split(" ");
+    public String generarCodigoSolicitudCama(String servicio) {
+        String [] servicioSplit = servicio.trim().split(" ");
         StringBuilder codigoCamaFormat = new StringBuilder();
         for(String s : servicioSplit){
             codigoCamaFormat.append(' ').append(s,0,3);
