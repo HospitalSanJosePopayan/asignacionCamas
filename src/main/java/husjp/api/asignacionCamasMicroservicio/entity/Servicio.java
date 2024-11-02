@@ -17,12 +17,13 @@ public class Servicio {
     @Column(nullable = false, unique = true)
     private String nombre;
     @ManyToOne
-    @JoinColumn(name = "proceso_id")
+    @JoinColumn(name = "proceso_id", foreignKey = @ForeignKey(name = "fk_servicio_proceso"))
     private Procesos procesos;
     @ManyToMany(mappedBy = "servicios")
     private List<Usuario> usuarios;
     @ManyToOne
-    @JoinColumn(name = "bloque_servicio_id", nullable = true, foreignKey = @ForeignKey(name = "fk_servicio_bloqueServicio"))
+    @JoinColumn(name = "bloque_servicio_id", nullable = true, foreignKey = @ForeignKey(name = "fk_proceso_bloqueServicio"))
     private BloqueServicio bloqueServicio;
+
 
 }

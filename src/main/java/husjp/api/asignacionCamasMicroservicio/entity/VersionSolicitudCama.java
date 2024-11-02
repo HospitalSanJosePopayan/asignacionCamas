@@ -52,7 +52,7 @@ public class VersionSolicitudCama {
     private List<Diagnostico> diagnosticos;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "subservicio_id",nullable = false,  foreignKey = @ForeignKey(name = "fk_versionSolicitudCama_subservicio"))
-    private Servicio subservicio;
+    private Servicio servicio;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "cama_id", nullable = false, foreignKey = @ForeignKey(name = "fk_versionSolicitudCama_cama"))
     private Cama cama;

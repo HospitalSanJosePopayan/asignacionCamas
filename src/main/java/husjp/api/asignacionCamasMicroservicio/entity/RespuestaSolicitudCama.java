@@ -7,13 +7,15 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(name = "respuesta_cama")
-public class RespuestaCama {
+@Table(name = "respuesta_solicitud_cama")
+public class RespuestaSolicitudCama {
 
     @Id
     @Column(name = "id_respuesta_cama")
     private String id;
-    private String estado;
+    @ManyToOne
+    @JoinColumn(name = "estado_solicitud_cama_id", foreignKey = @ForeignKey(name = "fk_respuestaSolicitudCama_estadoSolicitudCama"), nullable = false)
+    private EstadoSolicitudCama estado;
     @Column(name = "fecha_inicial")
     private LocalDateTime fechaInicial;
     @ManyToOne

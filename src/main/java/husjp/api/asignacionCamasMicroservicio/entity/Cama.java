@@ -16,8 +16,11 @@ public class Cama {
     @Column(unique = true)
     private String codigo;
     @ManyToOne
-    @JoinColumn(name = "area_id", foreignKey = @ForeignKey(name = "FK_cama_area"), nullable = false)
-    private Area area;
+    @JoinColumn(name = "servicio_id", foreignKey = @ForeignKey(name = "FK_cama_servicio"))
+    private Servicio servicio;
+    @ManyToOne
+    @JoinColumn(name = "subsecion_servicio_id", foreignKey = @ForeignKey(name = "FK_cama_subSeccionServicio"))
+    private SubSeccionesServicio subseccion;
     @ManyToOne
     @JoinColumn(name = "cama_estado_id", foreignKey = @ForeignKey(name = "FK_cama_estadoCama"), nullable = false)
     private CamaEstado camaEstado;

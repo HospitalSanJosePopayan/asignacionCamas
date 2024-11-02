@@ -15,6 +15,6 @@ public class Procesos {
     @Column(name = "id_proceso")
     private Integer id;
     private String nombre;
-    private String tipo;
+
 
 }

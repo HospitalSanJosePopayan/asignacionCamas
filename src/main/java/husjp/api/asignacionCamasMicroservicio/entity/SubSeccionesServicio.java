@@ -5,8 +5,8 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "area")
-public class Area {
+@Table(name = "subsecciones_servicio")
+public class SubSeccionesServicio {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,7 +15,7 @@ public class Area {
     private String nombre;
 
     @ManyToOne
-    @JoinColumn(name = "servicio_id", foreignKey = @ForeignKey(name = "FK_area_servicio"))
-    private Servicio servicio;
+    @JoinColumn(name = "seccion_servicio_id", foreignKey = @ForeignKey(name = "FK_subseccionServicio_seccionServicio"))
+    private SeccionesServicio seccionServicio;
 
 }
