@@ -16,12 +16,10 @@ public class VersionSolicitudCamaDTO {
     private String motivo;
     @NotEmpty(message = "El campo requerimientosEspeciales no puede estar vacio")
     private String requerimientosEspeciales;
-    private UsuarioDTO usuario;
     private SolicitudCamaDTO solicitudCama;
     private List<MedidasAislamientoDTO> medidasAislamiento;
     private List<TitulosFormacionAcademicaDTO> titulosFormacionAcademica;
     private List<DiagnosticoDTO> diagnosticos;
-    private ServicioDTO subservicio;
     private CamaDTO cama;
     @NotNull(message = "El campo bloqueServicio no puede ser nulo")
     private BloqueServicioDTO bloqueServicio;
