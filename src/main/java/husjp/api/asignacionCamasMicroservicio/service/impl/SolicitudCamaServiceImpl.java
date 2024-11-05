@@ -32,6 +32,11 @@ public class SolicitudCamaServiceImpl implements SolicitudCamaService {
     }
 
     @Override
+    public SolicitudCama findById(String id) {
+        return solicitudCamaRepository.findById(id).orElseThrow(() -> new EntidadNoExisteException("No existe la solicitud de cama con el identificador "+id));
+    }
+
+    @Override
     public void validarSiExisteSolicitudVigente(SolicitudCamaDTO solicitudCamaDTO) {
         List<Integer> estados = List.of(1,3);//EN ESPERA - ACEPTADA
 

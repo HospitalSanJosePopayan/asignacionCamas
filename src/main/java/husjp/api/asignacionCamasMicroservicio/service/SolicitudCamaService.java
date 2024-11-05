@@ -13,6 +13,8 @@ public interface SolicitudCamaService {
 
     SolicitudCama findLastIdBySiglas(String siglas);
 
+    SolicitudCama findById(String id);
+
     void validarSiExisteSolicitudVigente(SolicitudCamaDTO solicitudCamaDTO);
 
     String generarCodigoSolicitudCama(String servicio);
