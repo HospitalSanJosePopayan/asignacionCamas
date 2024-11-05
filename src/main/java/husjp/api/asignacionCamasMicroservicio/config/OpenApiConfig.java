@@ -66,9 +66,10 @@ public class OpenApiConfig {
 
     @Bean
     public GroupedOpenApi respuestaVersionSolicitudCamaOpenApi(@Value("2.3.0") String appVersion){
-        String [] paths = {"/respuestaVersionSolicitudCama/**"};
+        String [] paths = {"/asignacionVersionSolicitudCama/**"};
         return GroupedOpenApi.builder()
-                .group("respuestaVersionSolicitudCama")
+                .group("asignacionVersionSolicitudCama")
+                .displayName("ASIGNACION DE CAMA")
                 .addOpenApiCustomizer(openApi -> openApi.info(new Info().title("medidasAislamiento microservicio").version(appVersion)
                         .description("Ejemplo de como se debe documentar el microservicio")))
                 .pathsToMatch(paths)
