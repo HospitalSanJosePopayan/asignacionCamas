@@ -9,6 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 public class CamaDTO {
 
+    private Integer id;
     @NotEmpty
     private String codigo;
 

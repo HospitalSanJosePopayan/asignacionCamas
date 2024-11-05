@@ -52,12 +52,13 @@ public class VersionSolicitudCamaServiceImpl implements VersionSolicitudCamaServ
         Usuario usuario = usuarioRepository.findByDocumento(username).orElse(null);
         versionSolicitudCama.setUsuario(usuario);
         String codigoSolicitudCama = solicitudCamaService.generarCodigoSolicitudCama(cama.getSubseccion() == null ? cama.getServicio().getNombre() : cama.getSubseccion().getSeccionServicio().getServicio().getNombre());
-        //Actualizamos la fecha de la solicitud de cama y version de solicitud
-        versionSolicitudCama.getSolicitudCama().setFechaInicial(LocalDateTime.now());
         versionSolicitudCama.setFecha(LocalDateTime.now());
         versionSolicitudCama.setAutorizacionFacturacion("EN ESPERA");//POR DEFECTO SIEMPRE ES EN ESPERA
+        //creamos la solicitud de la cama
         versionSolicitudCama.getSolicitudCama().setEstado(new EstadoSolicitudCama(1));
         versionSolicitudCama.getSolicitudCama().setId(String.valueOf(codigoSolicitudCama));  // Asignar el id manualmente
+        //Actualizamos la fecha de la solicitud de cama y version de solicitud
+        versionSolicitudCama.getSolicitudCama().setFechaInicial(LocalDateTime.now());
         versionSolicitudCama.setId(codigoSolicitudCama+"-V1");  // Asignar el id manualmente
         //buscamos al paciente si el paciente no esta se crea_todo sin ninguna otra resticcion
 

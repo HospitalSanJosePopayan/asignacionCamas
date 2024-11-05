@@ -5,4 +5,6 @@ import husjp.api.asignacionCamasMicroservicio.entity.Servicio;
 public interface ServicioService {
 
     Servicio findByNombre(String codigo);
+
+    Servicio findById(Integer idServicio);
 }
