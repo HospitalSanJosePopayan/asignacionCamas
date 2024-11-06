@@ -7,4 +7,6 @@ import java.util.List;
 public interface BloqueServicioService {
 
     List<BloqueServicioResponseDTO> findAll();
+
+    BloqueServicioResponseDTO findAllServiciosByBloque(Integer idBloque);
 }

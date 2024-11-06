@@ -1,6 +1,7 @@
 package husjp.api.asignacionCamasMicroservicio.service.impl;
 
 import husjp.api.asignacionCamasMicroservicio.entity.BloqueServicio;
+import husjp.api.asignacionCamasMicroservicio.exceptionsControllers.exceptions.EntidadNoExisteException;
 import husjp.api.asignacionCamasMicroservicio.repository.BloqueServicioRepository;
 import husjp.api.asignacionCamasMicroservicio.service.BloqueServicioService;
 import husjp.api.asignacionCamasMicroservicio.service.dto.response.BloqueServicioResponseDTO;
@@ -20,9 +21,19 @@ public class BloqueServiceServiceImpl implements BloqueServicioService {
 
     @Override
     public List<BloqueServicioResponseDTO> findAll() {
-        return bloqueServicioRepository.findAll().stream()
+        // Se omite el mapeo de la lista de servicios
+        var typeMap = mapper.typeMap(BloqueServicio.class, BloqueServicioResponseDTO.class);
+        typeMap.addMappings(mapper -> mapper.skip(BloqueServicioResponseDTO::setServicios));
+        List<BloqueServicioResponseDTO> result =  bloqueServicioRepository.findAll().stream()
                 .map(entity -> mapper.map(entity, BloqueServicioResponseDTO.class))
                 .collect(Collectors.toList());
+        mapper.getTypeMap(BloqueServicio.class, BloqueServicioResponseDTO.class).addMappings(m -> m.map(BloqueServicio::getServicios, BloqueServicioResponseDTO::setServicios));
+        return result;
+    }
+
+    @Override
+    public BloqueServicioResponseDTO findAllServiciosByBloque(Integer idBloque) {
+        return mapper.map(bloqueServicioRepository.findById(idBloque).orElseThrow(() -> new EntidadNoExisteException("no se encontro el bloque con id "+idBloque)), BloqueServicioResponseDTO.class);
     }
 
 }

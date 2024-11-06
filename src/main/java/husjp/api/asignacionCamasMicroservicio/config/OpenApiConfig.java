@@ -43,6 +43,17 @@ public class OpenApiConfig {
     }
 
     @Bean
+    public GroupedOpenApi bloqueServicioOpenApi(@Value("2.3.0") String appVersion){
+        String [] paths = {"/bloque-servicio/**"};
+        return GroupedOpenApi.builder()
+                .group("bloque-servicio")
+                .addOpenApiCustomizer(openApi -> openApi.info(new Info().title("EJEMPLO microservicio").version(appVersion)
+                        .description("Ejemplo de como se debe documentar el microservicio")))
+                .pathsToMatch(paths)
+                .build();
+    }
+
+    @Bean
     public GroupedOpenApi titulosFormacionAcademicaOpenApi(@Value("2.3.0") String appVersion){
         String [] paths = {"/titulosFormacionAcademica/**"};
         return GroupedOpenApi.builder()

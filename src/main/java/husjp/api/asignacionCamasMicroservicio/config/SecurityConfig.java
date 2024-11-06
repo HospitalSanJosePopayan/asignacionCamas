@@ -36,6 +36,8 @@ public class SecurityConfig {
                         authorizeRequests.requestMatchers(HttpMethod.GET, "medidasAislamiento").hasAnyRole("ADMIN");
                         authorizeRequests.requestMatchers(HttpMethod.GET, "diagnostico/{idOrName}").hasAnyRole("ADMIN");
                         authorizeRequests.requestMatchers(HttpMethod.PUT, "solicitudCama/cancelar/{idSolicitudCama}").hasAnyRole("ADMIN");
+                        authorizeRequests.requestMatchers(HttpMethod.GET, "bloque-servicio").hasAnyRole("ADMIN");
+                        authorizeRequests.requestMatchers(HttpMethod.GET, "bloque-servicio/servicios/{idBloque}").hasAnyRole("ADMIN");
                         authorizeRequests.requestMatchers(HttpMethod.POST, "asignacionVersionSolicitudCama").hasAnyRole("ADMIN");
                         authorizeRequests.anyRequest().authenticated();
                     }
