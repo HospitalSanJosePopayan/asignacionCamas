@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface VersionRespuestaSolicitudCamaRepository extends JpaRepository<VersionAsignacionSolicitudCama, String> {
 
-    @Query("SELECT vc FROM VersionAsignacionSolicitudCama vc where vc.asignacionCama.estado.nombre = 'EN ESPERA'")
+    @Query("SELECT vc FROM VersionAsignacionSolicitudCama vc where vc.asignacionCama.estado.nombre = 'ACEPTADA'")
     Optional<List<VersionAsignacionSolicitudCama>> findAllByRespuestaSolicitudCamaEstadoActivo();
 
 }
