@@ -8,5 +8,4 @@ public interface BloqueServicioService {
 
     List<BloqueServicioResponseDTO> findAll();
 
-    BloqueServicioResponseDTO findAllServiciosByBloque(Integer idBloque);
 }
