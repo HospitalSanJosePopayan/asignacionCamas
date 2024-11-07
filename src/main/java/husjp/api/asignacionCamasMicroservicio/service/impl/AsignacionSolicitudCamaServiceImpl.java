@@ -30,7 +30,12 @@ public class AsignacionSolicitudCamaServiceImpl implements AsignacionSolicitudCa
         String [] servicioSplit = nombreServicio.trim().split(" ");
         StringBuilder codigoCamaFormat = new StringBuilder();
         for(String s : servicioSplit){
-            codigoCamaFormat.append(' ').append(s,0,3);
+            if(s.length() > 3){
+                codigoCamaFormat.append(' ').append(s,0,3);
+            }
+            if(s.contains("l") || s.contains("ll") || s.contains("lll")){
+                codigoCamaFormat.append(' ').append(s);
+            }
         }
         codigoCamaFormat = new StringBuilder(codigoCamaFormat.toString().trim());
         AsignacionCama asignacionCama = findLastIdBySiglas(codigoCamaFormat.toString());
