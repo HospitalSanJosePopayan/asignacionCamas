@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 
 @AllArgsConstructor
 @RestController
@@ -20,5 +21,10 @@ public class VersionAsignacionSolicitudCamaController {
     @PostMapping
     public ResponseEntity<VersionAsignacionCamaResponseDTO> guardarVersionAsignacionCama(Principal principal, @RequestBody VersionAsignacionCamaDTO versionAsignacionCamaDTO){
         return ResponseEntity.ok(versionAsignacionSolicitudCamaService.guardarVersionAsignacionCama(versionAsignacionCamaDTO, principal.getName()));
+    }
+
+    @GetMapping("/active")
+    public ResponseEntity<List<VersionAsignacionCamaResponseDTO>> getAllVersionAsignacionCamaActivasEnEspera(){
+        return ResponseEntity.ok(versionAsignacionSolicitudCamaService.getAllVersionAsignacionCamaActivasEnEspera());
     }
 }
