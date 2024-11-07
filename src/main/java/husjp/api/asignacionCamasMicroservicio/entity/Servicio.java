@@ -16,14 +16,13 @@ public class Servicio {
     private Integer id;
     @Column(nullable = false, unique = true)
     private String nombre;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "proceso_id", foreignKey = @ForeignKey(name = "fk_servicio_proceso"))
     private Procesos procesos;
-    @ManyToMany(mappedBy = "servicios")
+    @ManyToMany(mappedBy = "servicios", fetch = FetchType.LAZY)
     private List<Usuario> usuarios;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bloque_servicio_id", nullable = true, foreignKey = @ForeignKey(name = "fk_proceso_bloqueServicio"))
     private BloqueServicio bloqueServicio;
-
 
 }
