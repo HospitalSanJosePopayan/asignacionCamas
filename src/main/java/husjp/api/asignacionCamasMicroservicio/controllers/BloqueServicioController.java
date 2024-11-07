@@ -20,10 +20,4 @@ public class BloqueServicioController {
     public ResponseEntity<List<BloqueServicioResponseDTO>> getAllBloqueServicio() {
         return ResponseEntity.ok( bloqueServicioService.findAll());
     }
-
-    @GetMapping("/servicios/{idBloque}")
-    public ResponseEntity<BloqueServicioResponseDTO> getAllServiciosByBloque(@PathVariable Integer idBloque) {
-        return ResponseEntity.ok( bloqueServicioService.findAllServiciosByBloque(idBloque));
-    }
-
 }
