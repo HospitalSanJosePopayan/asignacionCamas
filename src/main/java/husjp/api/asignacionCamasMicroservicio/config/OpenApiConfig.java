@@ -86,6 +86,18 @@ public class OpenApiConfig {
     }
 
     @Bean
+    public GroupedOpenApi solicitudCamilleroOpenApi(@Value("2.3.0") String appVersion){
+        String [] paths = {"/solicitudCamillero/**"};
+        return GroupedOpenApi.builder()
+                .group("solicitudCamillero")
+                .displayName("SOLICITUD CAMILLERO")
+                .addOpenApiCustomizer(openApi -> openApi.info(new Info().title("EJEMPLO microservicio").version(appVersion)
+                        .description("Ejemplo de como se debe documentar el microservicio")))
+                .pathsToMatch(paths)
+                .build();
+    }
+
+    @Bean
     public GroupedOpenApi medidasDeAislamientoOpenApi(@Value("2.3.0") String appVersion){
         String [] paths = {"/medidasAislamiento/**"};
         return GroupedOpenApi.builder()

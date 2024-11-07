@@ -41,6 +41,8 @@ public class SecurityConfig {
                         authorizeRequests.requestMatchers(HttpMethod.POST, "asignacionVersionSolicitudCama").hasAnyRole("ADMIN");
                         authorizeRequests.requestMatchers(HttpMethod.GET, "cama/{idServicio}").hasAnyRole("ADMIN");
                         authorizeRequests.requestMatchers(HttpMethod.GET, "servicio/{idBloqueServicio}").hasAnyRole("ADMIN");
+                        //SOLICITUD CAMILLERO
+                        authorizeRequests.requestMatchers(HttpMethod.POST, "solicitudCamillero").hasAnyRole("ADMIN");
                         authorizeRequests.anyRequest().authenticated();
                     }
                 )
