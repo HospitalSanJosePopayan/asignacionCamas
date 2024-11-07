@@ -8,5 +8,5 @@ import java.util.List;
 public interface VersionAsignacionSolicitudCamaService {
 
     VersionAsignacionCamaResponseDTO guardarVersionAsignacionCama(VersionAsignacionCamaDTO versionAsignacionCamaDTO, String username);
-    List<VersionAsignacionCamaResponseDTO> getVersionRespuestaCamaAsigandas();
+    List<VersionAsignacionCamaResponseDTO> getAllVersionAsignacionCamaActivasEnEspera();
 }
