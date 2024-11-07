@@ -50,7 +50,7 @@ public class VersionAsignacionSolicitudCamaServiceImpl implements VersionAsignac
     }
 
     @Override
-    public List<VersionAsignacionCamaResponseDTO> getVersionRespuestaCamaAsigandas() {
+    public List<VersionAsignacionCamaResponseDTO> getAllVersionAsignacionCamaActivasEnEspera() {
         List<VersionAsignacionSolicitudCama> respuesta = versionRespuestaSolicitudCamaRepository.findAllByRespuestaSolicitudCamaEstadoActivo().orElse(null);
         assert respuesta != null;
         //return List.of(mapper.map(respuesta,VersionRespuestaSolicitudCamaResponseDTO.class));
