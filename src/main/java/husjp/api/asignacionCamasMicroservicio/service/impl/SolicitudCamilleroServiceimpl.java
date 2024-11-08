@@ -10,6 +10,7 @@ import husjp.api.asignacionCamasMicroservicio.service.dto.request.SolicitudCamil
 import husjp.api.asignacionCamasMicroservicio.service.dto.response.SolicitudCamilleroResponseDTO;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -21,11 +22,14 @@ public class SolicitudCamilleroServiceimpl implements SolicitudCamilleroService 
     private ModelMapper modelMapper;
     private UsuarioRepository usuarioRepository;
     private SolicitudCamilleroRepository solicitudCamilleroRepository;
+    private SimpMessagingTemplate messagingTemplate;
 
     @Override
     public SolicitudCamilleroResponseDTO save(SolicitudCamilleroDTO solicitudCamilleroDTO, String username) {
         SolicitudCamillero solicitudCamillero = crearSolicitud(solicitudCamilleroDTO, username);
-        return modelMapper.map(solicitudCamilleroRepository.save(solicitudCamillero), SolicitudCamilleroResponseDTO.class);
+        messagingTemplate.convertAndSend("/topic/notifications", "Nueva solicitud de camillero");
+        //return modelMapper.map(solicitudCamilleroRepository.save(solicitudCamillero), SolicitudCamilleroResponseDTO.class);
+        return null;
     }
 
     private SolicitudCamillero crearSolicitud (SolicitudCamilleroDTO solicitudCamilleroDTO, String username){

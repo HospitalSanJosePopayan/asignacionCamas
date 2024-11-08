@@ -11,7 +11,6 @@ import java.util.List;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/bloque-servicio")
-@CrossOrigin(origins = {"http://localhost:5173","http://optimus:5173","http://192.168.16.160:5173"})
 public class BloqueServicioController {
 
     private BloqueServicioService bloqueServicioService;

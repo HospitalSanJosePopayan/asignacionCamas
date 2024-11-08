@@ -13,7 +13,6 @@ import java.util.List;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/asignacionVersionSolicitudCama")
-@CrossOrigin(origins = {"http://localhost:5173","http://optimus:5173","http://192.168.18.164:5173"})
 public class VersionAsignacionSolicitudCamaController {
 
     private VersionAsignacionSolicitudCamaService versionAsignacionSolicitudCamaService;
