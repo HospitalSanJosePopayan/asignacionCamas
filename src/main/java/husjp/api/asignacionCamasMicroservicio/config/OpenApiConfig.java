@@ -58,8 +58,8 @@ public class OpenApiConfig {
         String [] paths = {"/bloque-servicio/**"};
         return GroupedOpenApi.builder()
                 .group("bloque-servicio")
-                .addOpenApiCustomizer(openApi -> openApi.info(new Info().title("EJEMPLO microservicio").version(appVersion)
-                        .description("Ejemplo de como se debe documentar el microservicio")))
+                .addOpenApiCustomizer(openApi -> openApi.info(new Info().title("MICROSERVICIO CAMAS").version(appVersion)
+                        .description("TRABAJA CON BLOQUES, UN BLOQUE ES UN CONJUNTO DE SERVICIOS QUE PERTENECEN A ESE BLOQUE, UN SERVICIO SOLO PUEDE PERTENECER A UN BLOQUE")))
                 .pathsToMatch(paths)
                 .build();
     }
