@@ -9,7 +9,7 @@ Este se encarga de realizar una solicitud de camillero des de el servicio origen
 
 Cuenta con swagger para documentar la API y se accede mediante la ruta:
 
-http://localhost:8080/swagger-ui.html
+http://localhost:8004/swagger-ui.html
 
 # Dependencias con las que ya cuenta el proyecto
 - Spring Boot DevTools
