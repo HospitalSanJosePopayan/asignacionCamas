@@ -19,6 +19,17 @@ Cuenta con swagger para documentar la API y se accede mediante la ruta `http://l
 - ModelMapper
 - Swagger
 
+# Para realizar cambios no se debe modificar el archivo propperties
+- evitar hacer commit del arcivo application.properties
+- usar el siguiente comando para eviar que se tomen los cambios del archivo application.properties
+```bash  
+git update-index --assume-unchanged src/main/resources/application.properties
+```
+- desactivar el comando anterior para tomar los cambios del archivo application.properties
+```bash
+git update-index --no-assume-unchanged src/main/resources/application.properties
+```
+
 # Atener en cuenta
 - se conecta a una base de datos postgresql la cual ya debe tener las tablas persona, usuario y roles.
 - Se debe configurar el archivo application.properties con los datos de la base de datos.
