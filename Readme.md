@@ -7,7 +7,9 @@ Este microservicio se encarga de gestionar las solicitudes de camas, cuando se r
 ## Descripcion Camilleros
 Este se encarga de realizar una solicitud de camillero des de el servicio origen hasta el destino final, el cual administra un lider central de camilleros quien remite la solicitud a un camillero en especifico..
 
-Cuenta con swagger para documentar la API y se accede mediante la ruta `http://localhost:puerto/swagger-ui.html`.
+Cuenta con swagger para documentar la API y se accede mediante la ruta:
+
+http://localhost:8080/swagger-ui.html
 
 # Dependencias con las que ya cuenta el proyecto
 - Spring Boot DevTools
