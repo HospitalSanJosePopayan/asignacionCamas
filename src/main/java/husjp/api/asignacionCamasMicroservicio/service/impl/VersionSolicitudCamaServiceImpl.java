@@ -113,16 +113,9 @@ public class VersionSolicitudCamaServiceImpl implements VersionSolicitudCamaServ
         return modelMapper.map(nuevaVersionGuardada, VersionSolicitudResponseDTO.class);
     }
     @Override
-    public void EstadoSolicitud(String id, Integer estadoId) {
-        final String EN_ESPERA = "EN ESPERA";
-        final String SI = "SI";
-        final String NO = "NO";
-        VersionSolicitudCama versionSolicitudCama = versionSolicitudCamaRepository.findById(id)
-                .orElseThrow(() -> new EntidadNoExisteException("Solicitud no encontrada"));
-        String estadoActual = versionSolicitudCama.getAutorizacionFacturacion();
-        if (EN_ESPERA.equals(estadoActual) || SI.equals(estadoActual) || NO.equals(estadoActual)) {
-            versionSolicitudCama.setAutorizacionFacturacion(estadoId == 1 ? SI : NO);
-        }
+    public void EstadoSolicitud(String id) {
+        VersionSolicitudCama versionSolicitudCama = versionSolicitudCamaRepository.findById(id).orElseThrow(() -> new EntidadNoExisteException("Solicitud no encontrada"));
+        versionSolicitudCama.setAutorizacionFacturacion(versionSolicitudCama.getAutorizacionFacturacion().equals("NO") ? "SI" : "NO");
         versionSolicitudCamaRepository.save(versionSolicitudCama);
     }
     private String incrementarVersionId(String currentId) {
