@@ -107,31 +107,28 @@ public class VersionSolicitudCamaServiceImpl implements VersionSolicitudCamaServ
         }
         String nuevoId = incrementarVersionId(versionActual.getId());
         nuevaVersion.setId(nuevoId);
+        nuevaVersion.setFecha(LocalDateTime.now());
         VersionSolicitudCama nuevaVersionGuardada = versionSolicitudCamaRepository.save(nuevaVersion);
         System.out.println("Nueva versión creada con ID: " + nuevaVersionGuardada.getId());
         return modelMapper.map(nuevaVersionGuardada, VersionSolicitudResponseDTO.class);
     }
 
-    @Override
-    public void SolicitudEspera(String id) {
-        VersionSolicitudCama versionSolicitudCama= versionSolicitudCamaRepository.findById(id)
-                .orElseThrow(() -> new EntidadNoExisteException("Solicitud no encontrada"));
-        versionSolicitudCama.setAutorizacionFacturacion("Espera");
-    }
+
 
     @Override
-    public void SolicitudEstadoSi(String id) {
-        VersionSolicitudCama versionSolicitudCama= versionSolicitudCamaRepository.findById(id)
+    public void EstadoSolicitud(String id, Integer estadoId) {
+        final String EN_ESPERA = "EN ESPERA";
+        final String SI = "SI";
+        final String NO = "NO";
+        VersionSolicitudCama versionSolicitudCama = versionSolicitudCamaRepository.findById(id)
                 .orElseThrow(() -> new EntidadNoExisteException("Solicitud no encontrada"));
-        versionSolicitudCama.setAutorizacionFacturacion("Si");
+        String estadoActual = versionSolicitudCama.getAutorizacionFacturacion();
+        if (EN_ESPERA.equals(estadoActual) || SI.equals(estadoActual) || NO.equals(estadoActual)) {
+            versionSolicitudCama.setAutorizacionFacturacion(estadoId == 1 ? SI : NO);
+        }
+        versionSolicitudCamaRepository.save(versionSolicitudCama);
     }
-
-    @Override
-    public void SolicitudEstadoNo(String id) {
-        VersionSolicitudCama versionSolicitudCama= versionSolicitudCamaRepository.findById(id)
-                .orElseThrow(() -> new EntidadNoExisteException("Solicitud no encontrada"));
-        versionSolicitudCama.setAutorizacionFacturacion("No");
-    }
+    
 
     private String incrementarVersionId(String currentId) {
         if (!currentId.matches("^[A-Z]+(?: [A-Z]+)?-\\d+-V\\d+$")) {
