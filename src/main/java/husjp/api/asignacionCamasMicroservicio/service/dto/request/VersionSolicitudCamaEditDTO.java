@@ -11,6 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 public class VersionSolicitudCamaEditDTO {
     private  Boolean requiereAislamiento;
+    private  String requerimientosEspeciales;
     private List<MedidasAislamientoDTO> medidasAislamiento;
     private List<TitulosFormacionAcademicaDTO> titulosFormacionAcademica;
     private List<DiagnosticoDTO> diagnosticos;
