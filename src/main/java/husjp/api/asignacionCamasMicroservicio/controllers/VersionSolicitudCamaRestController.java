@@ -38,7 +38,7 @@ public class VersionSolicitudCamaRestController {
     }
 
     @PutMapping("/{id}/estadoAutorizacionFacturacion")
-    public ResponseEntity<String> cambiarestadoAutorizacionFacturacion(@PathVariable String id, @RequestParam Integer estadoId) {
+    public ResponseEntity<String> cambiarestadoAutorizacionFacturacion(@PathVariable String id) {
         versionSolicitudCamaService.EstadoSolicitud(id);
         return ResponseEntity.ok("Estado actualizado correctamente.");
     }
