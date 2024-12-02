@@ -1,13 +1,16 @@
 package husjp.api.asignacionCamasMicroservicio.service.impl;
 
 import husjp.api.asignacionCamasMicroservicio.entity.*;
+import husjp.api.asignacionCamasMicroservicio.exceptionsControllers.exceptions.EntidadNoExisteException;
 import husjp.api.asignacionCamasMicroservicio.repository.UsuarioRepository;
 import husjp.api.asignacionCamasMicroservicio.repository.VersionSolicitudCamaRepository;
 import husjp.api.asignacionCamasMicroservicio.service.*;
 import husjp.api.asignacionCamasMicroservicio.service.dto.request.VersionSolicitudCamaDTO;
+import husjp.api.asignacionCamasMicroservicio.service.dto.request.VersionSolicitudCamaEditDTO;
 import husjp.api.asignacionCamasMicroservicio.service.dto.response.VersionSolicitudResponseDTO;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -72,5 +75,71 @@ public class VersionSolicitudCamaServiceImpl implements VersionSolicitudCamaServ
         return response.stream()
                 .map(entity -> modelMapper.map(entity, VersionSolicitudResponseDTO.class))
                 .collect(Collectors.toList());
+    }
+    @Override
+    public VersionSolicitudResponseDTO editarVersionSolicitudCama(String id, VersionSolicitudCamaEditDTO versionSolicitudCamaEditDTO) {
+        VersionSolicitudCama versionActual = versionSolicitudCamaRepository.findById(id)
+                .orElseThrow(() -> new EntidadNoExisteException("Solicitud no encontrada"));
+        VersionSolicitudCama nuevaVersion = new VersionSolicitudCama();
+        BeanUtils.copyProperties(versionActual, nuevaVersion);
+        if(versionSolicitudCamaEditDTO.getMedidasAislamiento() !=null){
+            List<MedidasAislamiento>medidasAislamiento= versionSolicitudCamaEditDTO.getMedidasAislamiento()
+                    .stream()
+                    .map(dto -> modelMapper.map(dto, MedidasAislamiento.class))
+                    .collect(Collectors.toList());
+            nuevaVersion.setMedidasAislamiento(medidasAislamiento);
+            nuevaVersion.setRequiereAislamiento(versionSolicitudCamaEditDTO.getRequiereAislamiento());
+        }
+        if (versionSolicitudCamaEditDTO.getTitulosFormacionAcademica() != null) {
+            List<TitulosFormacionAcacemica> titulosFormacion = versionSolicitudCamaEditDTO.getTitulosFormacionAcademica()
+                    .stream()
+                    .map(dto -> modelMapper.map(dto, TitulosFormacionAcacemica.class))
+                    .collect(Collectors.toList());
+            System.out.println("Titulos Formacion Academica mapeados: " + titulosFormacion);
+            nuevaVersion.setTitulosFormacionAcademica(titulosFormacion);
+        }
+        if (versionSolicitudCamaEditDTO.getDiagnosticos() != null) {
+            List<Diagnostico>diagnosticos = versionSolicitudCamaEditDTO.getDiagnosticos()
+                    .stream()
+                    .map(dto -> modelMapper.map(dto, Diagnostico.class))
+                    .collect(Collectors.toList());
+            nuevaVersion.setDiagnosticos(diagnosticos);
+        }
+        String nuevoId = incrementarVersionId(versionActual.getId());
+        nuevaVersion.setId(nuevoId);
+        VersionSolicitudCama nuevaVersionGuardada = versionSolicitudCamaRepository.save(nuevaVersion);
+        System.out.println("Nueva versión creada con ID: " + nuevaVersionGuardada.getId());
+        return modelMapper.map(nuevaVersionGuardada, VersionSolicitudResponseDTO.class);
+    }
+
+    @Override
+    public void SolicitudEspera(String id) {
+        VersionSolicitudCama versionSolicitudCama= versionSolicitudCamaRepository.findById(id)
+                .orElseThrow(() -> new EntidadNoExisteException("Solicitud no encontrada"));
+        versionSolicitudCama.setAutorizacionFacturacion("Espera");
+    }
+
+    @Override
+    public void SolicitudEstadoSi(String id) {
+        VersionSolicitudCama versionSolicitudCama= versionSolicitudCamaRepository.findById(id)
+                .orElseThrow(() -> new EntidadNoExisteException("Solicitud no encontrada"));
+        versionSolicitudCama.setAutorizacionFacturacion("Si");
+    }
+
+    @Override
+    public void SolicitudEstadoNo(String id) {
+        VersionSolicitudCama versionSolicitudCama= versionSolicitudCamaRepository.findById(id)
+                .orElseThrow(() -> new EntidadNoExisteException("Solicitud no encontrada"));
+        versionSolicitudCama.setAutorizacionFacturacion("No");
+    }
+
+    private String incrementarVersionId(String currentId) {
+        if (!currentId.matches("^[A-Z]+(?: [A-Z]+)?-\\d+-V\\d+$")) {
+            throw new IllegalArgumentException("Formato inválido del ID: " + currentId);
+        }
+        String[] partesId = currentId.split("-V");
+        String parteFija = partesId[0];
+        int numeroVersion = Integer.parseInt(partesId[1]);
+        return parteFija + "-V" + (numeroVersion + 1);
     }
 }

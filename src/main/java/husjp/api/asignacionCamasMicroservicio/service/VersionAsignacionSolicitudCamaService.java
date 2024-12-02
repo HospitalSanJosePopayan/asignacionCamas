@@ -9,4 +9,5 @@ public interface VersionAsignacionSolicitudCamaService {
 
     VersionAsignacionCamaResponseDTO guardarVersionAsignacionCama(VersionAsignacionCamaDTO versionAsignacionCamaDTO, String username);
     List<VersionAsignacionCamaResponseDTO> getAllVersionAsignacionCamaActivasEnEspera();
+    VersionAsignacionCamaResponseDTO editarAsignacion(String id,VersionAsignacionCamaDTO versionAsignacionCamaDTO);
 }

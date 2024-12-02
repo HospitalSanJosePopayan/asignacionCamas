@@ -2,6 +2,7 @@ package husjp.api.asignacionCamasMicroservicio.controllers;
 
 import husjp.api.asignacionCamasMicroservicio.service.VersionSolicitudCamaService;
 import husjp.api.asignacionCamasMicroservicio.service.dto.request.VersionSolicitudCamaDTO;
+import husjp.api.asignacionCamasMicroservicio.service.dto.request.VersionSolicitudCamaEditDTO;
 import husjp.api.asignacionCamasMicroservicio.service.dto.response.VersionSolicitudResponseDTO;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -29,6 +30,11 @@ public class VersionSolicitudCamaRestController {
     @GetMapping("/active")
     public ResponseEntity<List<VersionSolicitudResponseDTO>> getVersionSolicitudCamaActivasEnEspera(){
         return ResponseEntity.ok(versionSolicitudCamaService.getVersionSolicitudCamaActivasEnEspera());
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<VersionSolicitudResponseDTO> editarVersionSolicitudCama(@PathVariable("id") String idVersionSolicitudCama, @RequestBody VersionSolicitudCamaEditDTO versionSolicitudCamaEditDTO) {
+        VersionSolicitudResponseDTO response = versionSolicitudCamaService.editarVersionSolicitudCama(idVersionSolicitudCama, versionSolicitudCamaEditDTO);
+        return ResponseEntity.ok(response);
     }
 
 }

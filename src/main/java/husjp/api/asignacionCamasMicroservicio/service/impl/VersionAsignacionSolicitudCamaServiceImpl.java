@@ -2,6 +2,7 @@ package husjp.api.asignacionCamasMicroservicio.service.impl;
 
 import husjp.api.asignacionCamasMicroservicio.entity.Usuario;
 import husjp.api.asignacionCamasMicroservicio.entity.VersionAsignacionSolicitudCama;
+import husjp.api.asignacionCamasMicroservicio.exceptionsControllers.exceptions.EntidadNoExisteException;
 import husjp.api.asignacionCamasMicroservicio.repository.UsuarioRepository;
 import husjp.api.asignacionCamasMicroservicio.repository.VersionRespuestaSolicitudCamaRepository;
 import husjp.api.asignacionCamasMicroservicio.service.AsignacionSolicitudCamaService;
@@ -10,6 +11,7 @@ import husjp.api.asignacionCamasMicroservicio.service.dto.request.VersionAsignac
 import husjp.api.asignacionCamasMicroservicio.service.dto.response.VersionAsignacionCamaResponseDTO;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -57,5 +59,32 @@ public class VersionAsignacionSolicitudCamaServiceImpl implements VersionAsignac
         return respuesta.stream()
                 .map(entity -> mapper.map(entity, VersionAsignacionCamaResponseDTO.class))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public VersionAsignacionCamaResponseDTO editarAsignacion(String id, VersionAsignacionCamaDTO versionAsignacionCamaDTO) {
+        VersionAsignacionSolicitudCama versionAsignacionSolicitudCamaActual = versionRespuestaSolicitudCamaRepository.findById(id)
+                .orElseThrow(()->new EntidadNoExisteException("No Existe esta Asignacion"));
+        VersionAsignacionSolicitudCama editarAsignacion = new VersionAsignacionSolicitudCama();
+        BeanUtils.copyProperties(versionAsignacionSolicitudCamaActual,editarAsignacion);
+        editarAsignacion.setObservacion(versionAsignacionSolicitudCamaActual.getObservacion());
+        editarAsignacion.setExtension(versionAsignacionSolicitudCamaActual.getExtension());
+        editarAsignacion.setEnfermero_origen(versionAsignacionSolicitudCamaActual.getEnfermero_origen());
+        editarAsignacion.setEnfermero_destino(versionAsignacionSolicitudCamaActual.getEnfermero_destino());
+        editarAsignacion.setServicio(versionAsignacionSolicitudCamaActual.getServicio());
+        String nuevoId= incrementarVersionId(versionAsignacionSolicitudCamaActual.getId());
+        System.out.println("Version Nueva"+nuevoId);
+        editarAsignacion.setId(nuevoId);
+        return mapper.map(editarAsignacion,VersionAsignacionCamaResponseDTO.class);
+
+    }
+    private String incrementarVersionId(String currentId) {
+        if (!currentId.matches("^[A-Z]+(?: [A-Z]+)?-\\d+-V\\d+$")) {
+            throw new IllegalArgumentException("Formato inválido del ID: " + currentId);
+        }
+        String[] partesId = currentId.split("-V");
+        String parteFija = partesId[0];
+        int numeroVersion = Integer.parseInt(partesId[1]);
+        return parteFija + "-V" + (numeroVersion + 1);
     }
 }
