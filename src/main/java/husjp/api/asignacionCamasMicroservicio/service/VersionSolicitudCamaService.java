@@ -10,7 +10,7 @@ public interface VersionSolicitudCamaService {
 
     VersionSolicitudResponseDTO guardarVersionSolicitudCama(VersionSolicitudCamaDTO versionSolicitudCamaDTO, String username);
     List<VersionSolicitudResponseDTO> getVersionSolicitudCamaActivasEnEspera();
-    VersionSolicitudResponseDTO editarVersionSolicitudCama(String id, VersionSolicitudCamaEditDTO versionSolicitudCamaEditDTO);
+    VersionSolicitudResponseDTO editarVersionSolicitudCama(String id, VersionSolicitudCamaEditDTO versionSolicitudCamaEditDTO,String username);
     VersionSolicitudResponseDTO EstadoSolicitud(String id);
 
 }
