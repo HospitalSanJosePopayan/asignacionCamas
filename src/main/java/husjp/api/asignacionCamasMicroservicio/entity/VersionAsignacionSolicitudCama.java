@@ -28,7 +28,7 @@ public class VersionAsignacionSolicitudCama {
     private String extension;
     private String motivo_cancelacion;
     @Column(name = "fecha_creacion", nullable = false)
-    private LocalDateTime fechaModificacion;
+    private LocalDateTime fechaCreacion;
     @ManyToOne
     @JoinColumn(name = "servicio_id", foreignKey = @ForeignKey(name = "fk_respuestaSolicitudCama_Servicio"))
     private Servicio servicio;
