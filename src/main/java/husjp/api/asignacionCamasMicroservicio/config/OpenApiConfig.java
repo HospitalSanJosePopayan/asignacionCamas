@@ -103,7 +103,7 @@ public class OpenApiConfig {
                 .group("asignacionVersionSolicitudCama")
                 .displayName("ASIGNACION DE CAMA")
                 .addOpenApiCustomizer(openApi -> openApi.info(new Info().title("medidasAislamiento microservicio").version(appVersion)
-                        .description("Ejemplo de como se debe documentar el microservicio")))
+                        .description("Crea una nueva version de la solicitud si esta fue modificada ")))
                 .pathsToMatch(paths)
                 .build();
     }
