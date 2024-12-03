@@ -1,6 +1,7 @@
 package husjp.api.asignacionCamasMicroservicio.service.impl;
 
 import husjp.api.asignacionCamasMicroservicio.entity.*;
+import husjp.api.asignacionCamasMicroservicio.entity.enums.EstadoSolicitudCama;
 import husjp.api.asignacionCamasMicroservicio.exceptionsControllers.exceptions.EntidadNoExisteException;
 import husjp.api.asignacionCamasMicroservicio.repository.UsuarioRepository;
 import husjp.api.asignacionCamasMicroservicio.repository.VersionSolicitudCamaRepository;
@@ -58,7 +59,7 @@ public class VersionSolicitudCamaServiceImpl implements VersionSolicitudCamaServ
         versionSolicitudCama.setFecha(LocalDateTime.now());
         versionSolicitudCama.setAutorizacionFacturacion("EN ESPERA");//POR DEFECTO SIEMPRE ES EN ESPERA
         //creamos la solicitud de la cama
-        versionSolicitudCama.getSolicitudCama().setEstado(new EstadoSolicitudCama(1));
+        versionSolicitudCama.getSolicitudCama().setEstado(EstadoSolicitudCama.EN_ESPERA.toEntity());
         versionSolicitudCama.getSolicitudCama().setId(String.valueOf(codigoSolicitudCama));  // Asignar el id manualmente
         //Actualizamos la fecha de la solicitud de cama y version de solicitud
         versionSolicitudCama.getSolicitudCama().setFechaInicial(LocalDateTime.now());

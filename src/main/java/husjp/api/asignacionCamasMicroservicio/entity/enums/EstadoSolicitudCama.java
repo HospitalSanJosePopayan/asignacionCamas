@@ -1,12 +1,11 @@
 package husjp.api.asignacionCamasMicroservicio.entity.enums;
 
-import husjp.api.asignacionCamasMicroservicio.entity.EstadoSolicitudCama;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-public enum EstadoSolicitudCamaEnum {
+public enum EstadoSolicitudCama {
 
     //usar estadode solicitud cama como enums
     EN_ESPERA(1),
@@ -16,8 +15,8 @@ public enum EstadoSolicitudCamaEnum {
 
     private final Integer id;
 
-    public EstadoSolicitudCama toEntity() {
-        return new EstadoSolicitudCama(id);
+    public husjp.api.asignacionCamasMicroservicio.entity.EstadoSolicitudCama toEntity() {
+        return new husjp.api.asignacionCamasMicroservicio.entity.EstadoSolicitudCama(id);
     }
 
 }
