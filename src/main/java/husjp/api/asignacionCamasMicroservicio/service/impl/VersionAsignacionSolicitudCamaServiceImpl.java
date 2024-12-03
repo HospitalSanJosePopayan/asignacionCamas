@@ -1,7 +1,5 @@
 package husjp.api.asignacionCamasMicroservicio.service.impl;
 
-import husjp.api.asignacionCamasMicroservicio.entity.Cama;
-import husjp.api.asignacionCamasMicroservicio.entity.Servicio;
 import husjp.api.asignacionCamasMicroservicio.entity.Usuario;
 import husjp.api.asignacionCamasMicroservicio.entity.VersionAsignacionSolicitudCama;
 import husjp.api.asignacionCamasMicroservicio.exceptionsControllers.exceptions.EntidadNoExisteException;
@@ -10,6 +8,7 @@ import husjp.api.asignacionCamasMicroservicio.repository.VersionRespuestaSolicit
 import husjp.api.asignacionCamasMicroservicio.service.AsignacionSolicitudCamaService;
 import husjp.api.asignacionCamasMicroservicio.service.VersionAsignacionSolicitudCamaService;
 import husjp.api.asignacionCamasMicroservicio.service.dto.request.VersionAsignacionCamaDTO;
+import husjp.api.asignacionCamasMicroservicio.service.dto.request.VersionAsignacionCamaEditDTO;
 import husjp.api.asignacionCamasMicroservicio.service.dto.response.VersionAsignacionCamaResponseDTO;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -41,11 +40,11 @@ public class VersionAsignacionSolicitudCamaServiceImpl implements VersionAsignac
 
     private VersionAsignacionSolicitudCama crearRespuestaSolicitudCama(VersionAsignacionCamaDTO versionAsignacionCamaDTO,String username){
         VersionAsignacionSolicitudCama versionAsignacionSolicitudCama = mapper.map(versionAsignacionCamaDTO, VersionAsignacionSolicitudCama.class);
-        versionAsignacionSolicitudCama.setFechaModificacion(LocalDateTime.now());
+        versionAsignacionSolicitudCama.setFechaCreacion(LocalDateTime.now());
         //agregar usuario
         Usuario usuario = usuarioRepository.findByDocumento(username).orElse(null);
         versionAsignacionSolicitudCama.setUsuario(usuario);
-        versionAsignacionSolicitudCama.setFechaModificacion(LocalDateTime.now());
+        versionAsignacionSolicitudCama.setFechaCreacion(LocalDateTime.now());
         //asignacion de cama
         versionAsignacionSolicitudCama.setAsignacionCama(asignacionSolicitudCamaService.crearAsignacionCamas(versionAsignacionCamaDTO.getAsignacionCama().getIdSolicitudCama(), versionAsignacionCamaDTO.getServicio().getId()));
         //asignamos id
@@ -64,31 +63,22 @@ public class VersionAsignacionSolicitudCamaServiceImpl implements VersionAsignac
     }
 
     @Override
-    public VersionAsignacionCamaResponseDTO editarAsignacion(String id, VersionAsignacionCamaDTO versionAsignacionCamaDTO) {
-        VersionAsignacionSolicitudCama versionAsignacionSolicitudCamaActual = versionRespuestaSolicitudCamaRepository.findById(id)
-                .orElseThrow(() -> new EntidadNoExisteException("No Existe esta Asignacion"));
-        System.out.println("ID actual: " + versionAsignacionSolicitudCamaActual.getId());
+    public VersionAsignacionCamaResponseDTO editarAsignacion(String id, VersionAsignacionCamaEditDTO versionAsignacionCamaEditDTO, String username) {
+        VersionAsignacionSolicitudCama versionAsignacionSolicitudCamaActual = versionRespuestaSolicitudCamaRepository.findById(id).orElseThrow(() -> new EntidadNoExisteException("No Existe esta Asignacion"));
         VersionAsignacionSolicitudCama editarAsignacion = new VersionAsignacionSolicitudCama();
         BeanUtils.copyProperties(versionAsignacionSolicitudCamaActual, editarAsignacion);
-        editarAsignacion.setObservacion(versionAsignacionCamaDTO.getObservacion());
-        editarAsignacion.setEnfermero_origen(versionAsignacionCamaDTO.getEnfermero_origen());
-        editarAsignacion.setEnfermero_destino(versionAsignacionCamaDTO.getEnfermero_destino());
-        Servicio servicio = mapper.map(versionAsignacionCamaDTO.getServicio(), Servicio.class);
-        editarAsignacion.setServicio(servicio);
-        Cama cama = mapper.map(versionAsignacionCamaDTO.getCama(), Cama.class);
-        editarAsignacion.setCama(cama);
-        editarAsignacion.setFechaModificacion(LocalDateTime.now());
-        String nuevoId = incrementarVersionId(versionAsignacionSolicitudCamaActual.getId());
-        System.out.println("Versión nueva: " + nuevoId);
-        System.out.println("este es mi nuevo objeto"+editarAsignacion);
-        editarAsignacion.setId(nuevoId);
+        editarAsignacion = mapper.map(versionAsignacionCamaEditDTO, VersionAsignacionSolicitudCama.class);
+        editarAsignacion.setId(incrementarVersionId(versionAsignacionSolicitudCamaActual.getId()));
+        editarAsignacion.setFechaCreacion(LocalDateTime.now());
+        editarAsignacion.setAsignacionCama(versionAsignacionSolicitudCamaActual.getAsignacionCama());
+        editarAsignacion.setUsuario(usuarioRepository.findByDocumento(username).orElse(null));
         versionRespuestaSolicitudCamaRepository.save(editarAsignacion);
         return mapper.map(editarAsignacion, VersionAsignacionCamaResponseDTO.class);
     }
     private String incrementarVersionId(String currentId) {
-        if (!currentId.matches("^[A-Z]+(?: [A-Z]+)?-\\d+-V\\d+$")) {
-            throw new IllegalArgumentException("Formato inválido del ID: " + currentId);
-        }
+//        if (!currentId.matches("^[A-Z]+(?: [A-Z]+)?-\\d+-V\\d+$")) {
+//            throw new IllegalArgumentException("Formato inválido del ID: " + currentId);
+//        }
         String[] partesId = currentId.split("-V");
         String parteFija = partesId[0];
         int numeroVersion = Integer.parseInt(partesId[1]);
