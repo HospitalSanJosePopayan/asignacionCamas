@@ -113,10 +113,11 @@ public class VersionSolicitudCamaServiceImpl implements VersionSolicitudCamaServ
         return modelMapper.map(nuevaVersionGuardada, VersionSolicitudResponseDTO.class);
     }
     @Override
-    public void EstadoSolicitud(String id) {
+    public VersionSolicitudResponseDTO EstadoSolicitud(String id) {
         VersionSolicitudCama versionSolicitudCama = versionSolicitudCamaRepository.findById(id).orElseThrow(() -> new EntidadNoExisteException("Solicitud no encontrada"));
         versionSolicitudCama.setAutorizacionFacturacion(versionSolicitudCama.getAutorizacionFacturacion().equals("NO") ? "SI" : "NO");
         versionSolicitudCamaRepository.save(versionSolicitudCama);
+        return modelMapper.map(versionSolicitudCama,VersionSolicitudResponseDTO.class);
     }
     private String incrementarVersionId(String currentId) {
         if (!currentId.matches("^[A-Z]+(?: [A-Z]+)?-\\d+-V\\d+$")) {
