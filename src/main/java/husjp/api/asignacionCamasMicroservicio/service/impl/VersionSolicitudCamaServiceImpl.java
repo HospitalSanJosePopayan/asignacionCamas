@@ -78,39 +78,10 @@ public class VersionSolicitudCamaServiceImpl implements VersionSolicitudCamaServ
                 .collect(Collectors.toList());
     }
     @Override
-    public VersionSolicitudResponseDTO editarVersionSolicitudCama(String id, VersionSolicitudCamaEditDTO versionSolicitudCamaEditDTO) {
-        VersionSolicitudCama versionActual = versionSolicitudCamaRepository.findById(id)
-                .orElseThrow(() -> new EntidadNoExisteException("Solicitud no encontrada"));
-        VersionSolicitudCama nuevaVersion = new VersionSolicitudCama();
-        BeanUtils.copyProperties(versionActual, nuevaVersion);
-        if(versionSolicitudCamaEditDTO.getMedidasAislamiento() !=null){
-            List<MedidasAislamiento>medidasAislamiento= versionSolicitudCamaEditDTO.getMedidasAislamiento()
-                    .stream()
-                    .map(dto -> modelMapper.map(dto, MedidasAislamiento.class))
-                    .collect(Collectors.toList());
-            nuevaVersion.setMedidasAislamiento(medidasAislamiento);
-            nuevaVersion.setRequiereAislamiento(versionSolicitudCamaEditDTO.getRequiereAislamiento());
-        }
-        if (versionSolicitudCamaEditDTO.getTitulosFormacionAcademica() != null) {
-            List<TitulosFormacionAcacemica> titulosFormacion = versionSolicitudCamaEditDTO.getTitulosFormacionAcademica()
-                    .stream()
-                    .map(dto -> modelMapper.map(dto, TitulosFormacionAcacemica.class))
-                    .collect(Collectors.toList());
-            System.out.println("Titulos Formacion Academica mapeados: " + titulosFormacion);
-            nuevaVersion.setTitulosFormacionAcademica(titulosFormacion);
-        }
-        if (versionSolicitudCamaEditDTO.getDiagnosticos() != null) {
-            List<Diagnostico>diagnosticos = versionSolicitudCamaEditDTO.getDiagnosticos()
-                    .stream()
-                    .map(dto -> modelMapper.map(dto, Diagnostico.class))
-                    .collect(Collectors.toList());
-            nuevaVersion.setDiagnosticos(diagnosticos);
-        }
-        String nuevoId = incrementarVersionId(versionActual.getId());
-        nuevaVersion.setId(nuevoId);
-        nuevaVersion.setFecha(LocalDateTime.now());
+    public VersionSolicitudResponseDTO editarVersionSolicitudCama(
+            String id, VersionSolicitudCamaEditDTO versionSolicitudCamaEditDTO, String username) {
+        VersionSolicitudCama nuevaVersion = prepararNuevaVersion(id, versionSolicitudCamaEditDTO, username);
         VersionSolicitudCama nuevaVersionGuardada = versionSolicitudCamaRepository.save(nuevaVersion);
-        System.out.println("Nueva versión creada con ID: " + nuevaVersionGuardada.getId());
         return modelMapper.map(nuevaVersionGuardada, VersionSolicitudResponseDTO.class);
     }
     @Override
@@ -119,6 +90,24 @@ public class VersionSolicitudCamaServiceImpl implements VersionSolicitudCamaServ
         versionSolicitudCama.setAutorizacionFacturacion(versionSolicitudCama.getAutorizacionFacturacion().equals("NO") ? "SI" : "NO");
         versionSolicitudCamaRepository.save(versionSolicitudCama);
         return modelMapper.map(versionSolicitudCama,VersionSolicitudResponseDTO.class);
+    }
+
+    private VersionSolicitudCama prepararNuevaVersion(String id, VersionSolicitudCamaEditDTO versionSolicitudCamaEditDTO, String username) {
+        VersionSolicitudCama versionActual = versionSolicitudCamaRepository.findById(id)
+                .orElseThrow(() -> new EntidadNoExisteException("Solicitud no encontrada"));
+        VersionSolicitudCama nuevaVersion = new VersionSolicitudCama();
+        BeanUtils.copyProperties(versionActual, nuevaVersion);
+        modelMapper.map(versionSolicitudCamaEditDTO, nuevaVersion);
+        nuevaVersion.setCama(versionActual.getCama());
+        nuevaVersion.setFecha(LocalDateTime.now());
+        nuevaVersion.setBloqueServicio(versionActual.getBloqueServicio());
+        nuevaVersion.setServicio(versionActual.getServicio());
+        nuevaVersion.setMotivo(versionActual.getMotivo());
+        nuevaVersion.setAutorizacionFacturacion(versionActual.getAutorizacionFacturacion());
+        nuevaVersion.setUsuario(usuarioRepository.findByDocumento(username).orElse(null));
+        nuevaVersion.setSolicitudCama(versionActual.getSolicitudCama());
+        nuevaVersion.setId(incrementarVersionId(versionActual.getId()));
+        return nuevaVersion;
     }
     private String incrementarVersionId(String currentId) {
         if (!currentId.matches("^[A-Z]+(?: [A-Z]+)?-\\d+-V\\d+$")) {

@@ -25,8 +25,8 @@ public class OpenApiConfig {
         String [] paths = {"/versionSolicitudCama/**"};
         return GroupedOpenApi.builder()
                 .group("versionSolicitudCama")
-                .addOpenApiCustomizer(openApi -> openApi.info(new Info().title("EJEMPLO microservicio").version(appVersion)
-                        .description("Ejemplo de como se debe documentar el microservicio")))
+                .addOpenApiCustomizer(openApi -> openApi.info(new Info().title("Version Solicitud").version(appVersion)
+                        .description("crea una nueva version de una solicitud URG ADU-1-V1 A URG ADU-1-V2")))
                 .pathsToMatch(paths)
                 .build();
     }
