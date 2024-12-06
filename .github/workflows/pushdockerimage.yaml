@@ -1,9 +1,9 @@
 name: Publish Docker image
 
 on:
-    push:
-        branches:
-        - main
+  push:
+    branches:
+     - main
 
 jobs:
   build:
@@ -22,14 +22,14 @@ jobs:
       - name: Create Docker network
         run: docker network create --subnet=192.168.10.0/24 network_red
 
-      - name: Run postgresSql container
+      - name: Run PostgresSql container
         run: |
           docker run -d --name postgres --network network_red --ip 192.168.10.35 \
           -e POSTGRES_USER=${{ secrets.USER_POSTGRESQL }} -e POSTGRES_PASSWORD=${{ secrets.PASSWORD_POSTGRESQL }} -e POSTGRES_DB=${{ secrets.NAME_BD_POSTGRES }} \
           -p 5432:5432 \
           postgres:15.0
 
-      - name: Run eureka container
+      - name: Run Eureka container
         run: |
           docker run -d --name eureka --network network_red --ip 192.168.10.35 \
           -e EUREKA_CLIENT_REGISTER_WITH_EUREKA=false -e EUREKA_CLIENT_FETCH_REGISTRY=false \
