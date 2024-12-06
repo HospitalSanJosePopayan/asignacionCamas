@@ -70,13 +70,14 @@ public class VersionSolicitudCamaServiceImpl implements VersionSolicitudCamaServ
     }
 
     @Override
-    public List<VersionSolicitudResponseDTO> getVersionSolicitudCamaActivasEnEspera() {
-        List<VersionSolicitudCama> response = versionSolicitudCamaRepository.findBySolicitudCamaEstadoActivo().orElse(null);
+    public List<VersionSolicitudResponseDTO> getVersionSolicitudCamaActivasEnEsperaByIdBloque(Integer idBloqueServicio) {
+        List<VersionSolicitudCama> response = versionSolicitudCamaRepository.findBySolicitudCamaEstadoActivoPorBloque(idBloqueServicio).orElse(null);
         assert response != null;
         return response.stream()
                 .map(entity -> modelMapper.map(entity, VersionSolicitudResponseDTO.class))
                 .collect(Collectors.toList());
     }
+
     @Override
     public VersionSolicitudResponseDTO editarVersionSolicitudCama(
             String id, VersionSolicitudCamaEditDTO versionSolicitudCamaEditDTO, String username) {

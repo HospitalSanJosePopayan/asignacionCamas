@@ -28,10 +28,11 @@ public class VersionSolicitudCamaRestController {
         return ResponseEntity.ok(versionSolicitudCamaService.guardarVersionSolicitudCama(versionSolicitudCamaDTO, principal.getName()));
     }
 
-    @GetMapping("/active")
-    public ResponseEntity<List<VersionSolicitudResponseDTO>> getVersionSolicitudCamaActivasEnEspera(){
-        return ResponseEntity.ok(versionSolicitudCamaService.getVersionSolicitudCamaActivasEnEspera());
+    @GetMapping("/active/{idBloqueServicio}")
+    public ResponseEntity<List<VersionSolicitudResponseDTO>> getVersionSolicitudCamaActivasEnEsperaByIdBloque(@PathVariable Integer idBloqueServicio){
+        return ResponseEntity.ok(versionSolicitudCamaService.getVersionSolicitudCamaActivasEnEsperaByIdBloque(idBloqueServicio));
     }
+
     @Operation(summary = "actualiza y crea una nueva version de solicitud apartir de los datos modificados")
     @PutMapping("/{id}")
     public ResponseEntity<VersionSolicitudResponseDTO> editarVersionSolicitudCama(@PathVariable("id") String idVersionSolicitudCama, @RequestBody VersionSolicitudCamaEditDTO versionSolicitudCamaEditDTO,Principal principal) {

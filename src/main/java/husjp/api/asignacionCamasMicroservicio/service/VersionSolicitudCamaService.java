@@ -9,8 +9,8 @@ import java.util.List;
 public interface VersionSolicitudCamaService {
 
     VersionSolicitudResponseDTO guardarVersionSolicitudCama(VersionSolicitudCamaDTO versionSolicitudCamaDTO, String username);
-    List<VersionSolicitudResponseDTO> getVersionSolicitudCamaActivasEnEspera();
-    VersionSolicitudResponseDTO editarVersionSolicitudCama(String id, VersionSolicitudCamaEditDTO versionSolicitudCamaEditDTO,String username);
+    List<VersionSolicitudResponseDTO> getVersionSolicitudCamaActivasEnEsperaByIdBloque(Integer idBloqueServicio);
+    VersionSolicitudResponseDTO editarVersionSolicitudCama(String id, VersionSolicitudCamaEditDTO versionSolicitudCamaEditDTO, String username);
     VersionSolicitudResponseDTO EstadoSolicitud(String id);
 
 }
