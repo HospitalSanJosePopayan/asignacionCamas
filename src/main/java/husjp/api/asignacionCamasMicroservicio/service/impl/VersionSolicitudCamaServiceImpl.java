@@ -93,6 +93,17 @@ public class VersionSolicitudCamaServiceImpl implements VersionSolicitudCamaServ
         return modelMapper.map(versionSolicitudCama,VersionSolicitudResponseDTO.class);
     }
 
+    @Override
+    public VersionSolicitudResponseDTO findEndVersionByIdSolicitudCama(String id) {
+        VersionSolicitudCama resEntity = versionSolicitudCamaRepository.findEndByIdSolicitudCama(id).orElse(null);
+        VersionSolicitudResponseDTO responseDTO =modelMapper.map(resEntity, VersionSolicitudResponseDTO.class);
+        responseDTO.setSolicitudCama(null);
+        if (resEntity != null) {
+            return responseDTO;
+        }
+        return null;
+    }
+
     private VersionSolicitudCama prepararNuevaVersion(String id, VersionSolicitudCamaEditDTO versionSolicitudCamaEditDTO, String username) {
         VersionSolicitudCama versionActual = versionSolicitudCamaRepository.findById(id)
                 .orElseThrow(() -> new EntidadNoExisteException("Solicitud no encontrada"));
