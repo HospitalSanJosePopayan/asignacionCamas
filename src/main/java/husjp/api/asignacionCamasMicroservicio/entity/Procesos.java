@@ -14,6 +14,7 @@ public class Procesos {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_proceso")
     private Integer id;
+    @Column(nullable = false, unique = true)
     private String nombre;
 
 
