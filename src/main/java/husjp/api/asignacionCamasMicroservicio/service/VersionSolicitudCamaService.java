@@ -12,5 +12,5 @@ public interface VersionSolicitudCamaService {
     List<VersionSolicitudResponseDTO> getVersionSolicitudCamaActivasEnEsperaByIdBloque(Integer idBloqueServicio);
     VersionSolicitudResponseDTO editarVersionSolicitudCama(String id, VersionSolicitudCamaEditDTO versionSolicitudCamaEditDTO, String username);
     VersionSolicitudResponseDTO EstadoSolicitud(String id);
-
+    VersionSolicitudResponseDTO findEndVersionByIdSolicitudCama(String id);
 }

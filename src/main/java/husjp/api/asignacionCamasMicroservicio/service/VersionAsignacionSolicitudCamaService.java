@@ -9,6 +9,6 @@ import java.util.List;
 public interface VersionAsignacionSolicitudCamaService {
 
     VersionAsignacionCamaResponseDTO guardarVersionAsignacionCama(VersionAsignacionCamaDTO versionAsignacionCamaDTO, String username);
-    List<VersionAsignacionCamaResponseDTO> getAllVersionAsignacionCamaActivasEnEspera();
+    List<VersionAsignacionCamaResponseDTO> getAllVersionAsignacionCamaActivasEnEsperaByIdBloque(Integer idBloqueServicio);
     VersionAsignacionCamaResponseDTO editarAsignacion(String id, VersionAsignacionCamaEditDTO versionAsignacionCamaEditDTO, String username);
 }
