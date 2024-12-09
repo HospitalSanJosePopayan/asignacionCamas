@@ -10,7 +10,7 @@ public class SubSeccionesServicio {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_area")
+    @Column(name = "id_subseccion_servicio")
     private Integer id;
     private String nombre;
 
