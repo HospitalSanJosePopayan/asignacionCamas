@@ -2,11 +2,13 @@ package husjp.api.asignacionCamasMicroservicio.service.impl;
 
 import husjp.api.asignacionCamasMicroservicio.entity.Usuario;
 import husjp.api.asignacionCamasMicroservicio.entity.VersionAsignacionSolicitudCama;
+import husjp.api.asignacionCamasMicroservicio.entity.enums.EstadoSolicitudCama;
 import husjp.api.asignacionCamasMicroservicio.exceptionsControllers.exceptions.EntidadNoExisteException;
 import husjp.api.asignacionCamasMicroservicio.repository.UsuarioRepository;
 import husjp.api.asignacionCamasMicroservicio.repository.VersionRespuestaSolicitudCamaRepository;
 import husjp.api.asignacionCamasMicroservicio.service.AsignacionSolicitudCamaService;
 import husjp.api.asignacionCamasMicroservicio.service.VersionAsignacionSolicitudCamaService;
+import husjp.api.asignacionCamasMicroservicio.service.VersionSolicitudCamaService;
 import husjp.api.asignacionCamasMicroservicio.service.dto.request.VersionAsignacionCamaDTO;
 import husjp.api.asignacionCamasMicroservicio.service.dto.request.VersionAsignacionCamaEditDTO;
 import husjp.api.asignacionCamasMicroservicio.service.dto.response.VersionAsignacionCamaResponseDTO;
@@ -27,6 +29,7 @@ public class VersionAsignacionSolicitudCamaServiceImpl implements VersionAsignac
     private ModelMapper mapper;
     private VersionRespuestaSolicitudCamaRepository versionRespuestaSolicitudCamaRepository;
     private AsignacionSolicitudCamaService asignacionSolicitudCamaService;
+    private VersionSolicitudCamaService versionSolicitudCamaService;
 
     @Override
     public VersionAsignacionCamaResponseDTO guardarVersionAsignacionCama(VersionAsignacionCamaDTO versionAsignacionCamaDTO, String username) {
@@ -53,13 +56,21 @@ public class VersionAsignacionSolicitudCamaServiceImpl implements VersionAsignac
     }
 
     @Override
-    public List<VersionAsignacionCamaResponseDTO> getAllVersionAsignacionCamaActivasEnEspera() {
-        List<VersionAsignacionSolicitudCama> respuesta = versionRespuestaSolicitudCamaRepository.findAllByRespuestaSolicitudCamaEstadoActivo().orElse(null);
+    public List<VersionAsignacionCamaResponseDTO> getAllVersionAsignacionCamaActivasEnEsperaByIdBloque(Integer idBloqueServicio) {
+        List<VersionAsignacionSolicitudCama> respuesta = versionRespuestaSolicitudCamaRepository.findByRespuestaSolicitudCamaEstadoActivoPorBloque(idBloqueServicio, EstadoSolicitudCama.ACEPTADA.getId()).orElse(null);
         assert respuesta != null;
         //return List.of(mapper.map(respuesta,VersionRespuestaSolicitudCamaResponseDTO.class));
-        return respuesta.stream()
+        List<VersionAsignacionCamaResponseDTO> res = respuesta.stream()
                 .map(entity -> mapper.map(entity, VersionAsignacionCamaResponseDTO.class))
                 .collect(Collectors.toList());
+
+        //obtenemos la información de la ultima versión que tiene la solicitud de cama para tener la información completa
+        for (VersionAsignacionCamaResponseDTO versionAsignacionCamaResponseDTO : res) {
+            versionAsignacionCamaResponseDTO.getAsignacionCama().getSolicitudCama().setVersionSolicitud(null);
+            versionAsignacionCamaResponseDTO.getAsignacionCama().getSolicitudCama().setVersionSolicitud(List.of(versionSolicitudCamaService.findEndVersionByIdSolicitudCama(versionAsignacionCamaResponseDTO.getAsignacionCama().getSolicitudCama().getId())));
+        }
+
+        return res;
     }
 
     @Override
