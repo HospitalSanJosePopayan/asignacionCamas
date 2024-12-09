@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,5 +16,6 @@ public class SolicitudCamaResponseDTO {
     private String fechaInicial;
     private IngresoResponseDTO ingreso;
     private String motivoCancelacion;
+    private List<VersionSolicitudResponseDTO> versionSolicitud;
 
 }
