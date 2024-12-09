@@ -17,7 +17,7 @@ public class VersionAsignacionSolicitudCama {
     @JoinColumn(name = "asignacion_cama_id", foreignKey = @ForeignKey(name = "fk_versionAsignacionCama_asignacionCama"))
     private AsignacionCama asignacionCama;
     @ManyToOne
-    @JoinColumn(name = "cama_id", foreignKey = @ForeignKey(name = "versionAsignacionCama_cama"))
+    @JoinColumn(name = "cama_id", foreignKey = @ForeignKey(name = "fk_versionAsignacionCama_cama"))
     private Cama cama;
     @ManyToOne
     @JoinColumn(name = "usuario_id", foreignKey = @ForeignKey(name = "fk_versionAsignacionCama_usuario"))
