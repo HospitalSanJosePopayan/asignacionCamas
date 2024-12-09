@@ -23,4 +23,16 @@ public interface VersionSolicitudCamaRepository extends JpaRepository<VersionSol
     """, nativeQuery = true)
     Optional<List<VersionSolicitudCama>> findBySolicitudCamaEstadoActivoPorBloque(@Param("bloqueServicioId") Integer bloqueServicioId);
 
+    @Query(value = """
+    SELECT vsc.*
+    FROM version_solicitud_cama vsc
+    WHERE vsc.solicitud_cama_id = :idSolicitudCama
+      AND vsc.fecha = (
+          SELECT MAX(vsc2.fecha)
+          FROM version_solicitud_cama vsc2
+          WHERE vsc2.solicitud_cama_id = vsc.solicitud_cama_id
+      );
+    
+    """, nativeQuery = true)
+    Optional<VersionSolicitudCama> findEndByIdSolicitudCama(@Param("idSolicitudCama") String idSolicitudCama);
 }
