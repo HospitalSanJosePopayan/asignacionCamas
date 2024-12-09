@@ -9,8 +9,8 @@ public enum EstadoSolicitudCama {
 
     //usar estadode solicitud cama como enums
     EN_ESPERA(1),
-    ACEPTADA(2 ),
-    CANCELADA(3),
+    ACEPTADA(3 ),
+    CANCELADA(2),
     FINALIZADA(4);
 
     private final Integer id;
