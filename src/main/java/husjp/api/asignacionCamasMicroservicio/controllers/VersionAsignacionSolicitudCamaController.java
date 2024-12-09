@@ -24,9 +24,9 @@ public class VersionAsignacionSolicitudCamaController {
         return ResponseEntity.ok(versionAsignacionSolicitudCamaService.guardarVersionAsignacionCama(versionAsignacionCamaDTO, principal.getName()));
     }
 
-    @GetMapping("/active")
-    public ResponseEntity<List<VersionAsignacionCamaResponseDTO>> getAllVersionAsignacionCamaActivasEnEspera(){
-        return ResponseEntity.ok(versionAsignacionSolicitudCamaService.getAllVersionAsignacionCamaActivasEnEspera());
+    @GetMapping("/active/{idBloqueServicio}")
+    public ResponseEntity<List<VersionAsignacionCamaResponseDTO>> getAllVersionAsignacionCamaActivasEnEsperaPorIdBloque(@PathVariable Integer idBloqueServicio){
+        return ResponseEntity.ok(versionAsignacionSolicitudCamaService.getAllVersionAsignacionCamaActivasEnEsperaByIdBloque(idBloqueServicio));
     }
     @PutMapping("/{id}")
     public ResponseEntity<VersionAsignacionCamaResponseDTO> editarVersionAsignacion(@PathVariable("id")String idVersionAsignacion, @RequestBody VersionAsignacionCamaEditDTO versionAsignacionCamaEditDTO, Principal principal){
