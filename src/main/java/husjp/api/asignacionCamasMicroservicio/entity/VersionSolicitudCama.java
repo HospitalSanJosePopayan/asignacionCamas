@@ -32,22 +32,22 @@ public class VersionSolicitudCama {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "version_solicitud_cama_medidas_aislamiento",
-            joinColumns = @JoinColumn(name = "version_solicitud_cama_id"),
-            inverseJoinColumns = @JoinColumn(name = "medidas_aislamiento_id")
+            joinColumns = @JoinColumn(name = "version_solicitud_cama_id",foreignKey = @ForeignKey(name = "fk_versionSolicitudCama_medidasAislamiento")),
+            inverseJoinColumns = @JoinColumn(name = "medidas_aislamiento_id", foreignKey = @ForeignKey(name = "fk_medidasAislamiento_versionSolicitudCama"))
     )
     private List<MedidasAislamiento> medidasAislamiento;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "version_solicitud_cama_titlo_formacion_academica",
-            joinColumns = @JoinColumn(name = "version_solicitud_cama_id"),
-            inverseJoinColumns = @JoinColumn(name = "titulo_formacion_academica_id")
+            joinColumns = @JoinColumn(name = "version_solicitud_cama_id", foreignKey = @ForeignKey(name = "fk_versionSolicitudCama_titloFormacionAcademica")),
+            inverseJoinColumns = @JoinColumn(name = "titulo_formacion_academica_id", foreignKey = @ForeignKey(name = "fk_titloFormacionAcademica_versionSolicitudCama"))
     )
     private List<TitulosFormacionAcacemica> titulosFormacionAcademica;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "version_solicitud_cama_servicio",
-            joinColumns = @JoinColumn(name = "version_solicitud_cama_id"),
-            inverseJoinColumns = @JoinColumn(name = "diagnostico_id")
+            joinColumns = @JoinColumn(name = "version_solicitud_cama_id", foreignKey = @ForeignKey(name = "fk_versionSolicitudCama_servicio")),
+            inverseJoinColumns = @JoinColumn(name = "diagnostico_id", foreignKey = @ForeignKey(name = "fk_servicio_versionSolicitudCama"))
     )
     private List<Diagnostico> diagnosticos;
     @ManyToOne(fetch = FetchType.LAZY)
