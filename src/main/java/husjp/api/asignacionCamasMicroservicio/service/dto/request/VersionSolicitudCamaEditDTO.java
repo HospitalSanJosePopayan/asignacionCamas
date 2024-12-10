@@ -17,5 +17,6 @@ public class VersionSolicitudCamaEditDTO {
     private List<MedidasAislamientoDTO> medidasAislamiento;
     private List<TitulosFormacionAcademicaDTO> titulosFormacionAcademica;
     private List<DiagnosticoDTO> diagnosticos;
+    private  BloqueServicioDTO bloqueServicio;
 
 }

@@ -4,6 +4,8 @@ import husjp.api.asignacionCamasMicroservicio.service.VersionAsignacionSolicitud
 import husjp.api.asignacionCamasMicroservicio.service.dto.request.VersionAsignacionCamaDTO;
 import husjp.api.asignacionCamasMicroservicio.service.dto.request.VersionAsignacionCamaEditDTO;
 import husjp.api.asignacionCamasMicroservicio.service.dto.response.VersionAsignacionCamaResponseDTO;
+import husjp.api.asignacionCamasMicroservicio.service.dto.response.VersionSolicitudResponseDTO;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,4 +35,11 @@ public class VersionAsignacionSolicitudCamaController {
         VersionAsignacionCamaResponseDTO responseDTO = versionAsignacionSolicitudCamaService.editarAsignacion(idVersionAsignacion, versionAsignacionCamaEditDTO, principal.getName());
         return ResponseEntity.ok(responseDTO);
     }
+    @PutMapping("/{id}/estadoFinalizado")
+    public ResponseEntity<VersionAsignacionCamaResponseDTO> cambiarEstadoFinalizado(@PathVariable String id){
+        VersionAsignacionCamaResponseDTO versionAsignacionCamaResponseDTO = versionAsignacionSolicitudCamaService.cambiarEstado(id);
+        return  ResponseEntity.ok(versionAsignacionCamaResponseDTO);
+    }
+
+
 }

@@ -44,6 +44,7 @@ public class SecurityConfig {
                         authorizeRequests.requestMatchers(HttpMethod.PUT, "versionSolicitudCama/{id}").hasAnyRole("ADMIN");
                         authorizeRequests.requestMatchers(HttpMethod.PUT,"versionSolicitudCama/{id}/estadoAutorizacionFacturacion").hasAnyRole("ADMIN");
                         authorizeRequests.requestMatchers(HttpMethod.PUT,"asignacionVersionSolicitudCama").hasAnyRole("ADMIN");
+                        authorizeRequests.requestMatchers(HttpMethod.PUT,"asignacionVersionSolicitudCama/{id}/estadoFinalizado").hasAnyRole("ADMIN");
 
                         authorizeRequests.anyRequest().authenticated();
                     }
