@@ -12,4 +12,5 @@ public interface VersionAsignacionSolicitudCamaService {
     List<VersionAsignacionCamaResponseDTO> getAllVersionAsignacionCamaActivasEnEsperaByIdBloque(Integer idBloqueServicio);
     VersionAsignacionCamaResponseDTO editarAsignacion(String id, VersionAsignacionCamaEditDTO versionAsignacionCamaEditDTO, String username);
     VersionAsignacionCamaResponseDTO cambiarEstado(String id);
+    VersionAsignacionCamaResponseDTO cambiarEstadoCancelada(String id, String motivoCancelar);
 }
