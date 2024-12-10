@@ -12,6 +12,7 @@ import husjp.api.asignacionCamasMicroservicio.service.VersionSolicitudCamaServic
 import husjp.api.asignacionCamasMicroservicio.service.dto.request.VersionAsignacionCamaDTO;
 import husjp.api.asignacionCamasMicroservicio.service.dto.request.VersionAsignacionCamaEditDTO;
 import husjp.api.asignacionCamasMicroservicio.service.dto.response.VersionAsignacionCamaResponseDTO;
+import husjp.api.asignacionCamasMicroservicio.service.dto.response.VersionSolicitudResponseDTO;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
@@ -86,6 +87,16 @@ public class VersionAsignacionSolicitudCamaServiceImpl implements VersionAsignac
         versionRespuestaSolicitudCamaRepository.save(editarAsignacion);
         return mapper.map(editarAsignacion, VersionAsignacionCamaResponseDTO.class);
     }
+    @Override
+    public VersionAsignacionCamaResponseDTO cambiarEstado(String id) {
+        VersionAsignacionSolicitudCama versionAsignacionSolicitudCama = versionRespuestaSolicitudCamaRepository.findById(id)
+                        .orElseThrow(() -> new EntidadNoExisteException("No Existe esta Asignación"));
+        husjp.api.asignacionCamasMicroservicio.entity.EstadoSolicitudCama nuevoEstado = EstadoSolicitudCama.FINALIZADA.toEntity();
+        versionAsignacionSolicitudCama.getAsignacionCama().setEstado(nuevoEstado);
+        versionRespuestaSolicitudCamaRepository.save(versionAsignacionSolicitudCama);
+        return mapper.map(versionAsignacionSolicitudCama, VersionAsignacionCamaResponseDTO.class);
+    }
+
     private String incrementarVersionId(String currentId) {
 //        if (!currentId.matches("^[A-Z]+(?: [A-Z]+)?-\\d+-V\\d+$")) {
 //            throw new IllegalArgumentException("Formato inválido del ID: " + currentId);
