@@ -57,7 +57,7 @@ jobs:
           -e PASSWORD_POSTGRESQL=${{ secrets.PASSWORD_POSTGRESQL }} \
           -e EUREKA_URL=${{ secrets.EUREKA_URL }} \
           gradle:8.10.2-jdk21-alpine \
-          ./gradlew bootJar -Dspring.profiles.active=prod
+          ./gradlew buildProdJar 
 
       - name: Build Docker image
         run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/microservices:asigsolcamacamillero-image .
