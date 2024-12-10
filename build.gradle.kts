@@ -1,6 +1,3 @@
-import org.gradle.internal.classpath.Instrumented.systemProperty
-import org.springframework.boot.gradle.tasks.bundling.BootJar
-
 plugins {
     java
     id("org.springframework.boot") version "3.3.2"
@@ -53,16 +50,17 @@ dependencyManagement {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
-// Configuración de tareas personalizadas para perfiles
 
-tasks.register<BootJar>("buildProdJar") {
-    group = "build"
-    description = "Compila el proyecto para el entorno de producción"
-    archiveBaseName.set("asignacioncamasMicroservicio")
-    archiveVersion.set("0.0.1-SNAPSHOT")
-    mainClass.set("husjp.api.asignacionCamasMicroservicio") // Asegúrate de ajustar esto a la ruta correcta de tu clase principal
-    targetJavaVersion.set(JavaVersion.VERSION_21) // Configura la versión de Java objetivo
-    doFirst {
-        systemProperty("spring.profiles.active", "prod")
+// Configuración para usar perfiles en tiempo de ejecución
+tasks {
+    withType<JavaExec> {
+        if (project.hasProperty("springProfile")) {
+            systemProperty("spring.profiles.active", project.property("springProfile").toString())
+        }
+    }
+
+    bootJar {
+        archiveBaseName.set("asignacioncamasMicroservicio")
+        archiveVersion.set("0.0.1-SNAPSHOT") // Cambia según sea necesario
     }
 }

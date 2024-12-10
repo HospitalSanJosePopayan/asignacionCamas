@@ -52,15 +52,11 @@ jobs:
           --network network_red \
           -v ${{ github.workspace }}:/workspace \
           -w /workspace \
-          -e DB_URL=${{ secrets.DB_URL }} \
-          -e USER_POSTGRESQL=${{ secrets.USER_POSTGRESQL }} \
-          -e PASSWORD_POSTGRESQL=${{ secrets.PASSWORD_POSTGRESQL }} \
-          -e EUREKA_URL=${{ secrets.EUREKA_URL }} \
           gradle:8.10.2-jdk21-alpine \
-          ./gradlew buildProdJar 
+          ./gradlew build -PspringProfile=prod
 
       - name: Build Docker image
-        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/microservices:asigsolcamacamillero-image .
+        run: docker build --build-arg PROFILE=prod -t ${{ secrets.DOCKERHUB_USERNAME }}/microservices:asigsolcamacamillero-image .
 
       - name: Push Docker image
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/microservices:asigsolcamacamillero-image
