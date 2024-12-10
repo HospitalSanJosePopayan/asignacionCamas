@@ -12,7 +12,7 @@ VOLUME /tmp
 COPY build/libs/asignacioncamasMicroservicio-0.0.1-SNAPSHOT.jar app.jar
 
 # Define un argumento para el perfil, con un valor predeterminado
-ARG PROFILE=prod
+ARG PROFILE=dev
 
 # Establece el perfil como variable de entorno
 ENV SPRING_PROFILES_ACTIVE=$PROFILE
