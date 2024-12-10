@@ -20,7 +20,7 @@ public class VersionAsignacionCamaResponseDTO {
     private String enfermero_destino;
     private String extension;
     private String motivo_cancelacion;
-    private LocalDateTime fechaModificacion;
+    private LocalDateTime fechaCreacion;
     private ServicioResponseDTO servicio;
 
 }
