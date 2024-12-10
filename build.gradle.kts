@@ -58,8 +58,8 @@ tasks.withType<Test> {
 tasks.register<BootJar>("buildProdJar") {
     group = "build"
     description = "Compila el proyecto para el entorno de producción"
-    archiveBaseName.set("mi-app")
-    archiveVersion.set("0.0.1-SNAPSHOT-prod")
+    archiveBaseName.set("asignacioncamasMicroservicio")
+    archiveVersion.set("0.0.1-SNAPSHOT")
     mainClass.set("husjp.api.asignacionCamasMicroservicio") // Asegúrate de ajustar esto a la ruta correcta de tu clase principal
     targetJavaVersion.set(JavaVersion.VERSION_21) // Configura la versión de Java objetivo
     doFirst {
