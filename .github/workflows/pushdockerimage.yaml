@@ -56,7 +56,13 @@ jobs:
           ./gradlew bootJar
 
       - name: Build Docker image
-        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/microservices:asigsolcamacamillero-image .
+        run: docker build \
+          --build-arg PROFILE=prod \
+          --build-arg DB_URL=${{ secrets.DB_URL }} \
+          --build-arg USER_POSTGRESQL=${{ secrets.USER_POSTGRESQL }} \
+          --build-arg PASSWORD_POSTGRESQL=${{ secrets.PASSWORD_POSTGRESQL }} \
+          --build-arg EUREKA_URL = ${{ secrets.EUREKA_URL }} \
+          -t ${{ secrets.DOCKERHUB_USERNAME }}/microservices:asigsolcamacamillero-image .
 
       - name: Push Docker image
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/microservices:asigsolcamacamillero-image
