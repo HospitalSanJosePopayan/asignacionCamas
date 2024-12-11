@@ -108,11 +108,10 @@ public class VersionSolicitudCamaServiceImpl implements VersionSolicitudCamaServ
         VersionSolicitudCama versionActual = versionSolicitudCamaRepository.findById(id)
                 .orElseThrow(() -> new EntidadNoExisteException("Solicitud no encontrada"));
         VersionSolicitudCama nuevaVersion = new VersionSolicitudCama();
-        BeanUtils.copyProperties(versionActual, nuevaVersion);
-        modelMapper.map(versionSolicitudCamaEditDTO, nuevaVersion);
+        BeanUtils.copyProperties(versionActual, nuevaVersion, "bloqueServicio");
+        nuevaVersion = modelMapper.map(versionSolicitudCamaEditDTO, VersionSolicitudCama.class);
         nuevaVersion.setCama(versionActual.getCama());
         nuevaVersion.setFecha(LocalDateTime.now());
-        nuevaVersion.setBloqueServicio(versionActual.getBloqueServicio());
         nuevaVersion.setServicio(versionActual.getServicio());
         nuevaVersion.setMotivo(versionActual.getMotivo());
         nuevaVersion.setAutorizacionFacturacion(versionActual.getAutorizacionFacturacion());

@@ -40,6 +40,11 @@ public class VersionAsignacionSolicitudCamaController {
         VersionAsignacionCamaResponseDTO versionAsignacionCamaResponseDTO = versionAsignacionSolicitudCamaService.cambiarEstado(id);
         return  ResponseEntity.ok(versionAsignacionCamaResponseDTO);
     }
+    @PutMapping("/{id}/estadoCancelado")
+    public ResponseEntity<VersionAsignacionCamaResponseDTO>cambiarEstadoCancelado(@PathVariable String id, @RequestParam String motivo){
+        VersionAsignacionCamaResponseDTO versionAsignacionCamaResponseDTO = versionAsignacionSolicitudCamaService.cambiarEstadoCancelada(id,motivo);
+        return  ResponseEntity.ok(versionAsignacionCamaResponseDTO);
+    }
 
 
 }

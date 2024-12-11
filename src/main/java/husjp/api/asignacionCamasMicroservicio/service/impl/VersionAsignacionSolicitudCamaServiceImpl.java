@@ -97,6 +97,17 @@ public class VersionAsignacionSolicitudCamaServiceImpl implements VersionAsignac
         return mapper.map(versionAsignacionSolicitudCama, VersionAsignacionCamaResponseDTO.class);
     }
 
+    @Override
+    public VersionAsignacionCamaResponseDTO cambiarEstadoCancelada(String id, String motivoCancelar) {
+        VersionAsignacionSolicitudCama versionAsignacionSolicitudCama = versionRespuestaSolicitudCamaRepository.findById(id)
+                .orElseThrow(() -> new EntidadNoExisteException("No Existe esta Asignación"));
+        husjp.api.asignacionCamasMicroservicio.entity.EstadoSolicitudCama nuevoEstado = EstadoSolicitudCama.CANCELADA.toEntity();
+        versionAsignacionSolicitudCama.getAsignacionCama().setEstado(nuevoEstado);
+        versionAsignacionSolicitudCama.setMotivo_cancelacion(motivoCancelar);
+        versionRespuestaSolicitudCamaRepository.save(versionAsignacionSolicitudCama);
+        return mapper.map(versionAsignacionSolicitudCama, VersionAsignacionCamaResponseDTO.class);
+    }
+
     private String incrementarVersionId(String currentId) {
 //        if (!currentId.matches("^[A-Z]+(?: [A-Z]+)?-\\d+-V\\d+$")) {
 //            throw new IllegalArgumentException("Formato inválido del ID: " + currentId);
