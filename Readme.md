@@ -44,5 +44,11 @@ git update-index --no-assume-unchanged src/main/resources/application.properties
 - Mantener la estructura del proyecto.
 - Mantener actualizado el README.md con la información del proyecto.
 
+# Archivos de configuración
+- ``application.properties`` se ejecuta por defecto 
+- ``application-dev.properties`` usar un archivo externo para configurar el perfil de desarrollo
+- ``application-prod.properties`` usar un archivo externo para configurar el perfil de produccion
+- ``env.properties`` archivo alojado en el servidor con información sensible
+
 
  
