@@ -5,21 +5,24 @@
 # Usa una imagen base de OpenJDK adecuada
 FROM openjdk:21
 
-# Crea un directorio temporal
-VOLUME /tmp
+# Crea un directorio para la aplicación
+WORKDIR /app
 
-# Copia el .jar generado
+# Copia el .jar generado al directorio de trabajo
 COPY build/libs/asignacioncamasMicroservicio-0.0.1-SNAPSHOT.jar app.jar
 
-# Define un argumento para el perfil, con un valor predeterminado
+# Argumentos para personalizar el perfil y el archivo de configuración
 ARG PROFILE=dev
-ARG CONFIG=./env.properties
+ARG CONFIG_PATH=env.properties
 
-# Establece el perfil como variable de entorno
-ENV SPRING_PROFILES_ACTIVE=$PROFILE
-ENV SPRING_CONFIG_IMPORT=$CONFIG
+# Establece las variables de entorno para Java
+ENV SPRING_PROFILES_ACTIVE=${PROFILE}
+ENV SPRING_CONFIG_IMPORT=file:/app/${CONFIG_PATH}
 
-# Define el punto de entrada con el perfil activo
-ENTRYPOINT ["java", "-Dspring.profiles.active=${SPRING_PROFILES_ACTIVE}", "-Dspring.config.import=file:./${SPRING_CONFIG_IMPORT}" ,"-jar", "app.jar"]
+# Copia el archivo de configuración por defecto al contenedor
+COPY ${CONFIG_PATH} /app/${CONFIG_PATH}
+
+# Define el punto de entrada
+ENTRYPOINT ["sh", "-c", "java -Dspring.profiles.active=${SPRING_PROFILES_ACTIVE} -Dspring.config.import=${SPRING_CONFIG_IMPORT} -jar app.jar"]
 
 # Fin del archivo Dockerfile
