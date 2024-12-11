@@ -13,11 +13,13 @@ COPY build/libs/asignacioncamasMicroservicio-0.0.1-SNAPSHOT.jar app.jar
 
 # Define un argumento para el perfil, con un valor predeterminado
 ARG PROFILE=dev
+ARG CONFIG=./env.properties
 
 # Establece el perfil como variable de entorno
 ENV SPRING_PROFILES_ACTIVE=$PROFILE
+ENV SPRING_CONFIG_IMPORT=$CONFIG
 
 # Define el punto de entrada con el perfil activo
-ENTRYPOINT ["java", "-Dspring.profiles.active=${SPRING_PROFILES_ACTIVE}", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=${SPRING_PROFILES_ACTIVE}", "-Dspring.config.import=file:./${SPRING_CONFIG_IMPORT}" ,"-jar", "app.jar"]
 
 # Fin del archivo Dockerfile
