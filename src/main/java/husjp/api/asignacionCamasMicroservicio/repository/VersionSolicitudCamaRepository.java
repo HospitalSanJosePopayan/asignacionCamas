@@ -18,9 +18,14 @@ public interface VersionSolicitudCamaRepository extends JpaRepository<VersionSol
         SELECT solicitud_cama_id, MAX(fecha) AS max_fecha
         FROM version_solicitud_cama
         GROUP BY solicitud_cama_id
-    ) latest_versions ON v.solicitud_cama_id = latest_versions.solicitud_cama_id 
-    AND v.fecha = latest_versions.max_fecha and v.bloque_servicio_id = :bloqueServicioId
-    """, nativeQuery = true)
+    ) latest_versions 
+    ON v.solicitud_cama_id = latest_versions.solicitud_cama_id 
+    AND v.fecha = latest_versions.max_fecha
+    INNER JOIN solicitud_cama sc 
+    ON v.solicitud_cama_id = sc.id_solicitud_cama
+    WHERE v.bloque_servicio_id = :bloqueServicioId
+    AND sc.estado_solicitud_cama_id = 1;
+""", nativeQuery = true)
     Optional<List<VersionSolicitudCama>> findBySolicitudCamaEstadoActivoPorBloque(@Param("bloqueServicioId") Integer bloqueServicioId);
 
     @Query(value = """
