@@ -50,3 +50,17 @@ dependencyManagement {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
+
+// Configuración para usar perfiles en tiempo de ejecución
+tasks {
+    withType<JavaExec> {
+        if (project.hasProperty("springProfile")) {
+            systemProperty("spring.profiles.active", project.property("springProfile").toString())
+        }
+    }
+
+    bootJar {
+        archiveBaseName.set("asignacioncamasMicroservicio")
+        archiveVersion.set("0.0.1-SNAPSHOT") // Cambia según sea necesario
+    }
+}

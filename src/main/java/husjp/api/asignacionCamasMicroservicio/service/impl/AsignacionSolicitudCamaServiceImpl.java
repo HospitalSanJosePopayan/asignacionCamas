@@ -1,9 +1,9 @@
 package husjp.api.asignacionCamasMicroservicio.service.impl;
 
 import husjp.api.asignacionCamasMicroservicio.entity.AsignacionCama;
-import husjp.api.asignacionCamasMicroservicio.entity.EstadoSolicitudCama;
 import husjp.api.asignacionCamasMicroservicio.entity.Servicio;
 import husjp.api.asignacionCamasMicroservicio.entity.SolicitudCama;
+import husjp.api.asignacionCamasMicroservicio.entity.enums.EstadoSolicitudCama;
 import husjp.api.asignacionCamasMicroservicio.repository.AsignacionSolicitudCamaRepository;
 import husjp.api.asignacionCamasMicroservicio.service.AsignacionSolicitudCamaService;
 import husjp.api.asignacionCamasMicroservicio.service.ServicioService;
@@ -52,10 +52,9 @@ public class AsignacionSolicitudCamaServiceImpl implements AsignacionSolicitudCa
         AsignacionCama asignacionCama = new AsignacionCama();
         asignacionCama.setFechaInicial(LocalDateTime.now());
         SolicitudCama solicitudCama = solicitudCamaService.findById(idSolicitudCama);
-        solicitudCama.setEstado(new EstadoSolicitudCama(3));
+        solicitudCama.setEstado(EstadoSolicitudCama.ACEPTADA.toEntity());
         asignacionCama.setSolicitudCama(solicitudCama);
-        asignacionCama.setEstado(new EstadoSolicitudCama(3));
-        //crear id
+        asignacionCama.setEstado(EstadoSolicitudCama.ACEPTADA.toEntity());
         Servicio servicio = servicioService.findById(idServicio);
         asignacionCama.setId(generarCodigoAsignacionSolicitudCama(servicio.getNombre()));
         return asignacionCama;
