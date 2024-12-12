@@ -87,27 +87,8 @@ public class VersionAsignacionSolicitudCamaServiceImpl implements VersionAsignac
         versionRespuestaSolicitudCamaRepository.save(editarAsignacion);
         return mapper.map(editarAsignacion, VersionAsignacionCamaResponseDTO.class);
     }
-    @Override
-    public VersionAsignacionCamaResponseDTO cambiarEstado(String id) {
-        VersionAsignacionSolicitudCama versionAsignacionSolicitudCama = versionRespuestaSolicitudCamaRepository.findById(id)
-                .orElseThrow(() -> new EntidadNoExisteException("No Existe esta Asignación"));
-        versionAsignacionSolicitudCama.getAsignacionCama().setEstado(EstadoSolicitudCama.FINALIZADA.toEntity());
-        versionAsignacionSolicitudCama.getAsignacionCama().getSolicitudCama().setEstado(EstadoSolicitudCama.FINALIZADA.toEntity());
-        versionRespuestaSolicitudCamaRepository.save(versionAsignacionSolicitudCama);
-        return mapper.map(versionAsignacionSolicitudCama, VersionAsignacionCamaResponseDTO.class);
-    }
 
 
-    @Override
-    public VersionAsignacionCamaResponseDTO cambiarEstadoCancelada(String id, String motivoCancelar) {
-        VersionAsignacionSolicitudCama versionAsignacionSolicitudCama = versionRespuestaSolicitudCamaRepository.findById(id)
-                .orElseThrow(() -> new EntidadNoExisteException("No Existe esta Asignación"));
-        versionAsignacionSolicitudCama.getAsignacionCama().setEstado(EstadoSolicitudCama.CANCELADA.toEntity());
-        versionAsignacionSolicitudCama.setMotivo_cancelacion(motivoCancelar);
-        versionAsignacionSolicitudCama.getAsignacionCama().getSolicitudCama().setEstado(EstadoSolicitudCama.EN_ESPERA.toEntity());
-        versionRespuestaSolicitudCamaRepository.save(versionAsignacionSolicitudCama);
-        return mapper.map(versionAsignacionSolicitudCama, VersionAsignacionCamaResponseDTO.class);
-    }
 
     private String incrementarVersionId(String currentId) {
 //        if (!currentId.matches("^[A-Z]+(?: [A-Z]+)?-\\d+-V\\d+$")) {

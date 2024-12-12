@@ -108,6 +108,18 @@ public class OpenApiConfig {
                 .build();
     }
 
+    @Bean
+    public GroupedOpenApi respuestaAsignacionSolicitudCamas(@Value("2.3.0") String appVersion){
+        String [] paths = {"/asignacionSolicitudCama/**"};
+        return GroupedOpenApi.builder()
+                .group("asignacionSolicitudCama")
+                .displayName("Asignacion Solicitud Cama")
+                .addOpenApiCustomizer(openApi -> openApi.info(new Info().title("medidasAislamiento microservicio").version(appVersion)
+                        .description("Crea una nueva Asignacion  ")))
+                .pathsToMatch(paths)
+                .build();
+    }
+
 
     @Bean
     public GroupedOpenApi ejemploOpenApi(@Value("2.3.0") String appVersion){

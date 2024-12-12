@@ -26,9 +26,5 @@ public class VersionSolicitudResponseDTO {
     private ServicioResponseDTO servicio;
     private CamaResponseDTO cama;
     private BloqueServicioDTO bloqueServicio;
-    private String versionAsignacionId;  // ID de la versión de asignación
-    private String motivoCancelacion;  // De version_asignacion_solicitud_cama
-    private LocalDateTime fechaAsignacion;  // De version_asignacion_solicitud_cama
-    private String estadoAsignacion;  // De version_asignacion_solicitud_cama
-    private LocalDateTime fechaCancelacion;  // De version_asignacion_solicitud_cama
+
 }

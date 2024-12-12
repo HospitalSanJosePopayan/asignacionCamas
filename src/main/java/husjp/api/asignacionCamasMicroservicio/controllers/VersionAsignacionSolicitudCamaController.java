@@ -35,16 +35,6 @@ public class VersionAsignacionSolicitudCamaController {
         VersionAsignacionCamaResponseDTO responseDTO = versionAsignacionSolicitudCamaService.editarAsignacion(idVersionAsignacion, versionAsignacionCamaEditDTO, principal.getName());
         return ResponseEntity.ok(responseDTO);
     }
-    @PutMapping("/{id}/estadoFinalizado")
-    public ResponseEntity<VersionAsignacionCamaResponseDTO> cambiarEstadoFinalizado(@PathVariable String id){
-        VersionAsignacionCamaResponseDTO versionAsignacionCamaResponseDTO = versionAsignacionSolicitudCamaService.cambiarEstado(id);
-        return  ResponseEntity.ok(versionAsignacionCamaResponseDTO);
-    }
-    @PutMapping("/{id}/estadoCancelado")
-    public ResponseEntity<VersionAsignacionCamaResponseDTO>cambiarEstadoCancelado(@PathVariable String id, @RequestParam String motivo){
-        VersionAsignacionCamaResponseDTO versionAsignacionCamaResponseDTO = versionAsignacionSolicitudCamaService.cambiarEstadoCancelada(id,motivo);
-        return  ResponseEntity.ok(versionAsignacionCamaResponseDTO);
-    }
 
 
 }
