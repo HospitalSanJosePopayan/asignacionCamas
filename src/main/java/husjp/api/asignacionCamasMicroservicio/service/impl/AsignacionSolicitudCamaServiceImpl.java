@@ -4,11 +4,14 @@ import husjp.api.asignacionCamasMicroservicio.entity.AsignacionCama;
 import husjp.api.asignacionCamasMicroservicio.entity.Servicio;
 import husjp.api.asignacionCamasMicroservicio.entity.SolicitudCama;
 import husjp.api.asignacionCamasMicroservicio.entity.enums.EstadoSolicitudCama;
+import husjp.api.asignacionCamasMicroservicio.exceptionsControllers.exceptions.EntidadNoExisteException;
 import husjp.api.asignacionCamasMicroservicio.repository.AsignacionSolicitudCamaRepository;
 import husjp.api.asignacionCamasMicroservicio.service.AsignacionSolicitudCamaService;
 import husjp.api.asignacionCamasMicroservicio.service.ServicioService;
 import husjp.api.asignacionCamasMicroservicio.service.SolicitudCamaService;
+import husjp.api.asignacionCamasMicroservicio.service.dto.request.AsignacionCamaDTO;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -20,6 +23,7 @@ public class AsignacionSolicitudCamaServiceImpl implements AsignacionSolicitudCa
     private AsignacionSolicitudCamaRepository asignacionSolicitudCamaRepository;
     private SolicitudCamaService solicitudCamaService;
     private ServicioService servicioService;
+    private ModelMapper mapper;
 
     public AsignacionCama findLastIdBySiglas(String siglas){
         return asignacionSolicitudCamaRepository.findLastIdBySiglas(siglas).orElse(null);
@@ -59,4 +63,16 @@ public class AsignacionSolicitudCamaServiceImpl implements AsignacionSolicitudCa
         asignacionCama.setId(generarCodigoAsignacionSolicitudCama(servicio.getNombre()));
         return asignacionCama;
     }
+
+    @Override
+    public AsignacionCamaDTO cambiarEstadoFinalizada(String id) {
+        AsignacionCama asignacionCama = asignacionSolicitudCamaRepository.findById(id).orElseThrow(()->new EntidadNoExisteException("no existe esta asignacion"));
+        asignacionCama.setEstado(EstadoSolicitudCama.FINALIZADA.toEntity());
+        asignacionCama.getSolicitudCama().setEstado(EstadoSolicitudCama.FINALIZADA.toEntity());
+        asignacionSolicitudCamaRepository.save(asignacionCama);
+        return  mapper.map(asignacionCama, AsignacionCamaDTO.class);
+
+    }
+
+
 }

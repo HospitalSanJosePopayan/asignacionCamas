@@ -71,25 +71,10 @@ public class VersionSolicitudCamaServiceImpl implements VersionSolicitudCamaServ
 
     @Override
     public List<VersionSolicitudResponseDTO> getVersionSolicitudCamaActivasEnEsperaByIdBloque(Integer idBloqueServicio) {
-        // Ejecutar la consulta con los parámetros bloqueServicioId y estadoSolicitudCamaId
-        List<Object[]> result = versionSolicitudCamaRepository.findBySolicitudCamaEstadoActivoPorBloque(
-                idBloqueServicio, EstadoSolicitudCama.EN_ESPERA.getId());
-
-        // Procesar el resultado
-        return result.stream()
-                .map(objects -> {
-                    // VersionSolicitudCama
-                    VersionSolicitudCama versionSolicitudCama = (VersionSolicitudCama) objects[0];
-                    // VersionAsignacionSolicitudCama (puede ser null)
-                    VersionAsignacionSolicitudCama versionAsignacionSolicitudCama = (VersionAsignacionSolicitudCama) objects[1];
-                    // Mapear las entidades a DTOs
-                    VersionSolicitudResponseDTO dto = modelMapper.map(versionSolicitudCama, VersionSolicitudResponseDTO.class);
-                    if (versionAsignacionSolicitudCama != null) {
-                        dto.setMotivoCancelacion(versionAsignacionSolicitudCama.getMotivo_cancelacion());
-
-                    }
-                    return dto;
-                })
+        List<VersionSolicitudCama> response = versionSolicitudCamaRepository.findBySolicitudCamaEstadoActivoPorBloque(idBloqueServicio,EstadoSolicitudCama.EN_ESPERA.getId()).orElseThrow(null);
+        assert response != null;
+        return response.stream()
+                .map(entity -> modelMapper.map(entity, VersionSolicitudResponseDTO.class))
                 .collect(Collectors.toList());
     }
 
