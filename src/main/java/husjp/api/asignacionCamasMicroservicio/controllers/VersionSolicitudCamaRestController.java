@@ -45,5 +45,10 @@ public class VersionSolicitudCamaRestController {
         VersionSolicitudResponseDTO versionSolicitudResponseDTO = versionSolicitudCamaService.EstadoSolicitud(id);
         return ResponseEntity.ok(versionSolicitudResponseDTO);
     }
+    @PutMapping("/{id}/estadoSolicitudCancelada")
+    public  ResponseEntity<VersionSolicitudResponseDTO>cambiarEstadoSolicitudCancelada(@PathVariable String id, @RequestParam String motivo){
+        VersionSolicitudResponseDTO versionSolicitudResponseDTO = versionSolicitudCamaService.CambiarEstadoCanceladaSolicitud(id,motivo);
+        return  ResponseEntity.ok(versionSolicitudResponseDTO);
+    }
 
 }

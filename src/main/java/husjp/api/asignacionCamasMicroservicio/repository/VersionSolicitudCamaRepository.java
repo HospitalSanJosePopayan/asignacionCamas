@@ -12,16 +12,25 @@ public interface VersionSolicitudCamaRepository extends JpaRepository<VersionSol
 
     //CONSULTA PARA OBTENER LAS ULTIMAS VERSIONES REGISTRADAS POR ID DE BLOQUE DE SERVICIO
     @Query(value = """
-    SELECT v.*
-    FROM version_solicitud_cama v
-    INNER JOIN (
-        SELECT solicitud_cama_id, MAX(fecha) AS max_fecha
-        FROM version_solicitud_cama
-        GROUP BY solicitud_cama_id
-    ) latest_versions ON v.solicitud_cama_id = latest_versions.solicitud_cama_id 
-    AND v.fecha = latest_versions.max_fecha and v.bloque_servicio_id = :bloqueServicioId
-    """, nativeQuery = true)
-    Optional<List<VersionSolicitudCama>> findBySolicitudCamaEstadoActivoPorBloque(@Param("bloqueServicioId") Integer bloqueServicioId);
+    SELECT 
+        version_solicitud_cama.*, 
+        version_asignacion_solicitud_cama.*
+    FROM version_solicitud_cama
+    INNER JOIN solicitud_cama 
+        ON version_solicitud_cama.solicitud_cama_id = solicitud_cama.id_solicitud_cama
+    LEFT JOIN asignacion_solicitud_cama 
+        ON version_solicitud_cama.solicitud_cama_id = asignacion_solicitud_cama.solicitud_cama_id
+    LEFT JOIN version_asignacion_solicitud_cama 
+        ON asignacion_solicitud_cama.id_asignacion_cama = version_asignacion_solicitud_cama.asignacion_cama_id
+    WHERE version_solicitud_cama.bloque_servicio_id = :bloqueServicioId
+      AND solicitud_cama.estado_solicitud_cama_id = :estadoSolicitudCamaId
+      AND version_solicitud_cama.fecha = (
+          SELECT MAX(version_solicitud_cama2.fecha)
+          FROM version_solicitud_cama version_solicitud_cama2
+          WHERE version_solicitud_cama2.solicitud_cama_id = version_solicitud_cama.solicitud_cama_id
+      )
+""", nativeQuery = true)
+    List<Object[]> findBySolicitudCamaEstadoActivoPorBloque(@Param("bloqueServicioId") Integer bloqueServicioId, @Param("estadoSolicitudCamaId") Integer estadoSolicitudCamaId);
 
     @Query(value = """
     SELECT vsc.*

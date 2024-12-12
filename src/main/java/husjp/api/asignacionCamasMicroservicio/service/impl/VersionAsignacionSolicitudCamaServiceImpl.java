@@ -90,20 +90,21 @@ public class VersionAsignacionSolicitudCamaServiceImpl implements VersionAsignac
     @Override
     public VersionAsignacionCamaResponseDTO cambiarEstado(String id) {
         VersionAsignacionSolicitudCama versionAsignacionSolicitudCama = versionRespuestaSolicitudCamaRepository.findById(id)
-                        .orElseThrow(() -> new EntidadNoExisteException("No Existe esta Asignación"));
-        husjp.api.asignacionCamasMicroservicio.entity.EstadoSolicitudCama nuevoEstado = EstadoSolicitudCama.FINALIZADA.toEntity();
-        versionAsignacionSolicitudCama.getAsignacionCama().setEstado(nuevoEstado);
+                .orElseThrow(() -> new EntidadNoExisteException("No Existe esta Asignación"));
+        versionAsignacionSolicitudCama.getAsignacionCama().setEstado(EstadoSolicitudCama.FINALIZADA.toEntity());
+        versionAsignacionSolicitudCama.getAsignacionCama().getSolicitudCama().setEstado(EstadoSolicitudCama.FINALIZADA.toEntity());
         versionRespuestaSolicitudCamaRepository.save(versionAsignacionSolicitudCama);
         return mapper.map(versionAsignacionSolicitudCama, VersionAsignacionCamaResponseDTO.class);
     }
+
 
     @Override
     public VersionAsignacionCamaResponseDTO cambiarEstadoCancelada(String id, String motivoCancelar) {
         VersionAsignacionSolicitudCama versionAsignacionSolicitudCama = versionRespuestaSolicitudCamaRepository.findById(id)
                 .orElseThrow(() -> new EntidadNoExisteException("No Existe esta Asignación"));
-        husjp.api.asignacionCamasMicroservicio.entity.EstadoSolicitudCama nuevoEstado = EstadoSolicitudCama.CANCELADA.toEntity();
-        versionAsignacionSolicitudCama.getAsignacionCama().setEstado(nuevoEstado);
+        versionAsignacionSolicitudCama.getAsignacionCama().setEstado(EstadoSolicitudCama.CANCELADA.toEntity());
         versionAsignacionSolicitudCama.setMotivo_cancelacion(motivoCancelar);
+        versionAsignacionSolicitudCama.getAsignacionCama().getSolicitudCama().setEstado(EstadoSolicitudCama.EN_ESPERA.toEntity());
         versionRespuestaSolicitudCamaRepository.save(versionAsignacionSolicitudCama);
         return mapper.map(versionAsignacionSolicitudCama, VersionAsignacionCamaResponseDTO.class);
     }
