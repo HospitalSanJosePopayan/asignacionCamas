@@ -13,4 +13,6 @@ public interface VersionSolicitudCamaService {
     VersionSolicitudResponseDTO editarVersionSolicitudCama(String id, VersionSolicitudCamaEditDTO versionSolicitudCamaEditDTO, String username);
     VersionSolicitudResponseDTO EstadoSolicitud(String id);
     VersionSolicitudResponseDTO findEndVersionByIdSolicitudCama(String id);
+    VersionSolicitudResponseDTO CambiarEstadoCanceladaSolicitud(String id, String motivoCancelar);
+
 }

@@ -92,6 +92,7 @@ public class VersionAsignacionSolicitudCamaServiceImpl implements VersionAsignac
         VersionAsignacionSolicitudCama versionAsignacionSolicitudCama = versionRespuestaSolicitudCamaRepository.findById(id)
                 .orElseThrow(() -> new EntidadNoExisteException("No Existe esta Asignación"));
         versionAsignacionSolicitudCama.getAsignacionCama().setEstado(EstadoSolicitudCama.FINALIZADA.toEntity());
+        versionAsignacionSolicitudCama.getAsignacionCama().getSolicitudCama().setEstado(EstadoSolicitudCama.FINALIZADA.toEntity());
         versionRespuestaSolicitudCamaRepository.save(versionAsignacionSolicitudCama);
         return mapper.map(versionAsignacionSolicitudCama, VersionAsignacionCamaResponseDTO.class);
     }
@@ -103,6 +104,7 @@ public class VersionAsignacionSolicitudCamaServiceImpl implements VersionAsignac
                 .orElseThrow(() -> new EntidadNoExisteException("No Existe esta Asignación"));
         versionAsignacionSolicitudCama.getAsignacionCama().setEstado(EstadoSolicitudCama.CANCELADA.toEntity());
         versionAsignacionSolicitudCama.setMotivo_cancelacion(motivoCancelar);
+        versionAsignacionSolicitudCama.getAsignacionCama().getSolicitudCama().setEstado(EstadoSolicitudCama.EN_ESPERA.toEntity());
         versionRespuestaSolicitudCamaRepository.save(versionAsignacionSolicitudCama);
         return mapper.map(versionAsignacionSolicitudCama, VersionAsignacionCamaResponseDTO.class);
     }

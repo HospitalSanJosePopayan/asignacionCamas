@@ -71,10 +71,25 @@ public class VersionSolicitudCamaServiceImpl implements VersionSolicitudCamaServ
 
     @Override
     public List<VersionSolicitudResponseDTO> getVersionSolicitudCamaActivasEnEsperaByIdBloque(Integer idBloqueServicio) {
-        List<VersionSolicitudCama> response = versionSolicitudCamaRepository.findBySolicitudCamaEstadoActivoPorBloque(idBloqueServicio).orElse(null);
-        assert response != null;
-        return response.stream()
-                .map(entity -> modelMapper.map(entity, VersionSolicitudResponseDTO.class))
+        // Ejecutar la consulta con los parámetros bloqueServicioId y estadoSolicitudCamaId
+        List<Object[]> result = versionSolicitudCamaRepository.findBySolicitudCamaEstadoActivoPorBloque(
+                idBloqueServicio, EstadoSolicitudCama.EN_ESPERA.getId());
+
+        // Procesar el resultado
+        return result.stream()
+                .map(objects -> {
+                    // VersionSolicitudCama
+                    VersionSolicitudCama versionSolicitudCama = (VersionSolicitudCama) objects[0];
+                    // VersionAsignacionSolicitudCama (puede ser null)
+                    VersionAsignacionSolicitudCama versionAsignacionSolicitudCama = (VersionAsignacionSolicitudCama) objects[1];
+                    // Mapear las entidades a DTOs
+                    VersionSolicitudResponseDTO dto = modelMapper.map(versionSolicitudCama, VersionSolicitudResponseDTO.class);
+                    if (versionAsignacionSolicitudCama != null) {
+                        dto.setMotivoCancelacion(versionAsignacionSolicitudCama.getMotivo_cancelacion());
+
+                    }
+                    return dto;
+                })
                 .collect(Collectors.toList());
     }
 
@@ -102,6 +117,15 @@ public class VersionSolicitudCamaServiceImpl implements VersionSolicitudCamaServ
             return responseDTO;
         }
         return null;
+    }
+
+    @Override
+    public VersionSolicitudResponseDTO CambiarEstadoCanceladaSolicitud(String id, String motivoCancelar) {
+        VersionSolicitudCama versionSolicitudCama = versionSolicitudCamaRepository.findById(id).orElseThrow(()-> new EntidadNoExisteException("No existe esta solicitud"));
+        versionSolicitudCama.getSolicitudCama().setMotivoCancelacion(motivoCancelar);
+        versionSolicitudCama.getSolicitudCama().setEstado(EstadoSolicitudCama.CANCELADA.toEntity());
+        versionSolicitudCamaRepository.save(versionSolicitudCama);
+        return  modelMapper.map(versionSolicitudCama, VersionSolicitudResponseDTO.class);
     }
 
     private VersionSolicitudCama prepararNuevaVersion(String id, VersionSolicitudCamaEditDTO versionSolicitudCamaEditDTO, String username) {
