@@ -14,6 +14,7 @@ public class VersionSolicitudResponseDTO {
 
     private String id;
     private Boolean requiereAislamiento;
+    private  Boolean estado;
     private String motivo;
     private String autorizacionFacturacion;
     private String requerimientosEspeciales;
