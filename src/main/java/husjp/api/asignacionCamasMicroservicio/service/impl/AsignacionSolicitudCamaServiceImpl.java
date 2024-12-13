@@ -3,9 +3,11 @@ package husjp.api.asignacionCamasMicroservicio.service.impl;
 import husjp.api.asignacionCamasMicroservicio.entity.AsignacionCama;
 import husjp.api.asignacionCamasMicroservicio.entity.Servicio;
 import husjp.api.asignacionCamasMicroservicio.entity.SolicitudCama;
+import husjp.api.asignacionCamasMicroservicio.entity.VersionAsignacionSolicitudCama;
 import husjp.api.asignacionCamasMicroservicio.entity.enums.EstadoSolicitudCama;
 import husjp.api.asignacionCamasMicroservicio.exceptionsControllers.exceptions.EntidadNoExisteException;
 import husjp.api.asignacionCamasMicroservicio.repository.AsignacionSolicitudCamaRepository;
+import husjp.api.asignacionCamasMicroservicio.repository.VersionRespuestaSolicitudCamaRepository;
 import husjp.api.asignacionCamasMicroservicio.service.AsignacionSolicitudCamaService;
 import husjp.api.asignacionCamasMicroservicio.service.ServicioService;
 import husjp.api.asignacionCamasMicroservicio.service.SolicitudCamaService;
@@ -21,6 +23,7 @@ import java.time.LocalDateTime;
 public class AsignacionSolicitudCamaServiceImpl implements AsignacionSolicitudCamaService {
 
     private AsignacionSolicitudCamaRepository asignacionSolicitudCamaRepository;
+    private VersionRespuestaSolicitudCamaRepository versionAsignacionSolicitudCamaRepository;
     private SolicitudCamaService solicitudCamaService;
     private ServicioService servicioService;
     private ModelMapper mapper;
@@ -72,6 +75,15 @@ public class AsignacionSolicitudCamaServiceImpl implements AsignacionSolicitudCa
         asignacionSolicitudCamaRepository.save(asignacionCama);
         return  mapper.map(asignacionCama, AsignacionCamaDTO.class);
 
+    }
+
+    @Override
+    public AsignacionCamaDTO cancelarAsignacionSolicitudMotivoVersinoAsignacionCama(String id, String idVersionAsignacionCama, String motivo) {
+        VersionAsignacionSolicitudCama res =  versionAsignacionSolicitudCamaRepository.findUltimaVersionActivaByIdAsignacionCama(id).orElseThrow(()->new EntidadNoExisteException("no existe esta asignacion"));
+        res.setMotivo_cancelacion(motivo);
+        res.getAsignacionCama().setEstado(EstadoSolicitudCama.CANCELADA.toEntity());
+        versionAsignacionSolicitudCamaRepository.save(res);
+        return mapper.map(res, AsignacionCamaDTO.class);
     }
 
 

@@ -20,4 +20,9 @@ public class AsignacionSolicitudController {
         return  ResponseEntity.ok(asignacionCamaDTO);
     }
 
+    @PutMapping("/{id}/cancelar/motivo/{idVersionAsignacionCama}")
+    public ResponseEntity<AsignacionCamaDTO> cancelarAsignacionMotivoVersinoAsignacionCama(@PathVariable(name = "id") String id, @PathVariable("idVersionAsignacionCama")  String idVersionAsignacionCama, @RequestParam(name = "motivo", required = true) String motivo){
+        return ResponseEntity.ok(asignacionSolicitudCamaService.cancelarAsignacionSolicitudMotivoVersinoAsignacionCama(id, idVersionAsignacionCama, motivo));
+    }
+
 }
