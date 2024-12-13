@@ -25,4 +25,7 @@ public interface VersionRespuestaSolicitudCamaRepository extends JpaRepository<V
 """, nativeQuery = true)
     Optional<List<VersionAsignacionSolicitudCama>> findByRespuestaSolicitudCamaEstadoActivoPorBloque(@Param("bloqueServicioId") Integer bloqueServicioId, @Param("estadoSolicitudCamaId") Integer estadoSolicitudCamaId);
 
+    @Query(value = "SELECT * FROM version_asignacion_solicitud_cama vasc WHERE vasc.asignacion_cama_id = :asignacionCamaId ORDER BY vasc.fecha_creacion DESC LIMIT 1", nativeQuery = true)
+    Optional<VersionAsignacionSolicitudCama> findUltimaVersionActivaByIdAsignacionCama(@Param("asignacionCamaId") String asignacionCamaId);
+
 }

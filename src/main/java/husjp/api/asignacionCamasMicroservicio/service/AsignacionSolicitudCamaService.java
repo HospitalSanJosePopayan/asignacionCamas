@@ -9,5 +9,5 @@ public interface AsignacionSolicitudCamaService {
     String generarCodigoAsignacionSolicitudCama(String nombreServicio);
     AsignacionCama crearAsignacionCamas(String idSolicitudCama, Integer idServicio);
     AsignacionCamaDTO cambiarEstadoFinalizada(String id);
-
+    AsignacionCamaDTO cancelarAsignacionSolicitudMotivoVersinoAsignacionCama(String id, String idVersionAsignacionCama, String motivo);
 }
