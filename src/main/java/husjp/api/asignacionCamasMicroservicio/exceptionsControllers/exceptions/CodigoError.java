@@ -24,8 +24,9 @@ public enum CodigoError {
     SIN_ASOCIACIONES("GC-0014","No tiene Asignaciones"),
     FECHA_FUERA_RANGO("GC-0015", "fecha No se encuentra entre los limites establecidos "),
     OPERACION_NO_PERMITIDA("GC-0016", " No se logro realizar esta asignacion "),
+    ENTIDAD_SIN_CAMBIOS("GC-0017", "Entidad sin cambios"),
     SOLICITUD_CAMA_VIGENTE("SCV-0001", "Solicitud vigente");
-
+    
     private final String codigo;
     private final String llaveMensaje;
 

@@ -3,11 +3,11 @@ package husjp.api.asignacionCamasMicroservicio.service.impl;
 import husjp.api.asignacionCamasMicroservicio.entity.*;
 import husjp.api.asignacionCamasMicroservicio.entity.enums.EstadoSolicitudCama;
 import husjp.api.asignacionCamasMicroservicio.exceptionsControllers.exceptions.EntidadNoExisteException;
+import husjp.api.asignacionCamasMicroservicio.exceptionsControllers.exceptions.EntidadSinCambiosException;
 import husjp.api.asignacionCamasMicroservicio.repository.UsuarioRepository;
 import husjp.api.asignacionCamasMicroservicio.repository.VersionSolicitudCamaRepository;
 import husjp.api.asignacionCamasMicroservicio.service.*;
-import husjp.api.asignacionCamasMicroservicio.service.dto.request.VersionSolicitudCamaDTO;
-import husjp.api.asignacionCamasMicroservicio.service.dto.request.VersionSolicitudCamaEditDTO;
+import husjp.api.asignacionCamasMicroservicio.service.dto.request.*;
 import husjp.api.asignacionCamasMicroservicio.service.dto.response.VersionSolicitudResponseDTO;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -15,7 +15,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -79,10 +81,16 @@ public class VersionSolicitudCamaServiceImpl implements VersionSolicitudCamaServ
     }
 
     @Override
-    public VersionSolicitudResponseDTO editarVersionSolicitudCama(
-            String id, VersionSolicitudCamaEditDTO versionSolicitudCamaEditDTO, String username) {
-        VersionSolicitudCama nuevaVersion = prepararNuevaVersion(id, versionSolicitudCamaEditDTO, username);
+    public VersionSolicitudResponseDTO editarVersionSolicitudCama(String id, VersionSolicitudCamaEditDTO versionSolicitudCamaEditDTO, String username) {
+        VersionSolicitudCama versionActual = versionSolicitudCamaRepository.findById(id)
+                .orElseThrow(() -> new EntidadNoExisteException("Solicitud no encontrada"));
+        if(!hayCambios(versionActual,versionSolicitudCamaEditDTO)){
+            throw  new EntidadSinCambiosException("NO SE  REALIZO NINGUN CAMBIO EN ESTA VERSION");
+        }
+        VersionSolicitudCama nuevaVersion = prepararNuevaVersion(versionActual, versionSolicitudCamaEditDTO, username);
         VersionSolicitudCama nuevaVersionGuardada = versionSolicitudCamaRepository.save(nuevaVersion);
+        versionActual.setEstado(false);
+        versionSolicitudCamaRepository.save(versionActual);
         return modelMapper.map(nuevaVersionGuardada, VersionSolicitudResponseDTO.class);
     }
     @Override
@@ -113,12 +121,13 @@ public class VersionSolicitudCamaServiceImpl implements VersionSolicitudCamaServ
         return  modelMapper.map(versionSolicitudCama, VersionSolicitudResponseDTO.class);
     }
 
-    private VersionSolicitudCama prepararNuevaVersion(String id, VersionSolicitudCamaEditDTO versionSolicitudCamaEditDTO, String username) {
-        VersionSolicitudCama versionActual = versionSolicitudCamaRepository.findById(id)
-                .orElseThrow(() -> new EntidadNoExisteException("Solicitud no encontrada"));
+    private VersionSolicitudCama prepararNuevaVersion(VersionSolicitudCama versionActual, VersionSolicitudCamaEditDTO versionSolicitudCamaEditDTO, String username) {
         VersionSolicitudCama nuevaVersion = new VersionSolicitudCama();
         BeanUtils.copyProperties(versionActual, nuevaVersion, "bloqueServicio");
         nuevaVersion = modelMapper.map(versionSolicitudCamaEditDTO, VersionSolicitudCama.class);
+        if (nuevaVersion.getRequiereAislamiento() == false) {
+            nuevaVersion.setMedidasAislamiento(null);
+        }
         nuevaVersion.setCama(versionActual.getCama());
         nuevaVersion.setFecha(LocalDateTime.now());
         nuevaVersion.setServicio(versionActual.getServicio());
@@ -127,7 +136,71 @@ public class VersionSolicitudCamaServiceImpl implements VersionSolicitudCamaServ
         nuevaVersion.setUsuario(usuarioRepository.findByDocumento(username).orElse(null));
         nuevaVersion.setSolicitudCama(versionActual.getSolicitudCama());
         nuevaVersion.setId(incrementarVersionId(versionActual.getId()));
+        nuevaVersion.setEstado(true);
         return nuevaVersion;
+    }
+
+    private boolean hayCambios(VersionSolicitudCama versionActual, VersionSolicitudCamaEditDTO versionSolicitudCamaEditDTO) {
+        if (!listasDeIdsIguales(
+                versionActual.getDiagnosticos() != null ? versionActual.getDiagnosticos().stream().map(Diagnostico::getId).toList() : null,
+                versionSolicitudCamaEditDTO.getDiagnosticos() != null ? versionSolicitudCamaEditDTO.getDiagnosticos().stream().map(DiagnosticoDTO::getId).toList() : null)) {
+            return true;
+        }
+        if(versionActual.getRequiereAislamiento()!=versionSolicitudCamaEditDTO.getRequiereAislamiento()){
+            return true;
+        }
+        if (!listasDeIdsIguales(
+                versionActual.getMedidasAislamiento() != null ? versionActual.getMedidasAislamiento().stream().map(MedidasAislamiento::getId).toList() : null,
+                versionSolicitudCamaEditDTO.getMedidasAislamiento() != null ? versionSolicitudCamaEditDTO.getMedidasAislamiento().stream().map(MedidasAislamientoDTO::getId).toList() : null)) {
+            return true;
+        }
+        if (!listasDeIdsIguales(
+                versionActual.getTitulosFormacionAcademica() != null ? versionActual.getTitulosFormacionAcademica().stream().map(TitulosFormacionAcacemica::getId).toList() : null,
+                versionSolicitudCamaEditDTO.getTitulosFormacionAcademica() != null ? versionSolicitudCamaEditDTO.getTitulosFormacionAcademica().stream().map(TitulosFormacionAcademicaDTO::getId).toList() : null)) {
+            return true;
+        }
+        if (!Objects.equals(versionActual.getBloqueServicio().getId(), versionSolicitudCamaEditDTO.getBloqueServicio().getId())) {
+            return true;
+        }
+        if (!compararCadenas(versionActual.getMotivo(), versionSolicitudCamaEditDTO.getMotivo())) {
+            return true;
+        }
+        if (!compararCadenas(versionActual.getRequerimientosEspeciales(), versionSolicitudCamaEditDTO.getRequerimientosEspeciales())) {
+            return true;
+        }
+        return false;
+    }
+    private boolean listasDeIdsIguales(List<?> lista1, List<?> lista2) {
+        if (lista1 == null && lista2 == null) {
+            return true;
+        }
+
+        if ((lista1 == null && lista2.isEmpty()) || (lista2 == null && lista1.isEmpty())) {
+            return true;
+        }
+
+        if (lista1.size() != lista2.size()) {
+            return false;
+        }
+
+        for (int i = 0; i < lista1.size(); i++) {
+            if (!Objects.equals(lista1.get(i), lista2.get(i))) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private boolean compararCadenas(String valor1, String valor2) {
+        if (valor1 == null && valor2 == null) {
+            return true;
+        }
+        if ((valor1 == null || valor1.trim().isEmpty()) &&
+                (valor2 == null || valor2.trim().isEmpty())) {
+            return true;
+        }
+        return valor1.trim().equals(valor2.trim());
     }
     private String incrementarVersionId(String currentId) {
         if (!currentId.matches("^[A-Z]+(?: [A-Z]+)?-\\d+-V\\d+$")) {
