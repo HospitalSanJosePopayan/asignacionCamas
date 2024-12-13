@@ -23,7 +23,7 @@ public class AsignacionSolicitudController {
 
     @Operation(summary = "Cencela la asignacion de cama y setea el motivo de la cancelacion a la ultima version de la asignacion de cama")
     @PutMapping("/{id}/cancelar/motivo/{idVersionAsignacionCama}")
-    public ResponseEntity<AsignacionCamaDTO> cancelarAsignacionMotivoVersinoAsignacionCama(@PathVariable(name = "id") String id, @PathVariable("idVersionAsignacionCama")  String idVersionAsignacionCama, @RequestParam(name = "motivo", required = true) String motivo){
+    public ResponseEntity<AsignacionCamaDTO> cancelarAsignacionMotivoVersinoAsignacionCama(@PathVariable String id, @PathVariable String idVersionAsignacionCama, @RequestParam(name = "motivo", required = true) String motivo){
         return ResponseEntity.ok(asignacionSolicitudCamaService.cancelarAsignacionSolicitudMotivoVersinoAsignacionCama(id, idVersionAsignacionCama, motivo));
     }
 
