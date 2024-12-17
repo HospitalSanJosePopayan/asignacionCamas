@@ -1,7 +1,7 @@
 package husjp.api.asignacionCamasMicroservicio.controllers;
 
 import husjp.api.asignacionCamasMicroservicio.service.SolicitudCamaService;
-import husjp.api.asignacionCamasMicroservicio.service.dto.response.SolicitudCamaResponseDTO;
+import husjp.api.asignacionCamasMicroservicio.service.dto.response.SolicitudCamaResDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +15,7 @@ public class SolicitudCamaController {
     private SolicitudCamaService solicitudCamaService;
 
     @PutMapping("/cancelar/{idSolicitudCama}")
-    public ResponseEntity<SolicitudCamaResponseDTO> cancelarSolicitudMotigo(@PathVariable String idSolicitudCama, @RequestParam(name = "motivo", required = true) String motivo){
+    public ResponseEntity<SolicitudCamaResDTO> cancelarSolicitudMotigo(@PathVariable String idSolicitudCama, @RequestParam(name = "motivo", required = true) String motivo){
         return ResponseEntity.ok(solicitudCamaService.updateMotivoCancelacion(motivo, idSolicitudCama));
     }
 }

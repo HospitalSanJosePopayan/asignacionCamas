@@ -1,17 +1,17 @@
 package husjp.api.asignacionCamasMicroservicio.service.impl;
 
-import husjp.api.asignacionCamasMicroservicio.entity.AsignacionCama;
+import husjp.api.asignacionCamasMicroservicio.entity.AsignacionSolicitudCama;
 import husjp.api.asignacionCamasMicroservicio.entity.Servicio;
 import husjp.api.asignacionCamasMicroservicio.entity.SolicitudCama;
 import husjp.api.asignacionCamasMicroservicio.entity.VersionAsignacionSolicitudCama;
 import husjp.api.asignacionCamasMicroservicio.entity.enums.EstadoSolicitudCama;
 import husjp.api.asignacionCamasMicroservicio.exceptionsControllers.exceptions.EntidadNoExisteException;
 import husjp.api.asignacionCamasMicroservicio.repository.AsignacionSolicitudCamaRepository;
-import husjp.api.asignacionCamasMicroservicio.repository.VersionRespuestaSolicitudCamaRepository;
+import husjp.api.asignacionCamasMicroservicio.repository.VersionAsignacionSolicitudCamaRepository;
 import husjp.api.asignacionCamasMicroservicio.service.AsignacionSolicitudCamaService;
 import husjp.api.asignacionCamasMicroservicio.service.ServicioService;
 import husjp.api.asignacionCamasMicroservicio.service.SolicitudCamaService;
-import husjp.api.asignacionCamasMicroservicio.service.dto.request.AsignacionCamaDTO;
+import husjp.api.asignacionCamasMicroservicio.service.dto.request.AsignacionCamaReqDTO;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -23,12 +23,12 @@ import java.time.LocalDateTime;
 public class AsignacionSolicitudCamaServiceImpl implements AsignacionSolicitudCamaService {
 
     private AsignacionSolicitudCamaRepository asignacionSolicitudCamaRepository;
-    private VersionRespuestaSolicitudCamaRepository versionAsignacionSolicitudCamaRepository;
+    private VersionAsignacionSolicitudCamaRepository versionAsignacionSolicitudCamaRepository;
     private SolicitudCamaService solicitudCamaService;
     private ServicioService servicioService;
     private ModelMapper mapper;
 
-    public AsignacionCama findLastIdBySiglas(String siglas){
+    public AsignacionSolicitudCama findLastIdBySiglas(String siglas){
         return asignacionSolicitudCamaRepository.findLastIdBySiglas(siglas).orElse(null);
     }
 
@@ -45,9 +45,9 @@ public class AsignacionSolicitudCamaServiceImpl implements AsignacionSolicitudCa
             }
         }
         codigoCamaFormat = new StringBuilder(codigoCamaFormat.toString().trim());
-        AsignacionCama asignacionCama = findLastIdBySiglas(codigoCamaFormat.toString());
-        if(asignacionCama != null){
-            String [] parts = asignacionCama.getId().split("-");
+        AsignacionSolicitudCama asignacionSolicitudCama = findLastIdBySiglas(codigoCamaFormat.toString());
+        if(asignacionSolicitudCama != null){
+            String [] parts = asignacionSolicitudCama.getId().split("-");
             return parts[0] + "-" + (Integer.parseInt(parts[1]) + 1);
         }else{
             return codigoCamaFormat.toString() + "-1";
@@ -55,35 +55,35 @@ public class AsignacionSolicitudCamaServiceImpl implements AsignacionSolicitudCa
     }
 
     @Override
-    public AsignacionCama crearAsignacionCamas(String idSolicitudCama, Integer idServicio) {
-        AsignacionCama asignacionCama = new AsignacionCama();
-        asignacionCama.setFechaInicial(LocalDateTime.now());
+    public AsignacionSolicitudCama crearAsignacionCamas(String idSolicitudCama, Integer idServicio) {
+        AsignacionSolicitudCama asignacionSolicitudCama = new AsignacionSolicitudCama();
+        asignacionSolicitudCama.setFechaInicial(LocalDateTime.now());
         SolicitudCama solicitudCama = solicitudCamaService.findById(idSolicitudCama);
         solicitudCama.setEstado(EstadoSolicitudCama.ACEPTADA.toEntity());
-        asignacionCama.setSolicitudCama(solicitudCama);
-        asignacionCama.setEstado(EstadoSolicitudCama.ACEPTADA.toEntity());
+        asignacionSolicitudCama.setSolicitudCama(solicitudCama);
+        asignacionSolicitudCama.setEstado(EstadoSolicitudCama.ACEPTADA.toEntity());
         Servicio servicio = servicioService.findById(idServicio);
-        asignacionCama.setId(generarCodigoAsignacionSolicitudCama(servicio.getNombre()));
-        return asignacionCama;
+        asignacionSolicitudCama.setId(generarCodigoAsignacionSolicitudCama(servicio.getNombre()));
+        return asignacionSolicitudCama;
     }
 
     @Override
-    public AsignacionCamaDTO cambiarEstadoFinalizada(String id) {
-        AsignacionCama asignacionCama = asignacionSolicitudCamaRepository.findById(id).orElseThrow(()->new EntidadNoExisteException("no existe esta asignacion"));
-        asignacionCama.setEstado(EstadoSolicitudCama.FINALIZADA.toEntity());
-        asignacionCama.getSolicitudCama().setEstado(EstadoSolicitudCama.FINALIZADA.toEntity());
-        asignacionSolicitudCamaRepository.save(asignacionCama);
-        return  mapper.map(asignacionCama, AsignacionCamaDTO.class);
+    public AsignacionCamaReqDTO cambiarEstadoFinalizada(String id) {
+        AsignacionSolicitudCama asignacionSolicitudCama = asignacionSolicitudCamaRepository.findById(id).orElseThrow(()->new EntidadNoExisteException("no existe esta asignacion"));
+        asignacionSolicitudCama.setEstado(EstadoSolicitudCama.FINALIZADA.toEntity());
+        asignacionSolicitudCama.getSolicitudCama().setEstado(EstadoSolicitudCama.FINALIZADA.toEntity());
+        asignacionSolicitudCamaRepository.save(asignacionSolicitudCama);
+        return  mapper.map(asignacionSolicitudCama, AsignacionCamaReqDTO.class);
 
     }
 
     @Override
-    public AsignacionCamaDTO cancelarAsignacionSolicitudMotivoVersinoAsignacionCama(String id, String idVersionAsignacionCama, String motivo) {
+    public AsignacionCamaReqDTO cancelarAsignacionSolicitudMotivoVersinoAsignacionCama(String id, String idVersionAsignacionCama, String motivo) {
         VersionAsignacionSolicitudCama res =  versionAsignacionSolicitudCamaRepository.findUltimaVersionActivaByIdAsignacionCama(id).orElseThrow(()->new EntidadNoExisteException("no existe esta asignacion"));
         res.setMotivo_cancelacion(motivo);
-        res.getAsignacionCama().setEstado(EstadoSolicitudCama.CANCELADA.toEntity());
+        res.getAsignacionSolicitudCama().setEstado(EstadoSolicitudCama.CANCELADA.toEntity());
         versionAsignacionSolicitudCamaRepository.save(res);
-        return mapper.map(res, AsignacionCamaDTO.class);
+        return mapper.map(res, AsignacionCamaReqDTO.class);
     }
 
 

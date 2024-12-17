@@ -9,5 +9,5 @@ public class BloqueServicioResponseDTO {
 
     private Integer id;
     private String nombre;
-    private List<ServicioResponseDTO> servicios;
+    private List<ServicioResDTO> servicios;
 }

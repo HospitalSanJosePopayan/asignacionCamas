@@ -15,7 +15,7 @@ public class VersionAsignacionSolicitudCama {
     private String id;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "asignacion_cama_id", foreignKey = @ForeignKey(name = "fk_versionAsignacionCama_asignacionCama"))
-    private AsignacionCama asignacionCama;
+    private AsignacionSolicitudCama asignacionSolicitudCama;
     @ManyToOne
     @JoinColumn(name = "cama_id", foreignKey = @ForeignKey(name = "fk_versionAsignacionCama_cama"))
     private Cama cama;
