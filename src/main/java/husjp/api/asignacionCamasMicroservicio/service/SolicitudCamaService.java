@@ -1,9 +1,8 @@
 package husjp.api.asignacionCamasMicroservicio.service;
 
 import husjp.api.asignacionCamasMicroservicio.entity.SolicitudCama;
-import husjp.api.asignacionCamasMicroservicio.service.dto.request.SolicitudCamaDTO;
-import husjp.api.asignacionCamasMicroservicio.service.dto.request.VersionSolicitudCamaDTO;
-import husjp.api.asignacionCamasMicroservicio.service.dto.response.SolicitudCamaResponseDTO;
+import husjp.api.asignacionCamasMicroservicio.service.dto.request.SolicitudCamaReqDTO;
+import husjp.api.asignacionCamasMicroservicio.service.dto.response.SolicitudCamaResDTO;
 
 import java.util.List;
 
@@ -15,9 +14,9 @@ public interface SolicitudCamaService {
 
     SolicitudCama findById(String id);
 
-    void validarSiExisteSolicitudVigente(SolicitudCamaDTO solicitudCamaDTO);
+    void validarSiExisteSolicitudVigente(SolicitudCamaReqDTO solicitudCamaReqDTO);
 
     String generarCodigoSolicitudCama(String servicio);
 
-    SolicitudCamaResponseDTO updateMotivoCancelacion(String motivo, String idSolicitudCama);
+    SolicitudCamaResDTO updateMotivoCancelacion(String motivo, String idSolicitudCama);
 }

@@ -2,7 +2,7 @@ package husjp.api.asignacionCamasMicroservicio.service.impl;
 
 import husjp.api.asignacionCamasMicroservicio.repository.TitulosFormacionAcademicaRepository;
 import husjp.api.asignacionCamasMicroservicio.service.TitulosFormacionAcademicaService;
-import husjp.api.asignacionCamasMicroservicio.service.dto.response.TitulosFormacionAcacemicaResponseDTO;
+import husjp.api.asignacionCamasMicroservicio.service.dto.response.TitulosFormacionAcacemicaResDTO;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -18,10 +18,10 @@ public class TitulosFormacionAcademicaServiceImpl implements TitulosFormacionAca
     private TitulosFormacionAcademicaRepository titulosFormacionAcademicaRepository;
 
     @Override
-    public List<TitulosFormacionAcacemicaResponseDTO> findAllByEspecialidad() {
+    public List<TitulosFormacionAcacemicaResDTO> findAllByEspecialidad() {
 
         return titulosFormacionAcademicaRepository.findAll().stream()
-                .map(entity -> mapper.map(entity,TitulosFormacionAcacemicaResponseDTO.class ))
+                .map(entity -> mapper.map(entity, TitulosFormacionAcacemicaResDTO.class ))
                 .collect(Collectors.toList());
     }
 

@@ -5,12 +5,12 @@ import husjp.api.asignacionCamasMicroservicio.entity.enums.EstadoSolicitudCama;
 import husjp.api.asignacionCamasMicroservicio.exceptionsControllers.exceptions.EntidadNoExisteException;
 import husjp.api.asignacionCamasMicroservicio.exceptionsControllers.exceptions.EntidadSinCambiosException;
 import husjp.api.asignacionCamasMicroservicio.repository.UsuarioRepository;
-import husjp.api.asignacionCamasMicroservicio.repository.VersionRespuestaSolicitudCamaRepository;
+import husjp.api.asignacionCamasMicroservicio.repository.VersionAsignacionSolicitudCamaRepository;
 import husjp.api.asignacionCamasMicroservicio.repository.VersionSolicitudCamaRepository;
 import husjp.api.asignacionCamasMicroservicio.service.*;
 import husjp.api.asignacionCamasMicroservicio.service.dto.request.*;
 import husjp.api.asignacionCamasMicroservicio.service.dto.response.*;
-import husjp.api.asignacionCamasMicroservicio.service.dto.response.BloqueServicioDTO;
+import husjp.api.asignacionCamasMicroservicio.service.dto.response.BloqueServicioResDTO;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
@@ -31,28 +31,28 @@ public class VersionSolicitudCamaServiceImpl implements VersionSolicitudCamaServ
 
     private SolicitudCamaService solicitudCamaService;
     private VersionSolicitudCamaRepository versionSolicitudCamaRepository;
-    private VersionRespuestaSolicitudCamaRepository versionRespuestaSolicitudCamaRepository;
+    private VersionAsignacionSolicitudCamaRepository versionAsignacionSolicitudCamaRepository;
     private PacienteService pacienteService;
     private CamaService camaService;
 
     @Override
-    public VersionSolicitudResponseDTO guardarVersionSolicitudCama(VersionSolicitudCamaDTO versionSolicitudCamaDTO, String username) {
+    public VersionSolicitudResDTO guardarVersionSolicitudCama(VersionSolicitudCamaReqDTO versionSolicitudCamaReqDTO, String username) {
         // si hay una solicitud activa se lanza excepcion
-        solicitudCamaService.validarSiExisteSolicitudVigente(versionSolicitudCamaDTO.getSolicitudCama());
-        VersionSolicitudCama versionSolicitudCama = crearVersionSolicitudCama(versionSolicitudCamaDTO, username);
+        solicitudCamaService.validarSiExisteSolicitudVigente(versionSolicitudCamaReqDTO.getSolicitudCama());
+        VersionSolicitudCama versionSolicitudCama = crearVersionSolicitudCama(versionSolicitudCamaReqDTO, username);
         VersionSolicitudCama r = versionSolicitudCamaRepository.save(versionSolicitudCama);
-        return modelMapper.map(r, VersionSolicitudResponseDTO.class);
+        return modelMapper.map(r, VersionSolicitudResDTO.class);
     }
 
-    private VersionSolicitudCama crearVersionSolicitudCama(VersionSolicitudCamaDTO versionSolicitudCamaDTO, String username) {
+    private VersionSolicitudCama crearVersionSolicitudCama(VersionSolicitudCamaReqDTO versionSolicitudCamaReqDTO, String username) {
 
-        VersionSolicitudCama versionSolicitudCama = modelMapper.map(versionSolicitudCamaDTO, VersionSolicitudCama.class);
-        Paciente paciente = pacienteService.findByIdentificacion(versionSolicitudCamaDTO.getSolicitudCama().getIngreso().getPaciente().getDocumento());
+        VersionSolicitudCama versionSolicitudCama = modelMapper.map(versionSolicitudCamaReqDTO, VersionSolicitudCama.class);
+        Paciente paciente = pacienteService.findByIdentificacion(versionSolicitudCamaReqDTO.getSolicitudCama().getIngreso().getPaciente().getDocumento());
         if(paciente != null ){
             versionSolicitudCama.getSolicitudCama().getIngreso().getPaciente().setIdPersona(paciente.getIdPersona());
         }
         //agregar la cama
-        Cama cama = camaService.findByCodigo(versionSolicitudCamaDTO.getCama().getCodigo());
+        Cama cama = camaService.findByCodigo(versionSolicitudCamaReqDTO.getCama().getCodigo());
         versionSolicitudCama.setCama(cama);
         //agregar el subservicio
         //Servicio servicio = servicioService.findByNombre(versionSolicitudCamaDTO.getServicio().getNombre());
@@ -75,14 +75,14 @@ public class VersionSolicitudCamaServiceImpl implements VersionSolicitudCamaServ
     }
 
     @Override
-    public List<VersionSolicitudResponseDTO> getVersionSolicitudCamaActivasEnEsperaByIdBloque(Integer idBloqueServicio) {
+    public List<VersionSolicitudResDTO> getVersionSolicitudCamaActivasEnEsperaByIdBloque(Integer idBloqueServicio) {
         List<VersionSolicitudCama> response = versionSolicitudCamaRepository.findBySolicitudCamaEstadoActivoPorBloque(idBloqueServicio,List.of(1,2))
                 .orElseThrow(null);
         assert response != null;
 
-        List<VersionSolicitudResponseDTO> listResponse = new ArrayList<>();
+        List<VersionSolicitudResDTO> listResponse = new ArrayList<>();
         for(VersionSolicitudCama verSolCamaEntity : response){
-            VersionSolicitudResponseDTO verSolResDTO = new VersionSolicitudResponseDTO();
+            VersionSolicitudResDTO verSolResDTO = new VersionSolicitudResDTO();
             verSolResDTO.setRequiereAislamiento(verSolCamaEntity.getRequiereAislamiento());
             verSolResDTO.setId(verSolCamaEntity.getId());
             verSolResDTO.setEstado(verSolCamaEntity.getEstado());
@@ -90,21 +90,21 @@ public class VersionSolicitudCamaServiceImpl implements VersionSolicitudCamaServ
             verSolResDTO.setAutorizacionFacturacion(verSolCamaEntity.getAutorizacionFacturacion());
             verSolResDTO.setRequerimientosEspeciales(verSolCamaEntity.getRequerimientosEspeciales());
             verSolResDTO.setFecha(verSolCamaEntity.getFecha());
-            verSolResDTO.setUsuario(modelMapper.map(verSolCamaEntity.getUsuario(), UsuarioResponseDTO.class));
-            verSolResDTO.setSolicitudCama(modelMapper.map(verSolCamaEntity.getSolicitudCama(), SolicitudCamaResponseDTO.class));
-            verSolResDTO.setMedidasAislamiento(verSolCamaEntity.getMedidasAislamiento().stream().map(medidasAislamiento -> modelMapper.map(medidasAislamiento, MedidasAislamientoResponseDTO.class)).collect(Collectors.toList()));
-            verSolResDTO.setTitulosFormacionAcademica(verSolCamaEntity.getTitulosFormacionAcademica().stream().map(titulosFormacionAcacemica -> modelMapper.map(titulosFormacionAcacemica, TitulosFormacionAcacemicaResponseDTO.class)).collect(Collectors.toList()));
-            verSolResDTO.setDiagnosticos(verSolCamaEntity.getDiagnosticos().stream().map(diagnostico -> modelMapper.map(diagnostico, DiagnosticoResponseDTO.class)).collect(Collectors.toList()));
-            verSolResDTO.setServicio(modelMapper.map(verSolCamaEntity.getServicio(), ServicioResponseDTO.class));
-            verSolResDTO.setCama(modelMapper.map(verSolCamaEntity.getCama(), CamaResponseDTO.class));
-            verSolResDTO.setBloqueServicio(modelMapper.map(verSolCamaEntity.getBloqueServicio(), BloqueServicioDTO.class));
+            verSolResDTO.setUsuario(modelMapper.map(verSolCamaEntity.getUsuario(), UsuarioResDTO.class));
+            verSolResDTO.setSolicitudCama(modelMapper.map(verSolCamaEntity.getSolicitudCama(), SolicitudCamaResDTO.class));
+            verSolResDTO.setMedidasAislamiento(verSolCamaEntity.getMedidasAislamiento().stream().map(medidasAislamiento -> modelMapper.map(medidasAislamiento, MedidasAislamientoResDTO.class)).collect(Collectors.toList()));
+            verSolResDTO.setTitulosFormacionAcademica(verSolCamaEntity.getTitulosFormacionAcademica().stream().map(titulosFormacionAcacemica -> modelMapper.map(titulosFormacionAcacemica, TitulosFormacionAcacemicaResDTO.class)).collect(Collectors.toList()));
+            verSolResDTO.setDiagnosticos(verSolCamaEntity.getDiagnosticos().stream().map(diagnostico -> modelMapper.map(diagnostico, DiagnosticoResDTO.class)).collect(Collectors.toList()));
+            verSolResDTO.setServicio(modelMapper.map(verSolCamaEntity.getServicio(), ServicioResDTO.class));
+            verSolResDTO.setCama(modelMapper.map(verSolCamaEntity.getCama(), CamaResDTO.class));
+            verSolResDTO.setBloqueServicio(modelMapper.map(verSolCamaEntity.getBloqueServicio(), BloqueServicioResDTO.class));
 
-            VersionAsignacionSolicitudCama verAsigSolCamaEntity = versionRespuestaSolicitudCamaRepository.findActiveAsignacionCamaByIdSolicitudCamaByEstadoSolicitudCamaByEstadoVersionSolicitudCama(verSolCamaEntity.getSolicitudCama().getId(), EstadoSolicitudCama.ACEPTADA.getId()).orElse(null);
+            VersionAsignacionSolicitudCama verAsigSolCamaEntity = versionAsignacionSolicitudCamaRepository.findActiveAsignacionCamaByIdSolicitudCamaByEstadoSolicitudCamaByEstadoVersionSolicitudCama(verSolCamaEntity.getSolicitudCama().getId(), EstadoSolicitudCama.ACEPTADA.getId()).orElse(null);
             if(verAsigSolCamaEntity != null){
-                AsignacionCamaResponseSinSolCamaDTO asigCamaResDTO = new AsignacionCamaResponseSinSolCamaDTO();
-                asigCamaResDTO.setId(verAsigSolCamaEntity.getAsignacionCama().getId());
-                asigCamaResDTO.setEstado(modelMapper.map(verAsigSolCamaEntity.getAsignacionCama().getEstado(), EstadoSolicitudCamaResponseDTO.class));
-                asigCamaResDTO.setVersionSolicitudAsignacion(modelMapper.map(verAsigSolCamaEntity, VersionSolicitudAsignacionSinAsigCamaResponseDTO.class));
+                AsignacionCamaSinSolCamaResDTO asigCamaResDTO = new AsignacionCamaSinSolCamaResDTO();
+                asigCamaResDTO.setId(verAsigSolCamaEntity.getAsignacionSolicitudCama().getId());
+                asigCamaResDTO.setEstado(modelMapper.map(verAsigSolCamaEntity.getAsignacionSolicitudCama().getEstado(), EstadoSolicitudCamaResDTO.class));
+                asigCamaResDTO.setVersionSolicitudAsignacion(modelMapper.map(verAsigSolCamaEntity, VersionSolicitudAsignacionSinAsigCamaResDTO.class));
                 verSolResDTO.setAsignacionCama(asigCamaResDTO);
             }
             listResponse.add(verSolResDTO);
@@ -113,7 +113,7 @@ public class VersionSolicitudCamaServiceImpl implements VersionSolicitudCamaServ
     }
 
     @Override
-    public VersionSolicitudResponseDTO editarVersionSolicitudCama(String id, VersionSolicitudCamaEditDTO versionSolicitudCamaEditDTO, String username) {
+    public VersionSolicitudResDTO editarVersionSolicitudCama(String id, VersionSolicitudCamaEditDTO versionSolicitudCamaEditDTO, String username) {
         VersionSolicitudCama versionActual = versionSolicitudCamaRepository.findById(id)
                 .orElseThrow(() -> new EntidadNoExisteException("Solicitud no encontrada"));
         if(!hayCambios(versionActual,versionSolicitudCamaEditDTO)){
@@ -123,20 +123,20 @@ public class VersionSolicitudCamaServiceImpl implements VersionSolicitudCamaServ
         VersionSolicitudCama nuevaVersionGuardada = versionSolicitudCamaRepository.save(nuevaVersion);
         versionActual.setEstado(false);
         versionSolicitudCamaRepository.save(versionActual);
-        return modelMapper.map(nuevaVersionGuardada, VersionSolicitudResponseDTO.class);
+        return modelMapper.map(nuevaVersionGuardada, VersionSolicitudResDTO.class);
     }
     @Override
-    public VersionSolicitudResponseDTO EstadoSolicitud(String id) {
+    public VersionSolicitudResDTO EstadoSolicitud(String id) {
         VersionSolicitudCama versionSolicitudCama = versionSolicitudCamaRepository.findById(id).orElseThrow(() -> new EntidadNoExisteException("Solicitud no encontrada"));
         versionSolicitudCama.setAutorizacionFacturacion(versionSolicitudCama.getAutorizacionFacturacion().equals("NO") ? "SI" : "NO");
         versionSolicitudCamaRepository.save(versionSolicitudCama);
-        return modelMapper.map(versionSolicitudCama,VersionSolicitudResponseDTO.class);
+        return modelMapper.map(versionSolicitudCama, VersionSolicitudResDTO.class);
     }
 
     @Override
-    public VersionSolicitudResponseDTO findEndVersionByIdSolicitudCama(String id) {
+    public VersionSolicitudResDTO findEndVersionByIdSolicitudCama(String id) {
         VersionSolicitudCama resEntity = versionSolicitudCamaRepository.findEndByIdSolicitudCama(id).orElse(null);
-        VersionSolicitudResponseDTO responseDTO =modelMapper.map(resEntity, VersionSolicitudResponseDTO.class);
+        VersionSolicitudResDTO responseDTO =modelMapper.map(resEntity, VersionSolicitudResDTO.class);
         responseDTO.setSolicitudCama(null);
         if (resEntity != null) {
             return responseDTO;
@@ -145,12 +145,12 @@ public class VersionSolicitudCamaServiceImpl implements VersionSolicitudCamaServ
     }
 
     @Override
-    public VersionSolicitudResponseDTO CambiarEstadoCanceladaSolicitud(String id, String motivoCancelar) {
+    public VersionSolicitudResDTO CambiarEstadoCanceladaSolicitud(String id, String motivoCancelar) {
         VersionSolicitudCama versionSolicitudCama = versionSolicitudCamaRepository.findById(id).orElseThrow(()-> new EntidadNoExisteException("No existe esta solicitud"));
         versionSolicitudCama.getSolicitudCama().setMotivoCancelacion(motivoCancelar);
         versionSolicitudCama.getSolicitudCama().setEstado(EstadoSolicitudCama.CANCELADA.toEntity());
         versionSolicitudCamaRepository.save(versionSolicitudCama);
-        return  modelMapper.map(versionSolicitudCama, VersionSolicitudResponseDTO.class);
+        return  modelMapper.map(versionSolicitudCama, VersionSolicitudResDTO.class);
     }
 
     private VersionSolicitudCama prepararNuevaVersion(VersionSolicitudCama versionActual, VersionSolicitudCamaEditDTO versionSolicitudCamaEditDTO, String username) {
@@ -175,7 +175,7 @@ public class VersionSolicitudCamaServiceImpl implements VersionSolicitudCamaServ
     private boolean hayCambios(VersionSolicitudCama versionActual, VersionSolicitudCamaEditDTO versionSolicitudCamaEditDTO) {
         if (!listasDeIdsIguales(
                 versionActual.getDiagnosticos() != null ? versionActual.getDiagnosticos().stream().map(Diagnostico::getId).toList() : null,
-                versionSolicitudCamaEditDTO.getDiagnosticos() != null ? versionSolicitudCamaEditDTO.getDiagnosticos().stream().map(DiagnosticoDTO::getId).toList() : null)) {
+                versionSolicitudCamaEditDTO.getDiagnosticos() != null ? versionSolicitudCamaEditDTO.getDiagnosticos().stream().map(DiagnosticoReqDTO::getId).toList() : null)) {
             return true;
         }
         if(versionActual.getRequiereAislamiento()!=versionSolicitudCamaEditDTO.getRequiereAislamiento()){
@@ -183,12 +183,12 @@ public class VersionSolicitudCamaServiceImpl implements VersionSolicitudCamaServ
         }
         if (!listasDeIdsIguales(
                 versionActual.getMedidasAislamiento() != null ? versionActual.getMedidasAislamiento().stream().map(MedidasAislamiento::getId).toList() : null,
-                versionSolicitudCamaEditDTO.getMedidasAislamiento() != null ? versionSolicitudCamaEditDTO.getMedidasAislamiento().stream().map(MedidasAislamientoDTO::getId).toList() : null)) {
+                versionSolicitudCamaEditDTO.getMedidasAislamiento() != null ? versionSolicitudCamaEditDTO.getMedidasAislamiento().stream().map(MedidasAislamientoReqDTO::getId).toList() : null)) {
             return true;
         }
         if (!listasDeIdsIguales(
                 versionActual.getTitulosFormacionAcademica() != null ? versionActual.getTitulosFormacionAcademica().stream().map(TitulosFormacionAcacemica::getId).toList() : null,
-                versionSolicitudCamaEditDTO.getTitulosFormacionAcademica() != null ? versionSolicitudCamaEditDTO.getTitulosFormacionAcademica().stream().map(TitulosFormacionAcademicaDTO::getId).toList() : null)) {
+                versionSolicitudCamaEditDTO.getTitulosFormacionAcademica() != null ? versionSolicitudCamaEditDTO.getTitulosFormacionAcademica().stream().map(EspecialidadesDTO::getId).toList() : null)) {
             return true;
         }
         if (!Objects.equals(versionActual.getBloqueServicio().getId(), versionSolicitudCamaEditDTO.getBloqueServicio().getId())) {

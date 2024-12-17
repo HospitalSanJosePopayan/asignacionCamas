@@ -1,7 +1,7 @@
 package husjp.api.asignacionCamasMicroservicio.controllers;
 
 import husjp.api.asignacionCamasMicroservicio.service.AsignacionSolicitudCamaService;
-import husjp.api.asignacionCamasMicroservicio.service.dto.request.AsignacionCamaDTO;
+import husjp.api.asignacionCamasMicroservicio.service.dto.request.AsignacionCamaReqDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,14 +16,14 @@ public class AsignacionSolicitudController {
     private AsignacionSolicitudCamaService asignacionSolicitudCamaService;
 
     @PutMapping("/{id}/estadoFinalizado")
-    public ResponseEntity<AsignacionCamaDTO> editarEstadoFinalizado(@PathVariable  String id){
-        AsignacionCamaDTO asignacionCamaDTO = asignacionSolicitudCamaService.cambiarEstadoFinalizada(id);
-        return  ResponseEntity.ok(asignacionCamaDTO);
+    public ResponseEntity<AsignacionCamaReqDTO> editarEstadoFinalizado(@PathVariable  String id){
+        AsignacionCamaReqDTO asignacionCamaReqDTO = asignacionSolicitudCamaService.cambiarEstadoFinalizada(id);
+        return  ResponseEntity.ok(asignacionCamaReqDTO);
     }
 
     @Operation(summary = "Cencela la asignacion de cama y setea el motivo de la cancelacion a la ultima version de la asignacion de cama")
     @PutMapping("/{id}/cancelar/motivo/{idVersionAsignacionCama}")
-    public ResponseEntity<AsignacionCamaDTO> cancelarAsignacionMotivoVersinoAsignacionCama(@PathVariable String id, @PathVariable String idVersionAsignacionCama, @RequestParam(name = "motivo", required = true) String motivo){
+    public ResponseEntity<AsignacionCamaReqDTO> cancelarAsignacionMotivoVersinoAsignacionCama(@PathVariable String id, @PathVariable String idVersionAsignacionCama, @RequestParam(name = "motivo", required = true) String motivo){
         return ResponseEntity.ok(asignacionSolicitudCamaService.cancelarAsignacionSolicitudMotivoVersinoAsignacionCama(id, idVersionAsignacionCama, motivo));
     }
 

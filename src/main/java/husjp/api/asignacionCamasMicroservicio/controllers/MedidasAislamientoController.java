@@ -1,7 +1,7 @@
 package husjp.api.asignacionCamasMicroservicio.controllers;
 
 import husjp.api.asignacionCamasMicroservicio.service.MedidasAislamientoService;
-import husjp.api.asignacionCamasMicroservicio.service.dto.response.MedidasAislamientoResponseDTO;
+import husjp.api.asignacionCamasMicroservicio.service.dto.response.MedidasAislamientoResDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -20,7 +20,7 @@ public class MedidasAislamientoController {
     private MedidasAislamientoService medidasAislamientoService;
 
     @GetMapping
-    public ResponseEntity<List<MedidasAislamientoResponseDTO>> getMedidasAislamiento() {
+    public ResponseEntity<List<MedidasAislamientoResDTO>> getMedidasAislamiento() {
         return ResponseEntity.ok(medidasAislamientoService.findAll());
     }
 }

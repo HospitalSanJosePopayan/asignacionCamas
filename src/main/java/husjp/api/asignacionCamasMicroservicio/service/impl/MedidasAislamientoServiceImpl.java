@@ -2,7 +2,7 @@ package husjp.api.asignacionCamasMicroservicio.service.impl;
 
 import husjp.api.asignacionCamasMicroservicio.repository.MedidasAislamientoRepository;
 import husjp.api.asignacionCamasMicroservicio.service.MedidasAislamientoService;
-import husjp.api.asignacionCamasMicroservicio.service.dto.response.MedidasAislamientoResponseDTO;
+import husjp.api.asignacionCamasMicroservicio.service.dto.response.MedidasAislamientoResDTO;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -18,9 +18,9 @@ public class MedidasAislamientoServiceImpl implements MedidasAislamientoService 
     private MedidasAislamientoRepository medidasAislamientoRepository;
 
     @Override
-    public List<MedidasAislamientoResponseDTO> findAll() {
+    public List<MedidasAislamientoResDTO> findAll() {
         return medidasAislamientoRepository.findAll().stream()
-                .map(entity -> mapper.map(entity, MedidasAislamientoResponseDTO.class))
+                .map(entity -> mapper.map(entity, MedidasAislamientoResDTO.class))
                 .collect(Collectors.toList());
     }
 }

@@ -6,8 +6,8 @@ import husjp.api.asignacionCamasMicroservicio.exceptionsControllers.exceptions.E
 import husjp.api.asignacionCamasMicroservicio.exceptionsControllers.exceptions.SolicitudCamaVigenteException;
 import husjp.api.asignacionCamasMicroservicio.repository.SolicitudCamaRepository;
 import husjp.api.asignacionCamasMicroservicio.service.SolicitudCamaService;
-import husjp.api.asignacionCamasMicroservicio.service.dto.request.SolicitudCamaDTO;
-import husjp.api.asignacionCamasMicroservicio.service.dto.response.SolicitudCamaResponseDTO;
+import husjp.api.asignacionCamasMicroservicio.service.dto.request.SolicitudCamaReqDTO;
+import husjp.api.asignacionCamasMicroservicio.service.dto.response.SolicitudCamaResDTO;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -37,10 +37,10 @@ public class SolicitudCamaServiceImpl implements SolicitudCamaService {
     }
 
     @Override
-    public void validarSiExisteSolicitudVigente(SolicitudCamaDTO solicitudCamaDTO) {
+    public void validarSiExisteSolicitudVigente(SolicitudCamaReqDTO solicitudCamaReqDTO) {
         List<Integer> estados = List.of(1,3);//EN ESPERA - ACEPTADA
 
-        SolicitudCama solicitudCama = findByIngreso_IdAndAndEstado_IdIn(solicitudCamaDTO.getIngreso().getId(), estados);
+        SolicitudCama solicitudCama = findByIngreso_IdAndAndEstado_IdIn(solicitudCamaReqDTO.getIngreso().getId(), estados);
         if(solicitudCama != null){
             throw new SolicitudCamaVigenteException("Ya existe una solicitud activa para el paciente");
         }
@@ -64,12 +64,12 @@ public class SolicitudCamaServiceImpl implements SolicitudCamaService {
     }
 
     @Override
-    public SolicitudCamaResponseDTO updateMotivoCancelacion(String motivo, String idSolicitudCama) {
+    public SolicitudCamaResDTO updateMotivoCancelacion(String motivo, String idSolicitudCama) {
         SolicitudCama solicitudCama = solicitudCamaRepository.findById(idSolicitudCama).orElseThrow(() -> new EntidadNoExisteException("No existe la solicitud de cama con el id "+idSolicitudCama));
         solicitudCama.setMotivoCancelacion(motivo);
         solicitudCama.setEstado(EstadoSolicitudCama.CANCELADA.toEntity());
         solicitudCamaRepository.save(solicitudCama);
-        return mapper.map(solicitudCama, SolicitudCamaResponseDTO.class);
+        return mapper.map(solicitudCama, SolicitudCamaResDTO.class);
     }
 
 }

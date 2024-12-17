@@ -14,9 +14,9 @@ public class VersionSolicitudCamaEditDTO {
     private Boolean requiereAislamiento;
     private String motivo;
     private String requerimientosEspeciales;
-    private List<MedidasAislamientoDTO> medidasAislamiento;
-    private List<TitulosFormacionAcademicaDTO> titulosFormacionAcademica;
-    private List<DiagnosticoDTO> diagnosticos;
-    private  BloqueServicioDTO bloqueServicio;
+    private List<MedidasAislamientoReqDTO> medidasAislamiento;
+    private List<EspecialidadesDTO> titulosFormacionAcademica;
+    private List<DiagnosticoReqDTO> diagnosticos;
+    private BloqueServicioReqDTO bloqueServicio;
 
 }

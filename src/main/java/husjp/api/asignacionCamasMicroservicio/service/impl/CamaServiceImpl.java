@@ -4,8 +4,7 @@ import husjp.api.asignacionCamasMicroservicio.entity.Cama;
 import husjp.api.asignacionCamasMicroservicio.exceptionsControllers.exceptions.EntidadNoExisteException;
 import husjp.api.asignacionCamasMicroservicio.repository.CamaRepository;
 import husjp.api.asignacionCamasMicroservicio.service.CamaService;
-import husjp.api.asignacionCamasMicroservicio.service.dto.response.CamaResponseDTO;
-import husjp.api.asignacionCamasMicroservicio.service.dto.response.CamaResponseSimpleDTO;
+import husjp.api.asignacionCamasMicroservicio.service.dto.response.CamaSimpleResDTO;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -26,10 +25,10 @@ public class CamaServiceImpl implements CamaService {
     }
 
     @Override
-    public List<CamaResponseSimpleDTO> findAllByServicioId(Integer idServicio) {
+    public List<CamaSimpleResDTO> findAllByServicioId(Integer idServicio) {
         List<Cama> res = camaRepository.findByServicioId(idServicio).orElseThrow(() -> new EntidadNoExisteException("No se encuentran camas para el servicio con id: " + idServicio));
         return res.stream()
-                .map(entity -> mapper.map(entity, CamaResponseSimpleDTO.class))
+                .map(entity -> mapper.map(entity, CamaSimpleResDTO.class))
                 .collect(Collectors.toList());
     }
 

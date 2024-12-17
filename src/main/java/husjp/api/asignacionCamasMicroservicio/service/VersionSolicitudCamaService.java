@@ -1,18 +1,18 @@
 package husjp.api.asignacionCamasMicroservicio.service;
 
-import husjp.api.asignacionCamasMicroservicio.service.dto.request.VersionSolicitudCamaDTO;
+import husjp.api.asignacionCamasMicroservicio.service.dto.request.VersionSolicitudCamaReqDTO;
 import husjp.api.asignacionCamasMicroservicio.service.dto.request.VersionSolicitudCamaEditDTO;
-import husjp.api.asignacionCamasMicroservicio.service.dto.response.VersionSolicitudResponseDTO;
+import husjp.api.asignacionCamasMicroservicio.service.dto.response.VersionSolicitudResDTO;
 
 import java.util.List;
 
 public interface VersionSolicitudCamaService {
 
-    VersionSolicitudResponseDTO guardarVersionSolicitudCama(VersionSolicitudCamaDTO versionSolicitudCamaDTO, String username);
-    List<VersionSolicitudResponseDTO> getVersionSolicitudCamaActivasEnEsperaByIdBloque(Integer idBloqueServicio);
-    VersionSolicitudResponseDTO editarVersionSolicitudCama(String id, VersionSolicitudCamaEditDTO versionSolicitudCamaEditDTO, String username);
-    VersionSolicitudResponseDTO EstadoSolicitud(String id);
-    VersionSolicitudResponseDTO findEndVersionByIdSolicitudCama(String id);
-    VersionSolicitudResponseDTO CambiarEstadoCanceladaSolicitud(String id, String motivoCancelar);
+    VersionSolicitudResDTO guardarVersionSolicitudCama(VersionSolicitudCamaReqDTO versionSolicitudCamaReqDTO, String username);
+    List<VersionSolicitudResDTO> getVersionSolicitudCamaActivasEnEsperaByIdBloque(Integer idBloqueServicio);
+    VersionSolicitudResDTO editarVersionSolicitudCama(String id, VersionSolicitudCamaEditDTO versionSolicitudCamaEditDTO, String username);
+    VersionSolicitudResDTO EstadoSolicitud(String id);
+    VersionSolicitudResDTO findEndVersionByIdSolicitudCama(String id);
+    VersionSolicitudResDTO CambiarEstadoCanceladaSolicitud(String id, String motivoCancelar);
 
 }
