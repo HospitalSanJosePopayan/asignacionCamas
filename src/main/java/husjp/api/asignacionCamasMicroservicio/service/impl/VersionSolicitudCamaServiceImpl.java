@@ -5,10 +5,12 @@ import husjp.api.asignacionCamasMicroservicio.entity.enums.EstadoSolicitudCama;
 import husjp.api.asignacionCamasMicroservicio.exceptionsControllers.exceptions.EntidadNoExisteException;
 import husjp.api.asignacionCamasMicroservicio.exceptionsControllers.exceptions.EntidadSinCambiosException;
 import husjp.api.asignacionCamasMicroservicio.repository.UsuarioRepository;
+import husjp.api.asignacionCamasMicroservicio.repository.VersionRespuestaSolicitudCamaRepository;
 import husjp.api.asignacionCamasMicroservicio.repository.VersionSolicitudCamaRepository;
 import husjp.api.asignacionCamasMicroservicio.service.*;
 import husjp.api.asignacionCamasMicroservicio.service.dto.request.*;
-import husjp.api.asignacionCamasMicroservicio.service.dto.response.VersionSolicitudResponseDTO;
+import husjp.api.asignacionCamasMicroservicio.service.dto.response.*;
+import husjp.api.asignacionCamasMicroservicio.service.dto.response.BloqueServicioDTO;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
@@ -29,6 +31,7 @@ public class VersionSolicitudCamaServiceImpl implements VersionSolicitudCamaServ
 
     private SolicitudCamaService solicitudCamaService;
     private VersionSolicitudCamaRepository versionSolicitudCamaRepository;
+    private VersionRespuestaSolicitudCamaRepository versionRespuestaSolicitudCamaRepository;
     private PacienteService pacienteService;
     private CamaService camaService;
 
@@ -73,11 +76,40 @@ public class VersionSolicitudCamaServiceImpl implements VersionSolicitudCamaServ
 
     @Override
     public List<VersionSolicitudResponseDTO> getVersionSolicitudCamaActivasEnEsperaByIdBloque(Integer idBloqueServicio) {
-        List<VersionSolicitudCama> response = versionSolicitudCamaRepository.findBySolicitudCamaEstadoActivoPorBloque(idBloqueServicio,EstadoSolicitudCama.EN_ESPERA.getId()).orElseThrow(null);
+        List<VersionSolicitudCama> response = versionSolicitudCamaRepository.findBySolicitudCamaEstadoActivoPorBloque(idBloqueServicio,List.of(1,2))
+                .orElseThrow(null);
         assert response != null;
-        return response.stream()
-                .map(entity -> modelMapper.map(entity, VersionSolicitudResponseDTO.class))
-                .collect(Collectors.toList());
+
+        List<VersionSolicitudResponseDTO> listResponse = new ArrayList<>();
+        for(VersionSolicitudCama verSolCamaEntity : response){
+            VersionSolicitudResponseDTO verSolResDTO = new VersionSolicitudResponseDTO();
+            verSolResDTO.setRequiereAislamiento(verSolCamaEntity.getRequiereAislamiento());
+            verSolResDTO.setId(verSolCamaEntity.getId());
+            verSolResDTO.setEstado(verSolCamaEntity.getEstado());
+            verSolResDTO.setMotivo(verSolCamaEntity.getMotivo());
+            verSolResDTO.setAutorizacionFacturacion(verSolCamaEntity.getAutorizacionFacturacion());
+            verSolResDTO.setRequerimientosEspeciales(verSolCamaEntity.getRequerimientosEspeciales());
+            verSolResDTO.setFecha(verSolCamaEntity.getFecha());
+            verSolResDTO.setUsuario(modelMapper.map(verSolCamaEntity.getUsuario(), UsuarioResponseDTO.class));
+            verSolResDTO.setSolicitudCama(modelMapper.map(verSolCamaEntity.getSolicitudCama(), SolicitudCamaResponseDTO.class));
+            verSolResDTO.setMedidasAislamiento(verSolCamaEntity.getMedidasAislamiento().stream().map(medidasAislamiento -> modelMapper.map(medidasAislamiento, MedidasAislamientoResponseDTO.class)).collect(Collectors.toList()));
+            verSolResDTO.setTitulosFormacionAcademica(verSolCamaEntity.getTitulosFormacionAcademica().stream().map(titulosFormacionAcacemica -> modelMapper.map(titulosFormacionAcacemica, TitulosFormacionAcacemicaResponseDTO.class)).collect(Collectors.toList()));
+            verSolResDTO.setDiagnosticos(verSolCamaEntity.getDiagnosticos().stream().map(diagnostico -> modelMapper.map(diagnostico, DiagnosticoResponseDTO.class)).collect(Collectors.toList()));
+            verSolResDTO.setServicio(modelMapper.map(verSolCamaEntity.getServicio(), ServicioResponseDTO.class));
+            verSolResDTO.setCama(modelMapper.map(verSolCamaEntity.getCama(), CamaResponseDTO.class));
+            verSolResDTO.setBloqueServicio(modelMapper.map(verSolCamaEntity.getBloqueServicio(), BloqueServicioDTO.class));
+
+            VersionAsignacionSolicitudCama verAsigSolCamaEntity = versionRespuestaSolicitudCamaRepository.findActiveAsignacionCamaByIdSolicitudCamaByEstadoSolicitudCamaByEstadoVersionSolicitudCama(verSolCamaEntity.getSolicitudCama().getId(), EstadoSolicitudCama.ACEPTADA.getId()).orElse(null);
+            if(verAsigSolCamaEntity != null){
+                AsignacionCamaResponseSinSolCamaDTO asigCamaResDTO = new AsignacionCamaResponseSinSolCamaDTO();
+                asigCamaResDTO.setId(verAsigSolCamaEntity.getAsignacionCama().getId());
+                asigCamaResDTO.setEstado(modelMapper.map(verAsigSolCamaEntity.getAsignacionCama().getEstado(), EstadoSolicitudCamaResponseDTO.class));
+                asigCamaResDTO.setVersionSolicitudAsignacion(modelMapper.map(verAsigSolCamaEntity, VersionSolicitudAsignacionSinAsigCamaResponseDTO.class));
+                verSolResDTO.setAsignacionCama(asigCamaResDTO);
+            }
+            listResponse.add(verSolResDTO);
+        }
+        return listResponse;
     }
 
     @Override

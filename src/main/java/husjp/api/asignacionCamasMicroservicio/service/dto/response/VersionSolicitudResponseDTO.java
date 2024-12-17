@@ -14,7 +14,7 @@ public class VersionSolicitudResponseDTO {
 
     private String id;
     private Boolean requiereAislamiento;
-    private  Boolean estado;
+    private Boolean estado;
     private String motivo;
     private String autorizacionFacturacion;
     private String requerimientosEspeciales;
@@ -27,5 +27,6 @@ public class VersionSolicitudResponseDTO {
     private ServicioResponseDTO servicio;
     private CamaResponseDTO cama;
     private BloqueServicioDTO bloqueServicio;
+    private AsignacionCamaResponseSinSolCamaDTO asignacionCama;
 
 }
