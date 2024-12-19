@@ -4,6 +4,7 @@ import husjp.api.asignacionCamasMicroservicio.service.VersionAsignacionSolicitud
 import husjp.api.asignacionCamasMicroservicio.service.dto.request.VersionAsignacionCamaReqDTO;
 import husjp.api.asignacionCamasMicroservicio.service.dto.request.VersionAsignacionCamaEditDTO;
 import husjp.api.asignacionCamasMicroservicio.service.dto.response.VersionAsignacionCamaResDTO;
+import husjp.api.asignacionCamasMicroservicio.service.dto.response.VersionAsignacionSolicitudCamaResDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +26,8 @@ public class VersionAsignacionSolicitudCamaController {
     }
 
     @GetMapping("/active/{idBloqueServicio}")
-    public ResponseEntity<List<VersionAsignacionCamaResDTO>> getAllVersionAsignacionCamaActivasEnEsperaPorIdBloque(@PathVariable Integer idBloqueServicio){
-        return ResponseEntity.ok(versionAsignacionSolicitudCamaService.getAllVersionAsignacionCamaActivasEnEsperaByIdBloque(idBloqueServicio));
+    public ResponseEntity<List<VersionAsignacionSolicitudCamaResDTO>> getAllVersionAsignacionCamaActivasEnEsperaPorIdBloque(@PathVariable Integer idBloqueServicio){
+        return ResponseEntity.ok(versionAsignacionSolicitudCamaService.getVersionAsignacionSolicitudCamaByBloque(idBloqueServicio));
     }
 
     @PutMapping("/{id}")
