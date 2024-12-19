@@ -14,7 +14,7 @@ public class VersionSolicitudSinAsignacionDTO {
     private String requerimientosEspeciales;
     private LocalDateTime fecha;
     private UsuarioResDTO usuario;
-    private SolicitudCamaResDTO solicitudCama;
+    private SolicitudCamaResSinVersionesDTO solicitudCama;
     private List<MedidasAislamientoResDTO> medidasAislamiento;
     private List<TitulosFormacionAcacemicaResDTO> titulosFormacionAcademica;
     private List<DiagnosticoResDTO> diagnosticos;

@@ -53,6 +53,7 @@ public class VersionAsignacionSolicitudCamaServiceImpl implements VersionAsignac
         for (VersionAsignacionSolicitudCama versionAsigSolCamaEntity : response) {
             VersionAsignacionSolicitudCamaResDTO versionAsigSolCamaResDTO = new VersionAsignacionSolicitudCamaResDTO();
             versionAsigSolCamaResDTO.setId(versionAsigSolCamaEntity.getId());
+            versionAsigSolCamaResDTO.setAsignacionCama(mapper.map(versionAsigSolCamaEntity.getAsignacionSolicitudCama(), AsignacionCamaResDTOSinVersionesSolDTO.class));
             versionAsigSolCamaResDTO.setCama(mapper.map(versionAsigSolCamaEntity.getCama(), CamaResDTO.class));
             versionAsigSolCamaResDTO.setUsuario(mapper.map(versionAsigSolCamaEntity.getUsuario(), UsuarioResDTO.class));
             versionAsigSolCamaResDTO.setObservacion(versionAsigSolCamaEntity.getObservacion());
@@ -73,7 +74,7 @@ public class VersionAsignacionSolicitudCamaServiceImpl implements VersionAsignac
                 versionSolicitufinaldto.setRequerimientosEspeciales(versionSolicitudfinal.getRequerimientosEspeciales());
                 versionSolicitufinaldto.setFecha(versionSolicitudfinal.getFecha());
                 versionSolicitufinaldto.setUsuario(mapper.map(versionSolicitudfinal.getUsuario(), UsuarioResDTO.class));
-                versionSolicitufinaldto.setSolicitudCama(mapper.map(versionSolicitudfinal.getSolicitudCama(), SolicitudCamaResDTO.class));
+                versionSolicitufinaldto.setSolicitudCama(mapper.map(versionSolicitudfinal.getSolicitudCama(), SolicitudCamaResSinVersionesDTO.class));
                 versionSolicitufinaldto.setMedidasAislamiento(versionSolicitudfinal.getMedidasAislamiento().stream().map(medidasAislamiento -> mapper.map(medidasAislamiento, MedidasAislamientoResDTO.class)).collect(Collectors.toList()));
                 versionSolicitufinaldto.setTitulosFormacionAcademica(versionSolicitudfinal.getTitulosFormacionAcademica().stream().map(titulosFormacionAcacemica -> mapper.map(titulosFormacionAcacemica, TitulosFormacionAcacemicaResDTO.class)).collect(Collectors.toList()));
                 versionSolicitufinaldto.setDiagnosticos(versionSolicitudfinal.getDiagnosticos().stream().map(diagnostico -> mapper.map(diagnostico, DiagnosticoResDTO.class)).collect(Collectors.toList()));
