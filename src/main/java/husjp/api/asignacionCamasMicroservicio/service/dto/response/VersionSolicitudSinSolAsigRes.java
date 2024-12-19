@@ -4,8 +4,9 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
 @Data
-public class VersionSolicitudSinAsignacionDTO {
+public class VersionSolicitudSinSolAsigRes {
     private String id;
     private Boolean requiereAislamiento;
     private Boolean estado;
@@ -14,7 +15,6 @@ public class VersionSolicitudSinAsignacionDTO {
     private String requerimientosEspeciales;
     private LocalDateTime fecha;
     private UsuarioResDTO usuario;
-    private SolicitudCamaResSinVersionesDTO solicitudCama;
     private List<MedidasAislamientoResDTO> medidasAislamiento;
     private List<TitulosFormacionAcacemicaResDTO> titulosFormacionAcademica;
     private List<DiagnosticoResDTO> diagnosticos;
