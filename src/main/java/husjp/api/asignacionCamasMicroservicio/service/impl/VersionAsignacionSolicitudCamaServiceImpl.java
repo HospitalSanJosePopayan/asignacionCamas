@@ -96,6 +96,7 @@ public class VersionAsignacionSolicitudCamaServiceImpl implements VersionAsignac
         //asignacion de cama
         versionAsignacionSolicitudCama.setAsignacionSolicitudCama(asignacionSolicitudCamaService.crearAsignacionCamas(versionAsignacionCamaReqDTO.getAsignacionCama().getIdSolicitudCama(), versionAsignacionCamaReqDTO.getServicio().getId()));
         //asignamos id
+        versionAsignacionSolicitudCama.setEstado(true);
         versionAsignacionSolicitudCama.setId(versionAsignacionSolicitudCama.getAsignacionSolicitudCama().getId()+"-V1");
         return versionAsignacionSolicitudCama;
     }

@@ -82,6 +82,7 @@ public class AsignacionSolicitudCamaServiceImpl implements AsignacionSolicitudCa
         VersionAsignacionSolicitudCama res =  versionAsignacionSolicitudCamaRepository.findUltimaVersionActivaByIdAsignacionCama(id).orElseThrow(()->new EntidadNoExisteException("no existe esta asignacion"));
         res.setMotivo_cancelacion(motivo);
         res.getAsignacionSolicitudCama().setEstado(EstadoSolicitudCama.CANCELADA.toEntity());
+        res.getAsignacionSolicitudCama().getSolicitudCama().setEstado(EstadoSolicitudCama.EN_ESPERA.toEntity());
         versionAsignacionSolicitudCamaRepository.save(res);
         return mapper.map(res, AsignacionCamaReqDTO.class);
     }
