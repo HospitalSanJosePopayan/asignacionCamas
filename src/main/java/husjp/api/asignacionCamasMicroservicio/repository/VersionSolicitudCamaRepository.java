@@ -26,4 +26,15 @@ public interface VersionSolicitudCamaRepository extends JpaRepository<VersionSol
     
     """, nativeQuery = true)
     Optional<VersionSolicitudCama> findEndByIdSolicitudCama(@Param("idSolicitudCama") String idSolicitudCama);
+
+    @Query("SELECT vsc " +
+            "FROM VersionSolicitudCama vsc " +
+            "JOIN vsc.solicitudCama sc " +
+            "JOIN AsignacionSolicitudCama asc2 ON asc2.solicitudCama.id = sc.id " +
+            "JOIN VersionAsignacionSolicitudCama vasc ON vasc.asignacionSolicitudCama.id = asc2.id " +
+            "WHERE vsc.estado = TRUE " +
+            "AND vasc.estado = TRUE " +
+            "AND asc2.id = :asignacionCamaId")
+    Optional<VersionSolicitudCama> findLastVersionByAsignacionCamaId(@Param("asignacionCamaId") String asignacionCamaId);
+
 }

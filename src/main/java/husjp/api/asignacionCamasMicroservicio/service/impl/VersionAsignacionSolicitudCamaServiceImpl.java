@@ -2,22 +2,25 @@ package husjp.api.asignacionCamasMicroservicio.service.impl;
 
 import husjp.api.asignacionCamasMicroservicio.entity.Usuario;
 import husjp.api.asignacionCamasMicroservicio.entity.VersionAsignacionSolicitudCama;
+import husjp.api.asignacionCamasMicroservicio.entity.VersionSolicitudCama;
 import husjp.api.asignacionCamasMicroservicio.entity.enums.EstadoSolicitudCama;
 import husjp.api.asignacionCamasMicroservicio.exceptionsControllers.exceptions.EntidadNoExisteException;
 import husjp.api.asignacionCamasMicroservicio.repository.UsuarioRepository;
 import husjp.api.asignacionCamasMicroservicio.repository.VersionAsignacionSolicitudCamaRepository;
+import husjp.api.asignacionCamasMicroservicio.repository.VersionSolicitudCamaRepository;
 import husjp.api.asignacionCamasMicroservicio.service.AsignacionSolicitudCamaService;
 import husjp.api.asignacionCamasMicroservicio.service.VersionAsignacionSolicitudCamaService;
 import husjp.api.asignacionCamasMicroservicio.service.VersionSolicitudCamaService;
 import husjp.api.asignacionCamasMicroservicio.service.dto.request.VersionAsignacionCamaReqDTO;
 import husjp.api.asignacionCamasMicroservicio.service.dto.request.VersionAsignacionCamaEditDTO;
-import husjp.api.asignacionCamasMicroservicio.service.dto.response.VersionAsignacionCamaResDTO;
+import husjp.api.asignacionCamasMicroservicio.service.dto.response.*;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +31,7 @@ public class VersionAsignacionSolicitudCamaServiceImpl implements VersionAsignac
     private final UsuarioRepository usuarioRepository;
     private ModelMapper mapper;
     private VersionAsignacionSolicitudCamaRepository versionAsignacionSolicitudCamaRepository;
+    private VersionSolicitudCamaRepository versionSolicitudCamaRepository;
     private AsignacionSolicitudCamaService asignacionSolicitudCamaService;
     private VersionSolicitudCamaService versionSolicitudCamaService;
 
@@ -39,6 +43,49 @@ public class VersionAsignacionSolicitudCamaServiceImpl implements VersionAsignac
         VersionAsignacionSolicitudCama r = versionAsignacionSolicitudCamaRepository.save(versionAsignacionSolicitudCama);
 
         return mapper.map(r, VersionAsignacionCamaResDTO.class);
+    }
+
+    @Override
+    public List<VersionAsignacionSolicitudCamaResDTO> getVersionAsignacionSolicitudCamaByBloque(Integer bloqueServicioId) {
+        List<VersionAsignacionSolicitudCama> response = versionAsignacionSolicitudCamaRepository.findVersionAsignacionSolicitudCamaByEstadoAceptadaAndBloqueNative(EstadoSolicitudCama.ACEPTADA.getId(),bloqueServicioId);
+        assert response != null;
+        List<VersionAsignacionSolicitudCamaResDTO> listResponse = new ArrayList<>();
+        for (VersionAsignacionSolicitudCama versionAsigSolCamaEntity : response) {
+            VersionAsignacionSolicitudCamaResDTO versionAsigSolCamaResDTO = new VersionAsignacionSolicitudCamaResDTO();
+            versionAsigSolCamaResDTO.setId(versionAsigSolCamaEntity.getId());
+            versionAsigSolCamaResDTO.setCama(mapper.map(versionAsigSolCamaEntity.getCama(), CamaResDTO.class));
+            versionAsigSolCamaResDTO.setUsuario(mapper.map(versionAsigSolCamaEntity.getUsuario(), UsuarioResDTO.class));
+            versionAsigSolCamaResDTO.setObservacion(versionAsigSolCamaEntity.getObservacion());
+            versionAsigSolCamaResDTO.setEnfermeroOrigen(versionAsigSolCamaEntity.getEnfermero_origen());
+            versionAsigSolCamaResDTO.setEnfermeroDestino(versionAsigSolCamaEntity.getEnfermero_destino());
+            versionAsigSolCamaResDTO.setExtension(versionAsigSolCamaEntity.getExtension());
+            versionAsigSolCamaResDTO.setMotivoCancelacion(versionAsigSolCamaEntity.getMotivo_cancelacion());
+            versionAsigSolCamaResDTO.setFechaCreacion(versionAsigSolCamaEntity.getFechaCreacion());
+            versionAsigSolCamaResDTO.setServicio(mapper.map(versionAsigSolCamaEntity.getServicio(), ServicioResDTO.class));
+            VersionSolicitudCama versionSolicitudfinal = versionSolicitudCamaRepository.findLastVersionByAsignacionCamaId(versionAsigSolCamaEntity.getAsignacionSolicitudCama().getId()).orElseThrow(null);
+            if (versionSolicitudfinal != null) {
+                VersionSolicitudSinAsignacionDTO versionSolicitufinaldto = new VersionSolicitudSinAsignacionDTO();
+                versionSolicitufinaldto.setId(versionSolicitudfinal.getId());
+                versionSolicitufinaldto.setRequiereAislamiento(versionSolicitudfinal.getRequiereAislamiento());
+                versionSolicitufinaldto.setEstado(versionSolicitudfinal.getEstado());
+                versionSolicitufinaldto.setMotivo(versionSolicitudfinal.getMotivo());
+                versionSolicitufinaldto.setAutorizacionFacturacion(versionSolicitudfinal.getAutorizacionFacturacion());
+                versionSolicitufinaldto.setRequerimientosEspeciales(versionSolicitudfinal.getRequerimientosEspeciales());
+                versionSolicitufinaldto.setFecha(versionSolicitudfinal.getFecha());
+                versionSolicitufinaldto.setUsuario(mapper.map(versionSolicitudfinal.getUsuario(), UsuarioResDTO.class));
+                versionSolicitufinaldto.setSolicitudCama(mapper.map(versionSolicitudfinal.getSolicitudCama(), SolicitudCamaResDTO.class));
+                versionSolicitufinaldto.setMedidasAislamiento(versionSolicitudfinal.getMedidasAislamiento().stream().map(medidasAislamiento -> mapper.map(medidasAislamiento, MedidasAislamientoResDTO.class)).collect(Collectors.toList()));
+                versionSolicitufinaldto.setTitulosFormacionAcademica(versionSolicitudfinal.getTitulosFormacionAcademica().stream().map(titulosFormacionAcacemica -> mapper.map(titulosFormacionAcacemica, TitulosFormacionAcacemicaResDTO.class)).collect(Collectors.toList()));
+                versionSolicitufinaldto.setDiagnosticos(versionSolicitudfinal.getDiagnosticos().stream().map(diagnostico -> mapper.map(diagnostico, DiagnosticoResDTO.class)).collect(Collectors.toList()));
+                versionSolicitufinaldto.setServicio(mapper.map(versionSolicitudfinal.getServicio(), ServicioResDTO.class));
+                versionSolicitufinaldto.setCama(mapper.map(versionSolicitudfinal.getCama(), CamaResDTO.class));
+                versionSolicitufinaldto.setBloqueServicio(mapper.map(versionSolicitudfinal.getBloqueServicio(), BloqueServicioResDTO.class));
+                versionAsigSolCamaResDTO.setVersionSolicitud(versionSolicitufinaldto);
+            }
+            listResponse.add(versionAsigSolCamaResDTO);
+        }
+
+        return listResponse;
     }
 
     private VersionAsignacionSolicitudCama crearRespuestaSolicitudCama(VersionAsignacionCamaReqDTO versionAsignacionCamaReqDTO, String username){
@@ -55,23 +102,7 @@ public class VersionAsignacionSolicitudCamaServiceImpl implements VersionAsignac
         return versionAsignacionSolicitudCama;
     }
 
-    @Override
-    public List<VersionAsignacionCamaResDTO> getAllVersionAsignacionCamaActivasEnEsperaByIdBloque(Integer idBloqueServicio) {
-        List<VersionAsignacionSolicitudCama> respuesta = versionAsignacionSolicitudCamaRepository.findByRespuestaSolicitudCamaEstadoActivoPorBloque(idBloqueServicio, EstadoSolicitudCama.ACEPTADA.getId()).orElse(null);
-        assert respuesta != null;
-        //return List.of(mapper.map(respuesta,VersionRespuestaSolicitudCamaResponseDTO.class));
-        List<VersionAsignacionCamaResDTO> res = respuesta.stream()
-                .map(entity -> mapper.map(entity, VersionAsignacionCamaResDTO.class))
-                .collect(Collectors.toList());
 
-        //obtenemos la información de la ultima versión que tiene la solicitud de cama para tener la información completa
-        for (VersionAsignacionCamaResDTO versionAsignacionCamaResDTO : res) {
-            versionAsignacionCamaResDTO.getAsignacionCama().getSolicitudCama().setVersionSolicitud(null);
-            versionAsignacionCamaResDTO.getAsignacionCama().getSolicitudCama().setVersionSolicitud(List.of(versionSolicitudCamaService.findEndVersionByIdSolicitudCama(versionAsignacionCamaResDTO.getAsignacionCama().getSolicitudCama().getId())));
-        }
-
-        return res;
-    }
 
     @Override
     public VersionAsignacionCamaResDTO editarAsignacion(String id, VersionAsignacionCamaEditDTO versionAsignacionCamaEditDTO, String username) {
