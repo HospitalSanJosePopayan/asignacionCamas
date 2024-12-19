@@ -68,6 +68,7 @@ public class VersionSolicitudCamaServiceImpl implements VersionSolicitudCamaServ
         versionSolicitudCama.getSolicitudCama().setId(String.valueOf(codigoSolicitudCama));  // Asignar el id manualmente
         //Actualizamos la fecha de la solicitud de cama y version de solicitud
         versionSolicitudCama.getSolicitudCama().setFechaInicial(LocalDateTime.now());
+        versionSolicitudCama.setEstado(true);
         versionSolicitudCama.setId(codigoSolicitudCama+"-V1");  // Asignar el id manualmente
         //buscamos al paciente si el paciente no esta se crea_todo sin ninguna otra resticcion
 
