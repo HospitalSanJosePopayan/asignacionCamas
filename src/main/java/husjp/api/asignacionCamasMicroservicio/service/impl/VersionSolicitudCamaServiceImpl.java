@@ -99,7 +99,7 @@ public class VersionSolicitudCamaServiceImpl implements VersionSolicitudCamaServ
             verSolResDTO.setCama(modelMapper.map(verSolCamaEntity.getCama(), CamaResDTO.class));
             verSolResDTO.setBloqueServicio(modelMapper.map(verSolCamaEntity.getBloqueServicio(), BloqueServicioResDTO.class));
 
-            VersionAsignacionSolicitudCama verAsigSolCamaEntity = versionAsignacionSolicitudCamaRepository.findActiveAsignacionCamaByIdSolicitudCamaByEstadoSolicitudCamaByEstadoVersionSolicitudCama(verSolCamaEntity.getSolicitudCama().getId(), EstadoSolicitudCama.ACEPTADA.getId()).orElse(null);
+            VersionAsignacionSolicitudCama verAsigSolCamaEntity = versionAsignacionSolicitudCamaRepository.findActiveAsignacionCamaByIdSolicitudCamaByEstadoSolicitudCamaByEstadoVersionSolicitudCama(verSolCamaEntity.getSolicitudCama().getId(), EstadoSolicitudCama.CANCELADA.getId()).orElse(null);
             if(verAsigSolCamaEntity != null){
                 AsignacionCamaSinSolCamaResDTO asigCamaResDTO = new AsignacionCamaSinSolCamaResDTO();
                 asigCamaResDTO.setId(verAsigSolCamaEntity.getAsignacionSolicitudCama().getId());
