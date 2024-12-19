@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 @Data
 public class VersionAsignacionSolicitudCamaResDTO {
     private String id;
-    private AsignacionCamaResDTOSinVersionesSolDTO asignacionCama;
+    private AsignacionCamaResVersionDTO asignacionCama;
     private CamaResDTO cama;
     private UsuarioResDTO usuario;
     private String observacion;
@@ -16,5 +16,4 @@ public class VersionAsignacionSolicitudCamaResDTO {
     private String motivoCancelacion;
     private LocalDateTime fechaCreacion;
     private ServicioResDTO servicio;
-    private VersionSolicitudSinAsignacionDTO versionSolicitud;
 }

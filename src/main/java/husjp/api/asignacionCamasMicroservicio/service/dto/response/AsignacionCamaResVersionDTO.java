@@ -5,9 +5,10 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class AsignacionCamaResDTOSinVersionesSolDTO {
+public class AsignacionCamaResVersionDTO {
+
     private String id;
     private EstadoSolicitudCamaResDTO estado;
     private LocalDateTime fechaInicial;
-    private SolicitudCamaResSinVersionesDTO solicitudCama;
+    private SolicitudCamaResVersionDTO solicitudCama;
 }
