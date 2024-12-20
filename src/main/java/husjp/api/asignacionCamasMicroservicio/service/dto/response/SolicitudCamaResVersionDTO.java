@@ -9,6 +9,6 @@ public class SolicitudCamaResVersionDTO {
     private String fechaInicial;
     private IngresoResDTO ingreso;
     private String motivoCancelacion;
-    private   VersionSolicitudSinSolAsigRes versionSolicitud;
+    private VersionSolicitudSinSolAsigResDTO versionSolicitud;
     
 }
