@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-public class VersionSolicitudSinSolAsigRes {
+public class VersionSolicitudSinSolAsigResDTO {
     private String id;
     private Boolean requiereAislamiento;
     private Boolean estado;

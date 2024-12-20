@@ -12,6 +12,6 @@ public interface VersionAsignacionSolicitudCamaService {
 
     VersionAsignacionCamaResDTO guardarVersionAsignacionCama(VersionAsignacionCamaReqDTO versionAsignacionCamaReqDTO, String username);
     List<VersionAsignacionSolicitudCamaResDTO> getVersionAsignacionSolicitudCamaByBloque(Integer bloqueServicioId);
-    VersionAsignacionCamaResDTO editarAsignacion(String id, VersionAsignacionCamaEditDTO versionAsignacionCamaEditDTO, String username);
+    VersionAsignacionSolicitudCamaResDTO editarAsignacion(String id, VersionAsignacionCamaEditDTO versionAsignacionCamaEditDTO, String username);
 
 }

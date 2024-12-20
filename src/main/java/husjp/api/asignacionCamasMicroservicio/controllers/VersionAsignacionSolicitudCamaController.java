@@ -31,8 +31,8 @@ public class VersionAsignacionSolicitudCamaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<VersionAsignacionCamaResDTO> editarVersionAsignacion(@PathVariable("id")String idVersionAsignacion, @RequestBody VersionAsignacionCamaEditDTO versionAsignacionCamaEditDTO, Principal principal){
-        VersionAsignacionCamaResDTO responseDTO = versionAsignacionSolicitudCamaService.editarAsignacion(idVersionAsignacion, versionAsignacionCamaEditDTO, principal.getName());
+    public ResponseEntity<VersionAsignacionSolicitudCamaResDTO> editarVersionAsignacion(@PathVariable("id")String idVersionAsignacion, @RequestBody VersionAsignacionCamaEditDTO versionAsignacionCamaEditDTO, Principal principal){
+        VersionAsignacionSolicitudCamaResDTO responseDTO = versionAsignacionSolicitudCamaService.editarAsignacion(idVersionAsignacion, versionAsignacionCamaEditDTO, principal.getName());
         return ResponseEntity.ok(responseDTO);
     }
 
