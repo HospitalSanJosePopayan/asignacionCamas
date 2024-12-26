@@ -30,6 +30,7 @@ public class SecurityConfig {
                     authorizeRequests.requestMatchers(AUTH_WHITLIST).permitAll();
                     //ejemplo para proteger un endpoint
                     authorizeRequests.requestMatchers(HttpMethod.GET, "ejemplo/prueba").hasAnyRole("ADMIN");
+                    authorizeRequests.requestMatchers(HttpMethod.GET, "ejemplo/fecha").hasAnyRole("ADMIN","CAMAS_COORD_INTERNACION");
                     // Solicitud Cama
                     authorizeRequests.requestMatchers(HttpMethod.PUT, "solicitudCama/cancelar/{idSolicitudCama}").hasAnyRole("ADMIN","CAMAS_COORD_INTERNACION");
                     //version Solicitud Cama

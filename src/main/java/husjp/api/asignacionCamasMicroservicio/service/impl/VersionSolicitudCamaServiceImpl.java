@@ -160,6 +160,7 @@ public class VersionSolicitudCamaServiceImpl implements VersionSolicitudCamaServ
         nuevaVersion = modelMapper.map(versionSolicitudCamaEditDTO, VersionSolicitudCama.class);
         if (nuevaVersion.getRequiereAislamiento() == false) {
             nuevaVersion.setMedidasAislamiento(null);
+            nuevaVersion.setMotivo(null);
         }
         nuevaVersion.setCama(versionActual.getCama());
         nuevaVersion.setFecha(LocalDateTime.now());
