@@ -18,7 +18,9 @@ public class VersionSolicitudCamaReqDTO {
     private String requerimientosEspeciales;
     private SolicitudCamaReqDTO solicitudCama;
     private List<MedidasAislamientoReqDTO> medidasAislamiento;
+    @NotNull(message = "El Campo Especialidad Tratante no puede ser nulo ")
     private List<EspecialidadesDTO> titulosFormacionAcademica;
+    @NotNull(message = "El Campo de Diagnosticos no Puede Ser nulo")
     private List<DiagnosticoReqDTO> diagnosticos;
     private CamaReqDTO cama;
     @NotNull(message = "El campo bloqueServicio no puede ser nulo")
