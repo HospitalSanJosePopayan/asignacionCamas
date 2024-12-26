@@ -25,13 +25,13 @@ public interface VersionAsignacionSolicitudCamaRepository extends JpaRepository<
     Optional<VersionAsignacionSolicitudCama> findUltimaVersionActivaByIdAsignacionCama(@Param("asignacionCamaId") String asignacionCamaId);
 
     @Query(value = """
-        select vasc.*
-            from version_asignacion_solicitud_cama vasc
-            inner join asignacion_solicitud_cama asc2 on asc2.id_asignacion_cama = vasc.asignacion_cama_id
-            where asc2.estado_solicitud_cama_id = :estadoSolicitudCama
-        and
-            asc2.solicitud_cama_id  = :idSolicitudCama and
-        vasc.estado = true 
+            select vasc.*
+                    from version_asignacion_solicitud_cama vasc
+                    inner join asignacion_solicitud_cama asc2 on asc2.id_asignacion_cama = vasc.asignacion_cama_id
+                    where asc2.estado_solicitud_cama_id = :estadoSolicitudCama
+                and
+                    asc2.solicitud_cama_id  = :idSolicitudCama and vasc.estado = true\s
+                 order by vasc.fecha_creacion desc limit 1
         """, nativeQuery = true)
     Optional<VersionAsignacionSolicitudCama> findActiveAsignacionCamaByIdSolicitudCamaByEstadoSolicitudCamaByEstadoVersionSolicitudCama(
             @Param("idSolicitudCama") String idSolicitudCama,
