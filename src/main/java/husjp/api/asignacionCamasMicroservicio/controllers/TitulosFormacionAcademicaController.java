@@ -1,7 +1,7 @@
 package husjp.api.asignacionCamasMicroservicio.controllers;
 
 import husjp.api.asignacionCamasMicroservicio.service.TitulosFormacionAcademicaService;
-import husjp.api.asignacionCamasMicroservicio.service.dto.response.TitulosFormacionAcacemicaResponseDTO;
+import husjp.api.asignacionCamasMicroservicio.service.dto.response.TitulosFormacionAcacemicaResDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -20,7 +20,7 @@ public class TitulosFormacionAcademicaController {
      private TitulosFormacionAcademicaService titulosFormacionAcademicaService;
 
      @GetMapping("/especialidad")
-     public ResponseEntity<List<TitulosFormacionAcacemicaResponseDTO>> obtenerTitulosDeEspecialidades() {
+     public ResponseEntity<List<TitulosFormacionAcacemicaResDTO>> obtenerTitulosDeEspecialidades() {
         return ResponseEntity.ok(titulosFormacionAcademicaService.findAllByEspecialidad());
      }
 }

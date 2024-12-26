@@ -27,27 +27,33 @@ public class SecurityConfig {
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorizeRequests -> {
-                        authorizeRequests.requestMatchers(AUTH_WHITLIST).permitAll();
-                        //ejemplo para proteger un endpoint
-                        authorizeRequests.requestMatchers(HttpMethod.GET, "ejemplo/prueba").hasAnyRole("ADMIN");
-                        authorizeRequests.requestMatchers(HttpMethod.POST, "versionSolicitudCama").hasAnyRole("ADMIN");
-                        authorizeRequests.requestMatchers(HttpMethod.GET, "versionSolicitudCama/active").hasAnyRole("ADMIN");
-                        authorizeRequests.requestMatchers(HttpMethod.GET, "titulosFormacionAcademica/especialidad").hasAnyRole("ADMIN");
-                        authorizeRequests.requestMatchers(HttpMethod.GET, "medidasAislamiento").hasAnyRole("ADMIN");
-                        authorizeRequests.requestMatchers(HttpMethod.GET, "diagnostico/{idOrName}").hasAnyRole("ADMIN");
-                        authorizeRequests.requestMatchers(HttpMethod.PUT, "solicitudCama/cancelar/{idSolicitudCama}").hasAnyRole("ADMIN");
-                        authorizeRequests.requestMatchers(HttpMethod.GET, "bloque-servicio").hasAnyRole("ADMIN");
-                        authorizeRequests.requestMatchers(HttpMethod.GET, "bloque-servicio/servicios/{idBloque}").hasAnyRole("ADMIN");
-                        authorizeRequests.requestMatchers(HttpMethod.POST, "asignacionVersionSolicitudCama").hasAnyRole("ADMIN");
-                        authorizeRequests.requestMatchers(HttpMethod.GET, "cama/{idServicio}").hasAnyRole("ADMIN");
-                        authorizeRequests.requestMatchers(HttpMethod.GET, "servicio/{idBloqueServicio}").hasAnyRole("ADMIN");
-                        authorizeRequests.requestMatchers(HttpMethod.PUT, "versionSolicitudCama/{id}").hasAnyRole("ADMIN");
-                        authorizeRequests.requestMatchers(HttpMethod.PUT,"versionSolicitudCama/{id}/estadoAutorizacionFacturacion").hasAnyRole("ADMIN");
-                        authorizeRequests.requestMatchers(HttpMethod.PUT,"asignacionVersionSolicitudCama").hasAnyRole("ADMIN");
-                        authorizeRequests.requestMatchers(HttpMethod.PUT,"asignacionVersionSolicitudCama/{id}/estadoFinalizado").hasAnyRole("ADMIN");
-                        authorizeRequests.requestMatchers(HttpMethod.PUT,"asignacionVersionSolicitudCama/{id}/estadoCancelado").hasAnyRole("ADMIN");
-
-                        authorizeRequests.anyRequest().authenticated();
+                    authorizeRequests.requestMatchers(AUTH_WHITLIST).permitAll();
+                    //ejemplo para proteger un endpoint
+                    authorizeRequests.requestMatchers(HttpMethod.GET, "ejemplo/prueba").hasAnyRole("ADMIN");
+                    // Solicitud Cama
+                    authorizeRequests.requestMatchers(HttpMethod.PUT, "solicitudCama/cancelar/{idSolicitudCama}").hasAnyRole("ADMIN","CAMAS_COORD_INTERNACION");
+                    //version Solicitud Cama
+                    authorizeRequests.requestMatchers(HttpMethod.GET, "versionSolicitudCama/active").hasAnyRole("ADMIN","CAMAS_COORD_INTERNACION","CAMAS_ENFERMERO_INTERNACION","CAMAS_ENFERMERO_URGENCIAS","CAMAS_FACTURACION","CAMAS_MEDICO_ESPECIALISTA");
+                    authorizeRequests.requestMatchers(HttpMethod.POST, "versionSolicitudCama").hasAnyRole("ADMIN","CAMAS_COORD_INTERNACION","CAMAS_ENFERMERO_INTERNACION","CAMAS_MEDICO_ESPECIALISTA");
+                    authorizeRequests.requestMatchers(HttpMethod.PUT, "versionSolicitudCama/{id}").hasAnyRole("ADMIN","CAMAS_COORD_INTERNACION");
+                    authorizeRequests.requestMatchers(HttpMethod.PUT, "versionSolicitudCama/{id}/estadoSolicitudCancelada").hasAnyRole("ADMIN","CAMAS_COORD_INTERNACION");
+                    authorizeRequests.requestMatchers(HttpMethod.PUT,"versionSolicitudCama/{id}/estadoAutorizacionFacturacion").hasAnyRole("ADMIN","CAMAS_COORD_INTERNACION","CAMAS_FACTURACION");
+                    //Asignacion Cama
+                    authorizeRequests.requestMatchers(HttpMethod.PUT,"asignacionSolicitudCama/{id}/estadoFinalizado").hasAnyRole("ADMIN","CAMAS_COORD_INTERNACION");
+                    authorizeRequests.requestMatchers(HttpMethod.PUT,"asignacionSolicitudCama/{id}/cancelar/motivo/{idVersionAsignacionCama}").hasAnyRole("ADMIN","CAMAS_COORD_INTERNACION");
+                    //Version Asignacion Solicitud Cama
+                    authorizeRequests.requestMatchers(HttpMethod.GET, "asignacionVersionSolicitudCama/active/{idBloqueServicio}").hasAnyRole("ADMIN","CAMAS_COORD_INTERNACION","CAMAS_ENFERMERO_INTERNACION","CAMAS_ENFERMERO_URGENCIAS");
+                    authorizeRequests.requestMatchers(HttpMethod.PUT,"asignacionVersionSolicitudCama").hasAnyRole("ADMIN","CAMAS_COORD_INTERNACION");
+                    authorizeRequests.requestMatchers(HttpMethod.POST, "asignacionVersionSolicitudCama").hasAnyRole("ADMIN","CAMAS_COORD_INTERNACION","CAMAS_ENFERMERO_INTERNACION");
+                    //
+                    authorizeRequests.requestMatchers(HttpMethod.GET, "titulosFormacionAcademica/especialidad").hasAnyRole("ADMIN","CAMAS_COORD_INTERNACION","CAMAS_ENFERMERO_INTERNACION","CAMAS_ENFERMERO_URGENCIAS","CAMAS_FACTURACION","CAMAS_MEDICO_ESPECIALISTA");;
+                    authorizeRequests.requestMatchers(HttpMethod.GET, "medidasAislamiento").hasAnyRole("ADMIN","CAMAS_COORD_INTERNACION","CAMAS_ENFERMERO_INTERNACION","CAMAS_ENFERMERO_URGENCIAS","CAMAS_FACTURACION","CAMAS_MEDICO_ESPECIALISTA");;
+                    authorizeRequests.requestMatchers(HttpMethod.GET, "diagnostico/{idOrName}").hasAnyRole("ADMIN","CAMAS_COORD_INTERNACION","CAMAS_ENFERMERO_INTERNACION","CAMAS_ENFERMERO_URGENCIAS","CAMAS_FACTURACION","CAMAS_MEDICO_ESPECIALISTA");;
+                    authorizeRequests.requestMatchers(HttpMethod.GET, "bloque-servicio").hasAnyRole("ADMIN","CAMAS_COORD_INTERNACION","CAMAS_ENFERMERO_INTERNACION","CAMAS_ENFERMERO_URGENCIAS","CAMAS_FACTURACION","CAMAS_MEDICO_ESPECIALISTA");;
+                    authorizeRequests.requestMatchers(HttpMethod.GET, "bloque-servicio/servicios/{idBloque}").hasAnyRole("ADMIN","CAMAS_COORD_INTERNACION","CAMAS_ENFERMERO_INTERNACION","CAMAS_ENFERMERO_URGENCIAS","CAMAS_FACTURACION","CAMAS_MEDICO_ESPECIALISTA");;
+                    authorizeRequests.requestMatchers(HttpMethod.GET, "cama/{idServicio}").hasAnyRole("ADMIN","CAMAS_COORD_INTERNACION","CAMAS_ENFERMERO_INTERNACION","CAMAS_ENFERMERO_URGENCIAS","CAMAS_FACTURACION","CAMAS_MEDICO_ESPECIALISTA");;
+                    authorizeRequests.requestMatchers(HttpMethod.GET, "servicio/{idBloqueServicio}").hasAnyRole("ADMIN","CAMAS_COORD_INTERNACION","CAMAS_ENFERMERO_INTERNACION","CAMAS_ENFERMERO_URGENCIAS","CAMAS_FACTURACION","CAMAS_MEDICO_ESPECIALISTA");;
+                    authorizeRequests.anyRequest().authenticated();
                     }
                 )
                 .build();

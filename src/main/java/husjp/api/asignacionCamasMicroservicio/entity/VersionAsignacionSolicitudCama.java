@@ -15,7 +15,7 @@ public class VersionAsignacionSolicitudCama {
     private String id;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "asignacion_cama_id", foreignKey = @ForeignKey(name = "fk_versionAsignacionCama_asignacionCama"))
-    private AsignacionCama asignacionCama;
+    private AsignacionSolicitudCama asignacionSolicitudCama;
     @ManyToOne
     @JoinColumn(name = "cama_id", foreignKey = @ForeignKey(name = "fk_versionAsignacionCama_cama"))
     private Cama cama;
@@ -29,6 +29,8 @@ public class VersionAsignacionSolicitudCama {
     private String motivo_cancelacion;
     @Column(name = "fecha_creacion", nullable = false)
     private LocalDateTime fechaCreacion;
+    @Column(name = "estado", nullable = false)
+    private Boolean estado;
     @ManyToOne
     @JoinColumn(name = "servicio_id", foreignKey = @ForeignKey(name = "fk_respuestaSolicitudCama_Servicio"))
     private Servicio servicio;

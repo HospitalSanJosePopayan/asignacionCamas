@@ -23,6 +23,8 @@ public class VersionSolicitudCama {
     private String autorizacionFacturacion;
     @Column(nullable = false)
     private LocalDateTime fecha;
+    @Column(name = "estado", nullable = false)
+    private Boolean estado;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "usuario_id", nullable = false, foreignKey = @ForeignKey(name = "fk_versionSolicitudCama_usuario"))
     private Usuario usuario;

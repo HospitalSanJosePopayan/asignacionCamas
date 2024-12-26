@@ -1,7 +1,7 @@
 package husjp.api.asignacionCamasMicroservicio.controllers;
 
 import husjp.api.asignacionCamasMicroservicio.service.CamaService;
-import husjp.api.asignacionCamasMicroservicio.service.dto.response.CamaResponseSimpleDTO;
+import husjp.api.asignacionCamasMicroservicio.service.dto.response.CamaSimpleResDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +17,7 @@ public class CamaController {
     private CamaService camaService;
 
     @GetMapping("/{idServicio}")
-    public ResponseEntity<List<CamaResponseSimpleDTO>> findAllByServicioId(@PathVariable Integer idServicio) {
+    public ResponseEntity<List<CamaSimpleResDTO>> findAllByServicioId(@PathVariable Integer idServicio) {
         return ResponseEntity.ok( camaService.findAllByServicioId(idServicio));
     }
 }

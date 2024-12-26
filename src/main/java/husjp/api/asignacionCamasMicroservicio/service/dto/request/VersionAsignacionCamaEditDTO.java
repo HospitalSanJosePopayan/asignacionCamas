@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 @Data
 public class VersionAsignacionCamaEditDTO {
 
-    private CamaDTO cama;
+    private CamaReqDTO cama;
     private String observacion;
     private String enfermero_origen;
     private String enfermero_destino;
     private String extension;
-    private ServicioDTO servicio;
+    private ServicioReqDTO servicio;
 
 }

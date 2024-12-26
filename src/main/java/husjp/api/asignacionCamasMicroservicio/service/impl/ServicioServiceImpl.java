@@ -4,7 +4,7 @@ import husjp.api.asignacionCamasMicroservicio.entity.Servicio;
 import husjp.api.asignacionCamasMicroservicio.exceptionsControllers.exceptions.EntidadNoExisteException;
 import husjp.api.asignacionCamasMicroservicio.repository.ServicioRepository;
 import husjp.api.asignacionCamasMicroservicio.service.ServicioService;
-import husjp.api.asignacionCamasMicroservicio.service.dto.response.ServicioResponseDTO;
+import husjp.api.asignacionCamasMicroservicio.service.dto.response.ServicioResDTO;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -25,9 +25,9 @@ public class ServicioServiceImpl implements ServicioService {
     }
 
     @Override
-    public List<ServicioResponseDTO> findAllByBloqueServicioId(Integer idBloqueServicio) {
+    public List<ServicioResDTO> findAllByBloqueServicioId(Integer idBloqueServicio) {
         return servicioRepository.findByBloqueServicio_Id(idBloqueServicio).stream()
-                .map(entity -> mapper.map(entity, ServicioResponseDTO.class))
+                .map(entity -> mapper.map(entity, ServicioResDTO.class))
                 .collect(Collectors.toList());
     }
 
