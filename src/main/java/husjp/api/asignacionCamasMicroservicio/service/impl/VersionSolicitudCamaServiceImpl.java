@@ -100,7 +100,7 @@ public class VersionSolicitudCamaServiceImpl implements VersionSolicitudCamaServ
             verSolResDTO.setCama(modelMapper.map(verSolCamaEntity.getCama(), CamaResDTO.class));
             verSolResDTO.setBloqueServicio(modelMapper.map(verSolCamaEntity.getBloqueServicio(), BloqueServicioResDTO.class));
 
-            VersionAsignacionSolicitudCama verAsigSolCamaEntity = versionAsignacionSolicitudCamaRepository.findActiveAsignacionCamaByIdSolicitudCamaByEstadoSolicitudCamaByEstadoVersionSolicitudCama(verSolCamaEntity.getSolicitudCama().getId(), EstadoSolicitudCama.ACEPTADA.getId()).orElse(null);
+            VersionAsignacionSolicitudCama verAsigSolCamaEntity = versionAsignacionSolicitudCamaRepository.findActiveAsignacionCamaByIdSolicitudCamaByEstadoSolicitudCamaByEstadoVersionSolicitudCama(verSolCamaEntity.getSolicitudCama().getId(), EstadoSolicitudCama.CANCELADA.getId()).orElse(null);
             if(verAsigSolCamaEntity != null){
                 AsignacionCamaSinSolCamaResDTO asigCamaResDTO = new AsignacionCamaSinSolCamaResDTO();
                 asigCamaResDTO.setId(verAsigSolCamaEntity.getAsignacionSolicitudCama().getId());
@@ -164,7 +164,6 @@ public class VersionSolicitudCamaServiceImpl implements VersionSolicitudCamaServ
         nuevaVersion.setCama(versionActual.getCama());
         nuevaVersion.setFecha(LocalDateTime.now());
         nuevaVersion.setServicio(versionActual.getServicio());
-        nuevaVersion.setMotivo(versionActual.getMotivo());
         nuevaVersion.setAutorizacionFacturacion(versionActual.getAutorizacionFacturacion());
         nuevaVersion.setUsuario(usuarioRepository.findByDocumento(username).orElse(null));
         nuevaVersion.setSolicitudCama(versionActual.getSolicitudCama());
