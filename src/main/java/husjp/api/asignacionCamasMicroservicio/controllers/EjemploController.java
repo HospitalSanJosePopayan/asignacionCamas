@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @AllArgsConstructor
@@ -24,5 +25,10 @@ public class EjemploController {
     @GetMapping()
     public ResponseEntity<List<EjemploDTO>> getAllEjemplo(){
         return ResponseEntity.ok(ejemploService.getAllEjemplo());
+    }
+    @GetMapping("/fecha")
+    public ResponseEntity<LocalDateTime> getFecha() {
+        LocalDateTime fecha = LocalDateTime.now();
+        return ResponseEntity.ok(fecha);
     }
 }
