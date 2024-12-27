@@ -53,8 +53,8 @@ public class VersionAsignacionSolicitudCamaServiceImpl implements VersionAsignac
             versionAsigSolCamaResDTO.setCama(mapper.map(versionAsigSolCamaEntity.getCama(), CamaResDTO.class));
             versionAsigSolCamaResDTO.setUsuario(mapper.map(versionAsigSolCamaEntity.getUsuario(), UsuarioResDTO.class));
             versionAsigSolCamaResDTO.setObservacion(versionAsigSolCamaEntity.getObservacion());
-            versionAsigSolCamaResDTO.setEnfermeroOrigen(versionAsigSolCamaEntity.getEnfermero_origen());
-            versionAsigSolCamaResDTO.setEnfermeroDestino(versionAsigSolCamaEntity.getEnfermero_destino());
+            versionAsigSolCamaResDTO.setEnfermeroOrigen(versionAsigSolCamaEntity.getEnfermeroOrigen());
+            versionAsigSolCamaResDTO.setEnfermeroDestino(versionAsigSolCamaEntity.getEnfermeroDestino());
             versionAsigSolCamaResDTO.setExtension(versionAsigSolCamaEntity.getExtension());
             versionAsigSolCamaResDTO.setMotivoCancelacion(versionAsigSolCamaEntity.getMotivo_cancelacion());
             versionAsigSolCamaResDTO.setFechaCreacion(versionAsigSolCamaEntity.getFechaCreacion());
@@ -118,8 +118,8 @@ public class VersionAsignacionSolicitudCamaServiceImpl implements VersionAsignac
         versionAsignacionSolicitudCamaResDTO.setCama(mapper.map(editarAsignacion.getCama(), CamaResDTO.class));
         versionAsignacionSolicitudCamaResDTO.setUsuario(mapper.map(editarAsignacion.getUsuario(),UsuarioResDTO.class));
         versionAsignacionSolicitudCamaResDTO.setObservacion(editarAsignacion.getObservacion());
-        versionAsignacionSolicitudCamaResDTO.setEnfermeroOrigen(editarAsignacion.getEnfermero_origen());
-        versionAsignacionSolicitudCamaResDTO.setEnfermeroDestino(editarAsignacion.getEnfermero_destino());
+        versionAsignacionSolicitudCamaResDTO.setEnfermeroOrigen(editarAsignacion.getEnfermeroOrigen());
+        versionAsignacionSolicitudCamaResDTO.setEnfermeroDestino(editarAsignacion.getEnfermeroDestino());
         versionAsignacionSolicitudCamaResDTO.setExtension(editarAsignacion.getExtension());
         versionAsignacionSolicitudCamaResDTO.setMotivoCancelacion(editarAsignacion.getMotivo_cancelacion());
         versionAsignacionSolicitudCamaResDTO.setFechaCreacion(LocalDateTime.now());
