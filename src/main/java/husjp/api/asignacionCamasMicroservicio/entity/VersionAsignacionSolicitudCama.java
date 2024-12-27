@@ -23,8 +23,10 @@ public class VersionAsignacionSolicitudCama {
     @JoinColumn(name = "usuario_id", foreignKey = @ForeignKey(name = "fk_versionAsignacionCama_usuario"))
     private Usuario usuario;
     private String observacion;
-    private String enfermero_origen;
-    private String enfermero_destino;
+    @Column(name="enfermero_origen")
+    private String enfermeroOrigen;
+    @Column(name="enfermero_destino")
+    private String enfermeroDestino;
     private String extension;
     private String motivo_cancelacion;
     @Column(name = "fecha_creacion", nullable = false)
