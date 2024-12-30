@@ -72,6 +72,7 @@ public class AsignacionSolicitudCamaServiceImpl implements AsignacionSolicitudCa
         AsignacionSolicitudCama asignacionSolicitudCama = asignacionSolicitudCamaRepository.findById(id).orElseThrow(()->new EntidadNoExisteException("no existe esta asignacion"));
         asignacionSolicitudCama.setEstado(EstadoSolicitudCama.FINALIZADA.toEntity());
         asignacionSolicitudCama.getSolicitudCama().setEstado(EstadoSolicitudCama.FINALIZADA.toEntity());
+        asignacionSolicitudCama.setFechaFinal(LocalDateTime.now());
         asignacionSolicitudCamaRepository.save(asignacionSolicitudCama);
         return  mapper.map(asignacionSolicitudCama, AsignacionCamaReqDTO.class);
 

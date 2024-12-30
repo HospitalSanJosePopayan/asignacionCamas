@@ -14,6 +14,7 @@ public class AsignacionCamaResDTO {
     private String id;
     private EstadoSolicitudCamaResDTO estado;
     private LocalDateTime fechaInicial;
+    private  LocalDateTime fechaFinal;
     private SolicitudCamaResDTO solicitudCama;
 
 }
