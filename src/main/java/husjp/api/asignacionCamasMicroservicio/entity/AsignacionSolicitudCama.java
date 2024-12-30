@@ -18,6 +18,8 @@ public class AsignacionSolicitudCama {
     private EstadoSolicitudCama estado;
     @Column(name = "fecha_inicial")
     private LocalDateTime fechaInicial;
+    @Column(name = "fecha_final")
+    private LocalDateTime fechaFinal;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "solicitud_cama_id", foreignKey = @ForeignKey(name = "fk_asignacionCama_solicitud_cama"))
     private SolicitudCama solicitudCama;
