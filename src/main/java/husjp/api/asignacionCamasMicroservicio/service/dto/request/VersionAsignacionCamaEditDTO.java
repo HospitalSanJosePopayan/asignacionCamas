@@ -11,8 +11,8 @@ public class VersionAsignacionCamaEditDTO {
 
     private CamaReqDTO cama;
     private String observacion;
-    private String enfermero_origen;
-    private String enfermero_destino;
+    private String enfermeroOrigen;
+    private String enfermeroDestino;
     private String extension;
     private ServicioReqDTO servicio;
 
