@@ -51,7 +51,11 @@ public class SolicitudCamaServiceImpl implements SolicitudCamaService {
         String [] servicioSplit = servicio.trim().split(" ");
         StringBuilder codigoCamaFormat = new StringBuilder();
         for(String s : servicioSplit){
-            codigoCamaFormat.append(' ').append(s,0,3);
+            if(s.length() >= 3){
+                codigoCamaFormat.append(' ').append(s,0,3);
+            }else if (!s.equals("DE")){
+                codigoCamaFormat.append(' ').append(s);
+            }
         }
         codigoCamaFormat = new StringBuilder(codigoCamaFormat.toString().trim());
         SolicitudCama solicitudCama = findLastIdBySiglas(codigoCamaFormat.toString());
