@@ -115,8 +115,7 @@ public class VersionSolicitudCamaServiceImpl implements VersionSolicitudCamaServ
 
     @Override
     public VersionSolicitudResDTO editarVersionSolicitudCama(String id, VersionSolicitudCamaEditDTO versionSolicitudCamaEditDTO, String username) {
-        VersionSolicitudCama versionActual = versionSolicitudCamaRepository.findById(id)
-                .orElseThrow(() -> new EntidadNoExisteException("Solicitud no encontrada"));
+        VersionSolicitudCama versionActual = versionSolicitudCamaRepository.findById(id).orElseThrow(() -> new EntidadNoExisteException("Solicitud no encontrada"));
         if(!hayCambios(versionActual,versionSolicitudCamaEditDTO)){
             throw  new EntidadSinCambiosException("NO SE  REALIZO NINGUN CAMBIO EN ESTA VERSION");
         }
@@ -152,6 +151,12 @@ public class VersionSolicitudCamaServiceImpl implements VersionSolicitudCamaServ
         versionSolicitudCama.getSolicitudCama().setEstado(EstadoSolicitudCama.CANCELADA.toEntity());
         versionSolicitudCamaRepository.save(versionSolicitudCama);
         return  modelMapper.map(versionSolicitudCama, VersionSolicitudResDTO.class);
+    }
+
+    @Override
+    public VersionSolicitudResDTO obtenerVerionSolicitudCamaActivaPorIngreso(String ingreso) {
+        VersionSolicitudCama versionSolicitudCama =  versionSolicitudCamaRepository.buscarActivaOEnEsperaByIngreso(ingreso).orElseThrow(() -> new EntidadNoExisteException("no se encotnro solicitud de cama con ingreso "+ingreso));
+        return modelMapper.map(versionSolicitudCama, VersionSolicitudResDTO.class);
     }
 
     private VersionSolicitudCama prepararNuevaVersion(VersionSolicitudCama versionActual, VersionSolicitudCamaEditDTO versionSolicitudCamaEditDTO, String username) {
@@ -236,9 +241,9 @@ public class VersionSolicitudCamaServiceImpl implements VersionSolicitudCamaServ
         return valor1.trim().equals(valor2.trim());
     }
     private String incrementarVersionId(String currentId) {
-        if (!currentId.matches("^[A-Z]+(?: [A-Z]+)?-\\d+-V\\d+$")) {
-            throw new IllegalArgumentException("Formato inválido del ID: " + currentId);
-        }
+//        if (!currentId.matches("^[A-Z]+(?: [A-Z]+)?-\\d+-V\\d+$")) {
+//            throw new IllegalArgumentException("Formato inválido del ID: " + currentId);
+//        }
         String[] partesId = currentId.split("-V");
         String parteFija = partesId[0];
         int numeroVersion = Integer.parseInt(partesId[1]);
