@@ -49,4 +49,9 @@ public class VersionSolicitudCamaRestController {
         return  ResponseEntity.ok(versionSolicitudResDTO);
     }
 
+    @GetMapping("/{ingreso}")
+    private ResponseEntity<VersionSolicitudResDTO> getVersionSolicitudCamaActivaPorDocumento(@PathVariable String ingreso){
+        return ResponseEntity.ok(versionSolicitudCamaService.obtenerVerionSolicitudCamaActivaPorIngreso(ingreso));
+    }
+
 }

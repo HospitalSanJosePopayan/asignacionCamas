@@ -14,5 +14,5 @@ public interface VersionSolicitudCamaService {
     VersionSolicitudResDTO EstadoSolicitud(String id);
     VersionSolicitudResDTO findEndVersionByIdSolicitudCama(String id);
     VersionSolicitudResDTO CambiarEstadoCanceladaSolicitud(String id, String motivoCancelar);
-
+    VersionSolicitudResDTO obtenerVerionSolicitudCamaActivaPorIngreso(String ingreso);
 }
