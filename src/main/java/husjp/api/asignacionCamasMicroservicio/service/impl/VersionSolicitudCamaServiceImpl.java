@@ -77,8 +77,7 @@ public class VersionSolicitudCamaServiceImpl implements VersionSolicitudCamaServ
 
     @Override
     public List<VersionSolicitudResDTO> getVersionSolicitudCamaActivasEnEsperaByIdBloque(Integer idBloqueServicio) {
-        List<VersionSolicitudCama> response = versionSolicitudCamaRepository.findBySolicitudCamaEstadoActivoPorBloque(idBloqueServicio,List.of(1,2))
-                .orElseThrow(null);
+        List<VersionSolicitudCama> response = versionSolicitudCamaRepository.findBySolicitudCamaEstadoActivoPorBloque(idBloqueServicio,List.of(1,2)).orElseThrow(null);
         assert response != null;
 
         List<VersionSolicitudResDTO> listResponse = new ArrayList<>();
