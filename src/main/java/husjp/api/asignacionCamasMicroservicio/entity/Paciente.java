@@ -1,19 +1,28 @@
 package husjp.api.asignacionCamasMicroservicio.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.ForeignKey;
-import jakarta.persistence.PrimaryKeyJoinColumn;
-import lombok.Getter;
+import jakarta.persistence.*;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+import java.time.LocalDate;
+
+@Data
 @Entity
 @NoArgsConstructor
-@PrimaryKeyJoinColumn(name ="id_paciente", foreignKey = @ForeignKey(name = "fk_paciente_persona"))
-public class Paciente extends Persona {
+public class Paciente {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_persona")
+    private Integer idPersona;
+    @Column(unique = true)
+    private String documento;
+    @Column(name = "nombre_completo")
+    private String nombreCompleto;
+    @Column(name = "fecha_nacimiento")
+    private LocalDate fechaNacimiento;
+    private String nombres;
+    private String apellidos;
     private String genero;
 
 }

@@ -1,19 +1,29 @@
 package husjp.api.asignacionCamasMicroservicio.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.Set;
 
-@Getter
-@Setter
+@Data
 @Entity
 @NoArgsConstructor
-@PrimaryKeyJoinColumn(name ="id_persona")
-public class Usuario  extends Persona {
+public class Usuario {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_persona")
+    private Integer idPersona;
+    @Column(unique = true)
+    private String documento;
+    @Column(name = "nombre_completo")
+    private String nombreCompleto;
+    @Column(name = "fecha_nacimiento")
+    private LocalDate fechaNacimiento;
+    private String nombres;
+    private String apellidos;
     private String password;
     private Boolean estado;
     @ManyToMany(fetch = FetchType.EAGER)
