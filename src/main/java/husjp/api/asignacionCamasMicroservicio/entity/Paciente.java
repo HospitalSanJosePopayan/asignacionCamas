@@ -9,11 +9,12 @@ import java.time.LocalDate;
 @Data
 @Entity
 @NoArgsConstructor
+@Table(name = "paciente")
 public class Paciente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_persona")
+    @Column(name = "id_paciente")
     private Integer idPersona;
     @Column(unique = true)
     private String documento;
