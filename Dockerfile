@@ -14,4 +14,5 @@ ENV SPRING_PROFILES_ACTIVE=$PROFILE
 VOLUME /env.properties
 
 # Establece el punto de entrada con el perfil activo
-ENTRYPOINT ["java","-Duser.timezone=America/Bogota", "-Dspring.profiles.active=${SPRING_PROFILES_ACTIVE}", "-Dspring.config.import=file:/env.properties", "-jar", "app.jar"]
+ENTRYPOINT ["java","-Duser.timezone=America/Bogota","-Dspring.profiles.active=${SPRING_PROFILES_ACTIVE}", "-Dspring.config.import=file:/env.properties", "-jar", "app.jar"]
+
